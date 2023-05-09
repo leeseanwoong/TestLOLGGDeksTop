@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="testlol.Views.QueueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:testlol.Views"
+             xmlns:vm="clr-namespace:testlol.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:QueueViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="큐 타입 : " FontSize="15" VerticalAlignment="Center"/>
+            <Label Content="{Binding }" FontSize="15" VerticalAlignment="Center"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="블루팀"/>
+                <DataGridTextColumn Width="*" Header="스펠"/>
+                <DataGridTextColumn Width="*" Header="룬"/>
+                <DataGridTextColumn Width="*" Header="이름"/>
+                <DataGridTextColumn Width="*" Header="티어"/>
+                <DataGridTextColumn Width="*" Header="랭크 승률"/>
+                <DataGridTextColumn Width="*" Header="챔피언 정보"/>
+            </DataGrid.Columns>
+        </DataGrid>
+       
+    </Grid>
+</UserControl>

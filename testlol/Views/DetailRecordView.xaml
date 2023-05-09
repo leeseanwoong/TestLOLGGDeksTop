@@ -1,0 +1,279 @@
+﻿<Window x:Class="testlol.Views.DetailRecordView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:testlol.Views"
+        xmlns:vm="clr-namespace:testlol.ViewModels"
+        mc:Ignorable="d"
+        Title="자세히 보기" Height="750" Width="1000">
+    <Window.DataContext>
+        <vm:DetailRecordViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <DataGrid Background="LightPink" ItemsSource="{Binding RedTeam}" IsReadOnly="True" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
+                <DataGridTemplateColumn Header="Champion / Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="{Binding ChampionName}" Width="20" Height="20" Margin="3"/>
+                                <TextBlock Text="{Binding SummonerName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="SS">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Lv" Binding="{Binding ChampionLevel}"/>
+                <DataGridTemplateColumn Header="KDA">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding KDA}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding kdaScore}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Item">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding Item0}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item1}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item2}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item3}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item4}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item5}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item6}" Width="20" Height="20" Margin="1"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="G/CS">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding TotalGold}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock TextAlignment="Center" Text="{Binding TotalCS}" Margin="1"/>
+                                    <TextBlock TextAlignment="Center"  
+                                               Text="{Binding AvgCS,StringFormat=({0})}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="딜량">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding TotalDamge}"/>
+                                <ProgressBar Foreground="Red" Minimum="0" Maximum="{Binding MaxDamge}" Value="{Binding TotalDamge}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="피해량">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding TotalDamgeTaken}"/>
+                                <ProgressBar Foreground="Green" Minimum="0" Maximum="{Binding MaxDamgeTaken}" Value="{Binding TotalDamgeTaken}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="와드">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding visionSocreAndDetectedWards}"/>
+                                <TextBlock Text="{Binding wardPslacedandkilled}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding RedWin}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} / {1} / {2}">
+                        <Binding Path="RedChampionKill" />
+                        <Binding Path="RedTotalDeaths" />
+                        <Binding Path="RedTotalAssists" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Center" Grid.Column="2" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}전령 : {0} 포탑 :  {1} 드래곤 :  {2} 바론 : {3} 억제기 : {4}">
+                        <Binding Path="RedRiftHeraldKill" />
+                        <Binding Path="RedTowerKill" />
+                        <Binding Path="RedDragonKill" />
+                        <Binding Path="RedBaronKill" />
+                        <Binding Path="RedInhibitorKill" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding BlueWin}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} / {1} / {2}">
+                        <Binding Path="BlueChampionKill" />
+                        <Binding Path="BlueTotalDeaths" />
+                        <Binding Path="BlueTotalAssists" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Center" Grid.Column="2" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}전령 : {0} 포탑 :  {1} 드래곤 :  {2} 바론 : {3}  억제기 : {4}">
+                        <Binding Path="BlueRiftHeraldKill" />
+                        <Binding Path="BlueTowerKill" />
+                        <Binding Path="BlueDragonKill" />
+                        <Binding Path="BlueBaronKill" />
+                        <Binding Path="BlueInhibitorKill" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+        <DataGrid Background="SkyBlue" Grid.Row="3" IsReadOnly="True" ItemsSource="{Binding BlueTeam}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
+                <DataGridTemplateColumn Header="Champion / Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="{Binding ChampionName}" Width="20" Height="20" Margin="3"/>
+                                <TextBlock Text="{Binding SummonerName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="SS">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Lv" Binding="{Binding ChampionLevel}"/>
+                <DataGridTemplateColumn Header="KDA">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding KDA}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding kdaScore}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Item">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding Item0}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item1}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item2}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item3}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item4}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item5}" Width="20" Height="20" Margin="1"/>
+                                <Image Source="{Binding Item6}" Width="20" Height="20" Margin="1"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="G/CS">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding TotalGold}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock TextAlignment="Center" Text="{Binding TotalCS}" Margin="1"/>
+                                    <TextBlock TextAlignment="Center"  
+                                               Text="{Binding AvgCS,StringFormat=({0})}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="딜량">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding TotalDamge}"/>
+                                <ProgressBar Foreground="Red" Minimum="0" Maximum="{Binding MaxDamge}" Value="{Binding TotalDamge}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="피해량">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding TotalDamgeTaken}"/>
+                                <ProgressBar Foreground="Green" Minimum="0" Maximum="{Binding MaxDamgeTaken}" Value="{Binding TotalDamgeTaken}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="와드">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding visionSocreAndDetectedWards}"/>
+                                <TextBlock Text="{Binding wardPslacedandkilled}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
