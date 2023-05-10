@@ -43,7 +43,16 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                
+                <Grid>
+                    <StackPanel Orientation="Vertical">
+                        <Image Source="{Binding Path=Perks.statPerks.offenseImg}" Width="25" Height="25" Margin="0 20 0 0"/>
+                        <TextBlock TextAlignment="Center" Text="{Binding Path=Perks.statPerks.offenseDesc}"/>
+                        <Image Source="{Binding Path=Perks.statPerks.flexImg}" Width="25" Height="25" Margin="0 5 0 5"/>
+                        <TextBlock TextAlignment="Center" Text="{Binding Path=Perks.statPerks.flexDesc}"/>
+                        <Image Source="{Binding Path=Perks.statPerks.defenseImg}" Width="25" Height="25" Margin="0 5 0 5"/>
+                        <TextBlock TextAlignment="Center" Text="{Binding Path=Perks.statPerks.defenseDesc}"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

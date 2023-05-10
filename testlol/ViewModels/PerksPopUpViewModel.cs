@@ -24,5 +24,7 @@ namespace testlol.ViewModels
             get => perks;
             set => SetProperty(ref perks, value);
         }
+
+
     }
 }

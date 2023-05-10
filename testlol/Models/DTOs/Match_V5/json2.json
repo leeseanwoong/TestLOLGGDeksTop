@@ -1,0 +1,76 @@
+[
+
+  {
+    "id": 5001,
+    "name": "체력 증가",
+    "majorChangePatchVersion": "",
+    "tooltip": "체력 +@f1@ (레벨에 비례)",
+    "shortDesc": "체력 +15~140 (레벨에 비례)",
+    "longDesc": "체력 +15~140 (레벨에 비례)",
+    "recommendationDescriptor": "",
+    "iconPath": "/lol-game-data/assets/v1/perk-images/StatMods/StatModsHealthScalingIcon.png",
+    "endOfGameStatDescs": [],
+    "recommendationDescriptorAttributes": {}
+  },
+  {
+    "id": 5002,
+    "name": "방어력",
+    "majorChangePatchVersion": "",
+    "tooltip": "방어력 +6",
+    "shortDesc": "방어력 +6",
+    "longDesc": "방어력 +6",
+    "recommendationDescriptor": "",
+    "iconPath": "/lol-game-data/assets/v1/perk-images/StatMods/StatModsArmorIcon.png",
+    "endOfGameStatDescs": [],
+    "recommendationDescriptorAttributes": {}
+  },
+  {
+    "id": 5003,
+    "name": "마법 저항력",
+    "majorChangePatchVersion": "",
+    "tooltip": "마법 저항력 +8",
+    "shortDesc": "마법 저항력 +8",
+    "longDesc": "마법 저항력 +8",
+    "recommendationDescriptor": "",
+    "iconPath": "/lol-game-data/assets/v1/perk-images/StatMods/StatModsMagicResIcon.MagicResist_Fix.png",
+    "endOfGameStatDescs": [],
+    "recommendationDescriptorAttributes": {}
+  },
+  {
+    "id": 5005,
+    "name": "공격 속도",
+    "majorChangePatchVersion": "",
+    "tooltip": "공격 속도 +10%",
+    "shortDesc": "공격 속도 +10%",
+    "longDesc": "공격 속도 +10%",
+    "recommendationDescriptor": "",
+    "iconPath": "/lol-game-data/assets/v1/perk-images/StatMods/StatModsAttackSpeedIcon.png",
+    "endOfGameStatDescs": [],
+    "recommendationDescriptorAttributes": {}
+  },
+  {
+    "id": 5007,
+    "name": "스킬 가속",
+    "majorChangePatchVersion": "",
+    "tooltip": "스킬 가속 +@f1@",
+    "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>스킬 가속</lol-uikit-tooltipped-keyword> +8 ",
+    "longDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>스킬 가속</lol-uikit-tooltipped-keyword> +8 ",
+    "recommendationDescriptor": "",
+    "iconPath": "/lol-game-data/assets/v1/perk-images/StatMods/StatModsCDRScalingIcon.png",
+    "endOfGameStatDescs": [],
+    "recommendationDescriptorAttributes": {}
+  },
+  {
+    "id": 5008,
+    "name": "적응형 능력치",
+    "majorChangePatchVersion": "",
+    "tooltip": "<scaleAD>+공격력 @f2@</scaleAD>",
+    "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'><font color='#48C4B7'>적응형 능력치</font></lol-uikit-tooltipped-keyword> +9",
+    "longDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'><font color='#48C4B7'>적응형 능력치</font></lol-uikit-tooltipped-keyword> +9",
+    "recommendationDescriptor": "",
+    "iconPath": "/lol-game-data/assets/v1/perk-images/StatMods/StatModsAdaptiveForceIcon.png",
+    "endOfGameStatDescs": [],
+    "recommendationDescriptorAttributes": {}
+  }
+
+]
