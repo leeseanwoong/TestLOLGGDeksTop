@@ -47,20 +47,41 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding Path=MostChampions.ChampionPhoto}" Width="50" Height="50"/>
-                <Image Source="{Binding Path=MostChampions.ChampionPhoto}"  Width="50" Height="50" Grid.Row="1"/>
-                <Image Source="{Binding Path=MostChampions.ChampionPhoto}"  Width="50" Height="50" Grid.Row="2"/>
+                <Image Source="{Binding Path=MostChampions[0].ChampionPhoto}" Width="50" Height="50"/>
+                <Image Source="{Binding Path=MostChampions[1].ChampionPhoto}"  Width="50" Height="50" Grid.Row="1"/>
+                <Image Source="{Binding Path=MostChampions[2].ChampionPhoto}"  Width="50" Height="50" Grid.Row="2"/>
                 <StackPanel Grid.Column="1" Grid.Row="0">
-                    <TextBlock Text="이즈리얼"/>
-                    <TextBlock Text="33% 1.73 3게임"/>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}  {1}승  {2}패">
+                                <Binding Path="MostChampions[0].KDA" />
+                                <Binding Path="MostChampions[0].WinCount" />
+                                <Binding Path="MostChampions[0].LossesCount" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="1">
-                    <TextBlock Text="케이틀린"/>
-                    <TextBlock Text="33% 1.73 3게임"/>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}  {1}승  {2}패">
+                                <Binding Path="MostChampions[1].KDA" />
+                                <Binding Path="MostChampions[1].WinCount" />
+                                <Binding Path="MostChampions[1].LossesCount" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="2">
-                    <TextBlock Text="바루스"/>
-                    <TextBlock Text="33% 1.73 3게임"/>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}  {1}승  {2}패">
+                                <Binding Path="MostChampions[2].KDA" />
+                                <Binding Path="MostChampions[2].WinCount" />
+                                <Binding Path="MostChampions[2].LossesCount" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
         </Grid>

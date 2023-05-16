@@ -17,6 +17,7 @@ namespace testlol.ViewModels
 {
     internal class RecordViewModel : ViewModelBase
     {
+        #region ctor
         public RecordViewModel()
         {
             Match_V5 match_V5 = new Match_V5();
@@ -32,36 +33,65 @@ namespace testlol.ViewModels
             int totalWinCount = 0;
             int totalLossesCount = 0;
             List<MostChampionDTO> mostChampions = new List<MostChampionDTO>();
-            MostChampionDTO most = new MostChampionDTO();
+            
             for (int i = 0; i < arr.Length; i++)
             {
+                MostChampionDTO most = new MostChampionDTO();
                 MatchDTO matchData = match_V5.GetMatchData(arr[i]);
                 matchData.info.participants = InitParticipants(matchData.info.participants);
                 ParticipantDTO userData = match_V5.GetUserData(matchData);
                 if (userData.win == true)
                 {
                     totalWinCount = totalWinCount + 1;
+                    most.WinCount +=1;
                 }
                 else if (userData.win == false)
                 {
                     totalLossesCount = totalLossesCount + 1;
+                    most.LossesCount+=1;
                 }
                 most.ChampionPhoto = userData.championPhoto;
                 most.ChampionName = userData.championName;
-                most.Count = most.Count + 1;
-                totalKills = most.Kills = totalKills + userData.kills;
-                totalDeaths = most.Deaths = totalDeaths + userData.deaths;
-                totalAssists = most.Assists = totalAssists + userData.assists;
+                most.ChampCount = most.ChampCount + 1;
+                most.Kills = userData.kills;
+                most.Deaths = userData.deaths;
+                most.Assists = userData.assists;
+                totalKills  = totalKills + userData.kills;
+                totalDeaths =  totalDeaths + userData.deaths;
+                totalAssists =  totalAssists + userData.assists;
                 most.KDA = Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
                 mostChampions.Add(most);
             }
-
+            for (int j = 0; j < mostChampions.Count; j++)
+            {
+                for (int k = 0; k < mostChampions.Count; k++)
+                {
+                    if (j == k) { }
+                    else
+                    {
+                        if (mostChampions[j].ChampionName == mostChampions[k].ChampionName)
+                        {
+                            mostChampions[j].Assists += mostChampions[k].Assists;
+                            mostChampions[j].Deaths += mostChampions[k].Deaths;
+                            mostChampions[j].Kills += mostChampions[k].Kills;
+                            mostChampions[j].LossesCount += mostChampions[k].LossesCount;
+                            mostChampions[j].WinCount += mostChampions[k].WinCount;
+                            mostChampions[j].ChampCount += 1;
+                            mostChampions[j].KDA = Math.Round(((double)mostChampions[j].Kills + mostChampions[j].Assists) / mostChampions[j].Deaths, 2);
+                            mostChampions.RemoveAt(k);
+                            k += -1;
+                        }
+                    }
+                }
+            }
+            var mostList = mostChampions.OrderByDescending(x => x.ChampCount).ToList();
             TotalGameCount = totalGameCount + " 전 " + totalWinCount + " 승 " + totalLossesCount + " 패";
             TotalWinRate = String.Format("{0:P0}", (double)totalWinCount / totalGameCount);
             TotalKDAScore = string.Format("{0:#,###0.#}", (double)totalKills / 10) + " / " + string.Format("{0:#,###0.#}", (double)totalAssists / 10) + " / " + string.Format("{0:#,###0.#}", (double)totalDeaths / 10);
             TotalKDA = String.Format("{0:0.0#}", (double)(totalKills + totalAssists) / totalDeaths);
-
+            MostChampions = mostList;
         }
+        #endregion
 
         #region property
         private ObservableCollection<RecordListItemViewModel> innermembers
@@ -69,8 +99,8 @@ namespace testlol.ViewModels
 
         private ReadOnlyObservableCollection<RecordListItemViewModel> members;
 
-        private MostChampionDTO mostChampions;
-        public MostChampionDTO MostChampions
+        private List<MostChampionDTO> mostChampions;
+        public List<MostChampionDTO> MostChampions
         {
             get => mostChampions;
             set => SetProperty(ref mostChampions, value);
@@ -154,8 +184,8 @@ namespace testlol.ViewModels
                             PrimaryPerks = userData.perks.styles[0].selections[0].perkImage,
                             SubPerks = userData.perks.styles[1].styleIcon,
                             gametime = matchData.info.gameDuration,
-                            teams=matchData.info.teams,
-                            Perks=userData.perks,
+                            teams = matchData.info.teams,
+                            Perks = userData.perks,
                         });
                     }
                 }
@@ -191,7 +221,7 @@ namespace testlol.ViewModels
         }
 
         private DelegateCommand buttonPerksPopup;
-        public ICommand ButtonPerksPopup => buttonPerksPopup = buttonPerksPopup ?? new DelegateCommand(ButtonPerksPopupCommand,CanButtonClick);
+        public ICommand ButtonPerksPopup => buttonPerksPopup = buttonPerksPopup ?? new DelegateCommand(ButtonPerksPopupCommand, CanButtonClick);
         private void ButtonPerksPopupCommand(object parameter)
         {
             int idx = Members.IndexOf(parameter as RecordListItemViewModel);
