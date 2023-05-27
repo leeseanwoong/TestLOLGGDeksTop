@@ -19,7 +19,8 @@ namespace testlol.ViewModels
 
         public HomeViewModel()
         {
-            var position = GetPosition(Constants.Summoner);
+            League_V4 league_V4 = new League_V4();
+            var position = league_V4.GetPosition(Constants.Summoner);
             Name = Constants.UserName;
             SummonerLevel = Constants.Summoner.SummonerLevel;
             ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon"+Constants.Summoner.ProfileIconId+".jpg";
@@ -86,13 +87,5 @@ namespace testlol.ViewModels
         #endregion
 
 
-        private PositionDTO GetPosition(SummonerDTO summoner)
-        {
-            League_V4 league = new League_V4();
-
-            var position = league.GetPositions(summoner.Id).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
-
-            return position ?? new PositionDTO();
-        }
     }
 }

@@ -13,24 +13,92 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="4*"/>
+
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="6*"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Label Content="큐 타입 : " FontSize="15" VerticalAlignment="Center"/>
-            <Label Content="{Binding }" FontSize="15" VerticalAlignment="Center"/>
+            <Label Content="{Binding GameMode}" FontSize="15" VerticalAlignment="Center"/>
         </StackPanel>
-        <DataGrid Grid.Row="1">
+        <DataGrid Visibility="{Binding Visibility}" Grid.Row="1" Background="SkyBlue" ItemsSource="{Binding BlueTeam}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="*" Header="블루팀"/>
-                <DataGridTextColumn Width="*" Header="스펠"/>
-                <DataGridTextColumn Width="*" Header="룬"/>
-                <DataGridTextColumn Width="*" Header="이름"/>
-                <DataGridTextColumn Width="*" Header="티어"/>
-                <DataGridTextColumn Width="*" Header="랭크 승률"/>
-                <DataGridTextColumn Width="*" Header="챔피언 정보"/>
+                <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
+                <DataGridTemplateColumn Header="Champion / Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="{Binding ChampionName}" Width="20" Height="20" Margin="3"/>
+                                <TextBlock Text="{Binding SummonerName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="SS">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="랭크 승률">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Win}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-       
+        <DataGrid Visibility="{Binding Visibility}" Grid.Row="2" Background="LightPink" ItemsSource="{Binding RedTeam}" IsReadOnly="True" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
+                <DataGridTemplateColumn Header="Champion / Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="{Binding ChampionName}" Width="20" Height="20" Margin="3"/>
+                                <TextBlock Text="{Binding SummonerName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="SS">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                    <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="랭크 승률">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Win}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

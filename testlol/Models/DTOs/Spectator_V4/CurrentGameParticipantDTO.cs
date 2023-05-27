@@ -14,6 +14,7 @@ namespace testlol.Models.DTOs.Spectator_V4
         public string summonerName { get; set; }
         public long spell1Id { get; set; }
         public long spell2Id { get; set; }
-
+        public string summonerId { get; set; }
+        public string championName { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace testlol.ViewModels
                 case FunctionType.Record:
                     MainContentViewModel.MainContent = new RecordViewModel();
                     break;
-                case FunctionType.Queue_information:
+                case FunctionType.Queue:
                     MainContentViewModel.MainContent = new QueueViewModel();
                     break;
             }

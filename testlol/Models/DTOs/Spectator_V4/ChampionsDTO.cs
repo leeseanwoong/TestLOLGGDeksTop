@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace testlol.Types
+namespace testlol.Models.DTOs.Spectator_V4
 {
-    public enum FunctionType
+    public class ChampionsDTO
     {
-            Home,
-            Record,
-            Queue,
+        public List<ChampionDataDTO> data { get; set; }
     }
 }

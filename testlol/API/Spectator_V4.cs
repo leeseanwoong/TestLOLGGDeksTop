@@ -32,5 +32,21 @@ namespace testlol.API
                 return null;
             }
         }
+        public ChampionsDTO GetChampions()
+        {
+            string path = "http://ddragon.leagueoflegends.com/cdn/13.10.1/data/en_US/champion.json";
+
+            var response = GET(path);
+            string content = response.Content.ReadAsStringAsync().Result;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return JsonConvert.DeserializeObject<ChampionsDTO>(content);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

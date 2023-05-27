@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -21,9 +22,6 @@ namespace testlol
     {
         public  RiotClientManager clientManager;
 
-        private DelegateCommand buttonConnect;
-
-        public ICommand ButtonConnect => buttonConnect = buttonConnect ?? new DelegateCommand(ButtonConnectCommand);
 
 
         private SummonerDTO GetSummoner(string SummerName)
@@ -32,48 +30,55 @@ namespace testlol
             return summoner_V4.GetSummonerByName(SummerName);
         }
 
-        
-
-        private async void ButtonConnectCommand()
+        public ConnViewModel()
         {
-            clientManager = new RiotClientManager();
-            try
+            System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
+            Timer.Interval = TimeSpan.FromTicks(10000000);
+            Timer.Tick += async (s, a) =>
             {
-                Process[] processes = Process.GetProcessesByName(ClientData.CLIENT_NAME);
-                ClientData.clientProcess = processes[0];
-
-                ClientData.LeaguePath = Path.GetDirectoryName(ClientData.clientProcess.MainModule.FileName);
-                var lockFilePath = Path.Combine(ClientData.LeaguePath, "lockfile");
-
-                using (var fileStream = new FileStream(lockFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var reader = new StreamReader(fileStream))
+                clientManager = new RiotClientManager();
+                try
                 {
-                    var text = reader.ReadToEnd();
-                    string[] items = text.Split(':');
-                    ClientData.ToKen = items[3];
-                    ClientData.Port = ushort.Parse(items[2]);
-                    ClientData.ApiUrl = "https://127.0.0.1:" + ClientData.Port.ToString() + "/";
+                    Process[] processes = Process.GetProcessesByName(ClientData.CLIENT_NAME);
+                    ClientData.clientProcess = processes[0];
 
-                    Console.WriteLine($"Token : {ClientData.ToKen}");
-                    Console.WriteLine($"Port : {ClientData.Port}");
-                    Console.WriteLine($"ApiUri : {ClientData.ApiUrl}");
+                    ClientData.LeaguePath = Path.GetDirectoryName(ClientData.clientProcess.MainModule.FileName);
+                    var lockFilePath = Path.Combine(ClientData.LeaguePath, "lockfile");
+
+                    using (var fileStream = new FileStream(lockFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (var reader = new StreamReader(fileStream))
+                    {
+                        var text = reader.ReadToEnd();
+                        string[] items = text.Split(':');
+                        ClientData.ToKen = items[3];
+                        ClientData.Port = ushort.Parse(items[2]);
+                        ClientData.ApiUrl = "https://127.0.0.1:" + ClientData.Port.ToString() + "/";
+
+                        Console.WriteLine($"Token : {ClientData.ToKen}");
+                        Console.WriteLine($"Port : {ClientData.Port}");
+                        Console.WriteLine($"ApiUri : {ClientData.ApiUrl}");
+                    }
+
+                    clientManager.Connect();
+                    
+                    
+                    MessageBox.Show("연결 완료");
+                    
+                    var msg = await clientManager.UsingApiEventJObject("Get", "/lol-summoner/v1/current-summoner");
+                    UserDTO username = JsonConvert.DeserializeObject<UserDTO>(msg.ToString());
+
+                    Constants.UserName = username.displayName;
+                    Constants.Summoner = GetSummoner(Constants.UserName);
+                    Timer.Stop();
+
                 }
-
-                clientManager.Connect();
-
-                MessageBox.Show("연결 성공");
-
-                var msg = await clientManager.UsingApiEventJObject("Get", "/lol-summoner/v1/current-summoner");
-                UserDTO username = JsonConvert.DeserializeObject<UserDTO>(msg.ToString());
-
-                Constants.UserName = username.displayName;
-                Constants.Summoner = GetSummoner(Constants.UserName);
-
-            }
-            catch
-            {
-                MessageBox.Show("연결 실패");
-            }
+                catch
+                {
+                    Console.WriteLine("Connection Failed");
+                }
+            };
+            Timer.Start();
         }
+       
     }
 }

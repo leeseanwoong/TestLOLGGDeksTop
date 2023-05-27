@@ -12,5 +12,8 @@ namespace testlol.Models.DTOs.Spectator_V4
         public List<long> perkIds { get; set; }
         public long perkStyle { get; set; }
         public long perkSubStyle { get; set; }
+        public List<string> perksImgs { get; set; }
+        public string perksStyleIcon { get; set; }
+        public string perkSubStyleIcon { get; set; }
     }
 }

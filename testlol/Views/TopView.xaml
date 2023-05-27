@@ -13,13 +13,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Label Content="TestLoL" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
-        </Grid>
-        <Grid Grid.Column="1">
-            <Button Content="Connection" Command="{Binding ButtonConnect}"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -187,7 +187,7 @@ namespace testlol.ViewModels
         {
             get => blue;
             set => SetProperty(ref blue, value);
-        } 
+        }
         #endregion
         
        

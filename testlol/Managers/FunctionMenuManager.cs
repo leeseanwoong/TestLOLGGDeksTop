@@ -26,7 +26,7 @@ namespace testlol.Managers
 
             items.Add(new FunctionMenuItemData(FunctionType.Home, "Home"));
             items.Add(new FunctionMenuItemData(FunctionType.Record, "Record"));
-            items.Add(new FunctionMenuItemData(FunctionType.Queue_information, "Queue"));
+            items.Add(new FunctionMenuItemData(FunctionType.Queue, "Queue"));
 
 
 

@@ -51,9 +51,9 @@
                 <Image Source="{Binding Path=MostChampions[1].ChampionPhoto}"  Width="50" Height="50" Grid.Row="1"/>
                 <Image Source="{Binding Path=MostChampions[2].ChampionPhoto}"  Width="50" Height="50" Grid.Row="2"/>
                 <StackPanel Grid.Column="1" Grid.Row="0">
-                    <TextBlock>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0}  {1}승  {2}패">
+                            <MultiBinding StringFormat="{}KDA : {0}  {1}승  {2}패">
                                 <Binding Path="MostChampions[0].KDA" />
                                 <Binding Path="MostChampions[0].WinCount" />
                                 <Binding Path="MostChampions[0].LossesCount" />
@@ -62,9 +62,9 @@
                     </TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="1">
-                    <TextBlock>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0}  {1}승  {2}패">
+                            <MultiBinding StringFormat="{}KDA : {0}  {1}승  {2}패">
                                 <Binding Path="MostChampions[1].KDA" />
                                 <Binding Path="MostChampions[1].WinCount" />
                                 <Binding Path="MostChampions[1].LossesCount" />
@@ -73,9 +73,9 @@
                     </TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="2">
-                    <TextBlock>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0}  {1}승  {2}패">
+                            <MultiBinding StringFormat="{}KDA : {0}  {1}승  {2}패">
                                 <Binding Path="MostChampions[2].KDA" />
                                 <Binding Path="MostChampions[2].WinCount" />
                                 <Binding Path="MostChampions[2].LossesCount" />
