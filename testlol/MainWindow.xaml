@@ -20,7 +20,7 @@
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <view:TopView Visibility="{Binding ElementName=TopExpander, Path=IsExpanded, Converter={StaticResource FalseToCollapsed}}"/>
+            <view:TopView/>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <view:MenuView DataContext="{Binding MenuViewModel}" Visibility="{Binding ElementName=MenuExpander, Path=IsExpanded, Converter={StaticResource FalseToCollapsed}}"/>
+            <view:MenuView DataContext="{Binding MenuViewModel}"/>
 
             <view:MainView Grid.Column="1" DataContext="{Binding MainContentViewModel}"/>
         </Grid>

@@ -8,7 +8,7 @@ namespace testlol.Models.DTOs.Spectator_V4
 {
     public class ChampionDataDTO
     {
-        public string name { get; set; }
-        public ChampionDetailDTO detail { get; set; }
+        public string id { get; set; }
+        public string key { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace testlol.Models.DTOs.Spectator_V4
 {
     public class ChampionsDTO
     {
-        public List<ChampionDataDTO> data { get; set; }
+        public Dictionary<string, ChampionDataDTO> data { get; set; }
     }
 }

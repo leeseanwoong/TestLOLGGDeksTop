@@ -210,7 +210,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTextColumn Binding="{Binding summonerName}"/>
+                                        <DataGridHyperlinkColumn Binding="{Binding summonerName}" />
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <DataGrid IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" Grid.Column="1"  AutoGenerateColumns="False" ItemsSource="{Binding RedTeam}">

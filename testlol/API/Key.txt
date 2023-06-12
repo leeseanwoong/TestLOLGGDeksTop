@@ -1,1 +1,1 @@
-- Riot Api Key Value -
+RGAPI-cec8bab9-ef57-40a2-80e0-16022f65cd0c

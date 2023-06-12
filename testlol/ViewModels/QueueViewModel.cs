@@ -80,11 +80,15 @@ namespace testlol.ViewModels
                         if (position == null)
                             position.Tier = "UnRanked";
 
-                        for (int j = 0; j < champions.data.Count; j++)
+                        foreach (var item in champions.data) // 챔피언 아이디 값으로 이름 찾기
                         {
-                            if (red[i].championid == long.Parse(champions.data[j].detail.key))
-                                red[i].championName = champions.data[j].detail.id;
+                            if(long.Parse(champions.data[item.Key].key) == red[i].championid)
+                            {
+                                red[i].championName = champions.data[item.Key].id;
+                            }
+
                         }
+
                         GetPerks(red[i].perks, rune);
                         innerRed.Add(new QueueItemViewModel()
                         {
@@ -133,13 +137,17 @@ namespace testlol.ViewModels
                         var position = league.GetPositions(blue[i].summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
                         if (position == null)
                             position.Tier = "UnRanked";
-
-                        for (int j = 0; j < champions.data.Count; j++)
+                        foreach (var item in champions.data)
                         {
-                            if (blue[i].championid == long.Parse(champions.data[j].detail.key))
-                                blue[i].championName = champions.data[j].detail.id;
+                            if (long.Parse(champions.data[item.Key].key) == blue[i].championid)
+                            {
+                                blue[i].championName = champions.data[item.Key].id;
+                            }
+
                         }
+                        
                         GetPerks(blue[i].perks, rune);
+                        
                         innerRed.Add(new QueueItemViewModel()
                         {
                             tier = position.Tier + " " + position.Rank,
