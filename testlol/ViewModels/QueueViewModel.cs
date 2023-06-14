@@ -168,15 +168,23 @@ namespace testlol.ViewModels
 
         private void GetPerks(PerkDTO perk,List<RuneDTO> runes)
         {
+            perk.perksImgs = new List<string>();
             for (int i = 0; i < runes.Count; i++) //스타일 아이콘 찾기
             {
                 if (perk.perkStyle == runes[i].id)
+                {
                     perk.perksStyleIcon = "https://ddragon.leagueoflegends.com/cdn/img/" + runes[i].icon;
+                    break;
+                }
+                    
             }
             for (int i = 0; i < runes.Count; i++)
             {
                 if (perk.perkSubStyle == runes[i].id)
+                {
                     perk.perkSubStyleIcon = "https://ddragon.leagueoflegends.com/cdn/img/" + runes[i].icon;
+                    break;
+                }
             }
             for (int i = 0; i < perk.perkIds.Count; i++)
             {
@@ -186,8 +194,11 @@ namespace testlol.ViewModels
                     {
                         for (int t = 0; t < runes[j].slots[k].runes.Count; t++)
                         {
-                            if (perk.perkIds[i] == runes[j].slots[k].runes[t].id)
+                            if (perk.perkIds[i] == runes[j].slots[k].runes[t].id) 
+                            {
+                                
                                 perk.perksImgs.Add("https://ddragon.leagueoflegends.com/cdn/img/" + runes[j].slots[k].runes[t].icon);
+                            }
                             else
                             {
                                 if (perk.perkIds[i] == 5008) // 맨 위쪽
