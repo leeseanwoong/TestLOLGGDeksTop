@@ -144,6 +144,7 @@ namespace testlol.ViewModels
                     matchlist = matchlist.Replace("[", "");
                     matchlist = matchlist.Replace("]", "");
                     string[] arr = matchlist.Split(",");
+                    
                     for (int i = 0; i < arr.Length; i++)
                     {
                         List<ParticipantDTO> redTeam = new List<ParticipantDTO>();

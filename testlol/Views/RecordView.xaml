@@ -50,7 +50,7 @@
                 <Image Source="{Binding Path=MostChampions[0].ChampionPhoto}" Width="50" Height="50"/>
                 <Image Source="{Binding Path=MostChampions[1].ChampionPhoto}"  Width="50" Height="50" Grid.Row="1"/>
                 <Image Source="{Binding Path=MostChampions[2].ChampionPhoto}"  Width="50" Height="50" Grid.Row="2"/>
-                <StackPanel Grid.Column="1" Grid.Row="0">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}KDA : {0}  {1}승  {2}패">
@@ -61,7 +61,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Grid.Row="1">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}KDA : {0}  {1}승  {2}패">
@@ -72,7 +72,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Grid.Row="2">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}KDA : {0}  {1}승  {2}패">
@@ -210,7 +210,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridHyperlinkColumn Binding="{Binding summonerName}" />
+                                        <DataGridTextColumn Binding="{Binding summonerName}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <DataGrid IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" Grid.Column="1"  AutoGenerateColumns="False" ItemsSource="{Binding RedTeam}">

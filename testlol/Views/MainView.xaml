@@ -18,6 +18,9 @@
         <DataTemplate DataType="{x:Type vm:RecordViewModel}">
             <vw:RecordView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SearchViewModel}">
+            <vw:SearchView/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding MainContent}"/>

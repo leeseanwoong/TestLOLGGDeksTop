@@ -3,52 +3,7 @@
                     xmlns:converter ="clr-namespace:testlol">
     <converter:FalseToCollapsed x:Key="FalseToCollapsed"/>
     
-    <Style TargetType="Expander" x:Key="TopExpanderStyle">
-        <Setter Property="Background" Value="SkyBlue"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="ExpandDirection" Value="Down"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Width" Value="25"/>
-        <Setter Property="Height" Value="25"/>
-        <Setter Property="Margin" Value="0,4,0,0"/>
-        <Setter Property="ToolTip" Value="Menu OPen"/>
-        <Setter Property="Header">
-            <Setter.Value>
-                <TextBlock Text="Connection">
-                    <TextBlock.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </TextBlock.LayoutTransform>
-                    <TextBlock.RenderTransform>
-                        <TranslateTransform X="0.5" Y="0.5"/>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="Expander" x:Key="MenuExpanderStyle">
-        <Setter Property="Background" Value="SkyBlue"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="ExpandDirection" Value="Right"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Width" Value="25"/>
-        <Setter Property="Height" Value="70"/>
-        <Setter Property="Margin" Value="0,4,0,0"/>
-        <Setter Property="ToolTip" Value="Menu OPen"/>
-        <Setter Property="Header">
-            <Setter.Value>
-                <TextBlock Text="Menu">
-                    <TextBlock.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </TextBlock.LayoutTransform>
-                    <TextBlock.RenderTransform>
-                        <TranslateTransform X="0.5" Y="0.5"/>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    
 
     <Style TargetType="{x:Type DataGridRow}" x:Key="DGWinRowStyle">
         <Style.Triggers>

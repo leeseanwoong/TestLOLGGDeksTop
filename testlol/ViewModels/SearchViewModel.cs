@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace testlol.Types
+namespace testlol.ViewModels
 {
-    public enum FunctionType
+    internal class SearchViewModel : ViewModelBase
     {
-            Home,
-            Record,
-            Queue,
-            Search,
+        public SearchViewModel()
+        {
+
+        }
     }
 }

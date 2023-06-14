@@ -61,6 +61,9 @@ namespace testlol.ViewModels
                 case FunctionType.Queue:
                     MainContentViewModel.MainContent = new QueueViewModel();
                     break;
+                case FunctionType.Search:
+                    MainContentViewModel.MainContent = new SearchViewModel();
+                    break;
             }
         }
     }
