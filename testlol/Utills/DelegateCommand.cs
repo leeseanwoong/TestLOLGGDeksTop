@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace testlol.ViewModels
+namespace testlol.Utills
 {
     class DelegateCommand : ICommand
     {
         Predicate<object> canExecute;
         Action<object> execute;
-        public DelegateCommand( Action<object> _execute, Predicate<object> _canexecute)
+        public DelegateCommand(Action<object> _execute, Predicate<object> _canexecute)
        : this()
         {
             canExecute = _canexecute;

@@ -197,8 +197,8 @@ namespace testlol.ViewModels
         #endregion
 
         #region ButtonEvent
-        private DelegateCommand buttonDetailPopup;
-        public ICommand ButtonDetailPopup => buttonDetailPopup ?? new DelegateCommand(ButtonDeatilPopupCommand, CanButtonClick);
+        private Utills.DelegateCommand buttonDetailPopup;
+        public ICommand ButtonDetailPopup => buttonDetailPopup ?? new Utills.DelegateCommand(ButtonDeatilPopupCommand, CanButtonClick);
 
         private void ButtonDeatilPopupCommand(object parameter)
         {
@@ -221,8 +221,8 @@ namespace testlol.ViewModels
             return true;
         }
 
-        private DelegateCommand buttonPerksPopup;
-        public ICommand ButtonPerksPopup => buttonPerksPopup = buttonPerksPopup ?? new DelegateCommand(ButtonPerksPopupCommand, CanButtonClick);
+        private Utills.DelegateCommand buttonPerksPopup;
+        public ICommand ButtonPerksPopup => buttonPerksPopup = buttonPerksPopup ?? new Utills.DelegateCommand(ButtonPerksPopupCommand, CanButtonClick);
         private void ButtonPerksPopupCommand(object parameter)
         {
             int idx = Members.IndexOf(parameter as RecordListItemViewModel);
