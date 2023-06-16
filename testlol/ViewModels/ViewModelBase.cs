@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,19 +34,13 @@ namespace testlol.ViewModels
         }
 
 
-        protected bool SetProperty<T>(ref T property, T value)
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
         {
-            try
-            {
-                property = value;
-                OnPropertyChanged(nameof(property));
-                return true;
-            }
-            catch
-            {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
                 return false;
-            }
-
+            storage = value;
+            this.OnPropertyChanged(propertyName);
+            return true;
         }
 
         protected void RaisePropertyChanged(string propertyName)

@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              xmlns:vm="clr-namespace:testlol.ViewModels"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:view="clr-namespace:testlol.Views"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <vm:SearchViewModel/>
@@ -31,13 +32,13 @@
                 <ColumnDefinition Width="0.5*" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Image Source="{Binding ProfileIconId}"/>
+                <Image Source="{Binding ProfileIconId}" Height="150" Width="150" Margin="5"/>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding SearchName}"/>
+                    <TextBlock Text="{Binding SearchName}" FontSize="30"/>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}승  {1}패">
-                                <Binding Path="Wins" />
+                                <Binding Path="Wins"  />
                                 <Binding Path="Losses" />
                             </MultiBinding>
                         </TextBlock.Text>
@@ -45,8 +46,8 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Vertical">
-                <Image Grid.Column="1" Source="{Binding TierIcon}"/>
-                <TextBlock Text="{Binding Tier}"/>
+                <Image Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon}" Height="130" Width="130"/>
+                <TextBlock TextAlignment="Center" Text="{Binding Tier, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </Grid>
         <DataGrid ItemsSource="{Binding Items}" Grid.Row="2">

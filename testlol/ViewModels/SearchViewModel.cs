@@ -25,18 +25,12 @@ namespace testlol.ViewModels
         }
         
         #region properties
+
         private string summonerName;
         public string SummonerName
         {
             get => summonerName;
             set => SetProperty(ref summonerName, value);
-        }
-
-        private SummonerDTO summoner;
-        public SummonerDTO Summoner
-        {
-            get => summoner;
-            set => SetProperty(ref summoner, value);
         }
 
         private string searchName;
@@ -84,6 +78,26 @@ namespace testlol.ViewModels
             get => losses;
             set => SetProperty(ref losses, value);
         }
+
+        private SummonerDTO summoner;
+        public SummonerDTO Summoner
+        {
+            get => summoner;
+            set => SetProperty(ref summoner, value);
+        }
+        private SearchInfoViewModel searchInfoViewModel;
+        public SearchInfoViewModel SearchInfoViewModel
+        {
+            get
+            {
+                if(searchInfoViewModel == null)
+                {
+                    searchInfoViewModel = new SearchInfoViewModel();
+                }
+                return searchInfoViewModel;
+            }
+        }
+        
 
         /*private ObservableCollection<RecordListItemViewModel> innerItems { get; } = new ObservableCollection<RecordListItemViewModel>();
         private ReadOnlyObservableCollection<RecordListItemViewModel> items;
@@ -161,12 +175,12 @@ namespace testlol.ViewModels
             Summoner_V4 summoner_V4 = new Summoner_V4();
             Summoner = summoner_V4.GetSummonerByName(SummonerName);
             Summoner.SummonerName = SummonerName;
+            League_V4 league_V4 = new League_V4();
+            var position = league_V4.GetPosition(Summoner);
             if (string.IsNullOrEmpty(SummonerName))
                 return;
             if (Summoner != null)
             {
-                League_V4 league_V4 = new League_V4();
-                var position = league_V4.GetPosition(Summoner);
                 SearchName = Summoner.SummonerName;
                 SummonerLevel = Summoner.SummonerLevel;
                 ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Summoner.ProfileIconId + ".jpg";
