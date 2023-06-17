@@ -66,12 +66,12 @@ namespace testlol.API
                 return null;
             }
         }
-        public ParticipantDTO GetUserData(MatchDTO matchDTO)
+        public ParticipantDTO GetUserData(MatchDTO matchDTO, string summonerName)
         {
             ParticipantDTO userData = new ParticipantDTO();
             for(int i = 0; i < matchDTO.info.participants.Count; i++)
             {
-                if (Constants.UserName == matchDTO.info.participants[i].summonerName)
+                if (summonerName == matchDTO.info.participants[i].summonerName)
                 {
                     userData = matchDTO.info.participants[i];
                 }

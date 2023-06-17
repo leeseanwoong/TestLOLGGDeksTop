@@ -39,7 +39,7 @@ namespace testlol.ViewModels
                 MostChampionDTO most = new MostChampionDTO();
                 MatchDTO matchData = match_V5.GetMatchData(arr[i]);
                 matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                ParticipantDTO userData = match_V5.GetUserData(matchData);
+                ParticipantDTO userData = match_V5.GetUserData(matchData,Constants.UserName);
                 if (userData.win == true)
                 {
                     totalWinCount = totalWinCount + 1;
@@ -154,7 +154,7 @@ namespace testlol.ViewModels
                         match_V5.GetPerksImg(rune, matchData);
                         match_V5.GetStatsImg(rune, matchData);
                         match_V5.GetTeam(matchData, redTeam, blueTeam);
-                        ParticipantDTO userData = match_V5.GetUserData(matchData);
+                        ParticipantDTO userData = match_V5.GetUserData(matchData,Constants.UserName);
                         innermembers.Add(new RecordListItemViewModel()
                         {
                             Assists = userData.assists,

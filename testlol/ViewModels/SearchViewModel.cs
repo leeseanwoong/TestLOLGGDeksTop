@@ -113,7 +113,7 @@ namespace testlol.ViewModels
                         match_V5.GetPerksImg(rune, matchData);
                         match_V5.GetStatsImg(rune, matchData);
                         match_V5.GetTeam(matchData, redTeam, blueTeam);
-                        ParticipantDTO userData = match_V5.GetUserData(matchData);
+                        ParticipantDTO userData = match_V5.GetUserData(matchData,);
                         innerItems.Add(new RecordListItemViewModel()
                         {
                             Assists = userData.assists,
@@ -152,6 +152,7 @@ namespace testlol.ViewModels
                 return items;
             }
         }
+        
         #endregion
 
         private Prism.Commands.DelegateCommand buttonSearch;
@@ -162,21 +163,19 @@ namespace testlol.ViewModels
         {
             Summoner_V4 summoner_V4 = new Summoner_V4();
             Summoner = summoner_V4.GetSummonerByName(SummonerName);
-            Summoner.SummonerName = SummonerName;
             League_V4 league_V4 = new League_V4();
             var position = league_V4.GetPosition(Summoner);
             if (string.IsNullOrEmpty(SummonerName))
                 return;
             if (Summoner != null)
             {
-                SearchName = Summoner.SummonerName;
+                SearchName = Summoner.Name;
                 SummonerLevel = Summoner.SummonerLevel;
                 ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Summoner.ProfileIconId + ".jpg";
                 Tier = position.Tier + " " + position.Rank;
                 Wins = position.Wins;
                 Losses = position.Losses;
                 TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
-                
             }
             else
             {
