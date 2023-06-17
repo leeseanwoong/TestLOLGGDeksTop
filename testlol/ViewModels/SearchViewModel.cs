@@ -85,31 +85,19 @@ namespace testlol.ViewModels
             get => summoner;
             set => SetProperty(ref summoner, value);
         }
-        private SearchInfoViewModel searchInfoViewModel;
-        public SearchInfoViewModel SearchInfoViewModel
-        {
-            get
-            {
-                if(searchInfoViewModel == null)
-                {
-                    searchInfoViewModel = new SearchInfoViewModel();
-                }
-                return searchInfoViewModel;
-            }
-        }
-        
 
-        /*private ObservableCollection<RecordListItemViewModel> innerItems { get; } = new ObservableCollection<RecordListItemViewModel>();
+
+        private ObservableCollection<RecordListItemViewModel> innerItems { get; } = new ObservableCollection<RecordListItemViewModel>();
         private ReadOnlyObservableCollection<RecordListItemViewModel> items;
         public ReadOnlyObservableCollection<RecordListItemViewModel> Items
         {
             get
             {
-                if (items == null)
+                if (items == null && Summoner != null)
                 {
                     items = new ReadOnlyObservableCollection<RecordListItemViewModel>(innerItems);
                     Match_V5 match_V5 = new Match_V5();
-                    string matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
+                    string matchlist = match_V5.GetMatchList(Summoner.puuid);
                     List<RuneDTO> rune = match_V5.GetRune();
                     matchlist = matchlist.Replace("\"", "");
                     matchlist = matchlist.Replace("[", "");
@@ -121,10 +109,10 @@ namespace testlol.ViewModels
                         List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
                         List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
                         MatchDTO matchData = match_V5.GetMatchData(arr[i]);
-                        matchData.info.participants = InitParticipants(matchData.info.participants);
-                        GetPerksImg(rune, matchData);
-                        GetStatsImg(rune, matchData);
-                        GetTeam(matchData, redTeam, blueTeam);
+                        matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
+                        match_V5.GetPerksImg(rune, matchData);
+                        match_V5.GetStatsImg(rune, matchData);
+                        match_V5.GetTeam(matchData, redTeam, blueTeam);
                         ParticipantDTO userData = match_V5.GetUserData(matchData);
                         innerItems.Add(new RecordListItemViewModel()
                         {
@@ -132,9 +120,9 @@ namespace testlol.ViewModels
                             Kills = userData.kills,
                             Deaths = userData.deaths,
                             KDA = userData.KDA,
-                            Win = GetWinLose(userData.win),
+                            Win = match_V5.GetWinLose(userData.win),
                             QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                            GameDuration = GetGameTime(matchData.info.gameDuration),
+                            GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
                             ChampionPhoto = userData.championPhoto,
                             Summoner1Casts = match_V5.GetSpellName(userData.Summoner1Id),
                             Summoner2Casts = match_V5.GetSpellName(userData.Summoner2Id),
@@ -163,7 +151,7 @@ namespace testlol.ViewModels
                 }
                 return items;
             }
-        }*/
+        }
         #endregion
 
         private Prism.Commands.DelegateCommand buttonSearch;
@@ -188,6 +176,7 @@ namespace testlol.ViewModels
                 Wins = position.Wins;
                 Losses = position.Losses;
                 TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
+                
             }
             else
             {
