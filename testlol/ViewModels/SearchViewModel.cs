@@ -14,6 +14,7 @@ using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.League_V4;
 using System.ComponentModel;
 using System.Windows.Data;
+using testlol.Views;
 
 namespace testlol.ViewModels
 {
@@ -176,6 +177,45 @@ namespace testlol.ViewModels
             }
 
         }
-       
+        private Utills.DelegateCommand buttonDetailPopup;
+        public ICommand ButtonDetailPopup => buttonDetailPopup ?? new Utills.DelegateCommand(ButtonDeatilPopupCommand, CanButtonClick);
+
+        private void ButtonDeatilPopupCommand(object parameter)
+        {
+            Match_V5 match_V5 = new Match_V5();
+            int idx = Items.IndexOf(parameter as RecordListItemViewModel);
+            if (idx > -1 && idx < Items.Count)
+            {
+                match_V5.GetTier(Items[idx].RedTeam);
+                match_V5.GetTier(Items[idx].BlueTeam);
+
+                var viewModel = new DetailRecordViewModel(Items[idx].RedTeam, Items[idx].BlueTeam, Items[idx].gametime, Items[idx].teams);
+                DetailRecordView detailRecordView = new DetailRecordView();
+                detailRecordView.DataContext = viewModel;
+
+                detailRecordView.Show();
+            }
+
+        }
+        private bool CanButtonClick(object parameter)
+        {
+            return true;
+        }
+
+        private Utills.DelegateCommand buttonPerksPopup;
+        public ICommand ButtonPerksPopup => buttonPerksPopup = buttonPerksPopup ?? new Utills.DelegateCommand(ButtonPerksPopupCommand, CanButtonClick);
+        private void ButtonPerksPopupCommand(object parameter)
+        {
+            int idx = Items.IndexOf(parameter as RecordListItemViewModel);
+            if (idx > -1 && idx < Items.Count)
+            {
+                var viewModel = new PerksPopUpViewModel(Items[idx].Perks);
+                PerksPopUpView perksView = new PerksPopUpView();
+                perksView.DataContext = viewModel;
+
+                perksView.Show();
+            }
+
+        }
     }
 }

@@ -257,5 +257,19 @@ namespace testlol.API
             }
             return participantDTOs;
         }
+        public void GetTier(List<ParticipantDTO> team)
+        {
+            League_V4 league = new League_V4();
+
+
+            for (int i = 0; i < team.Count; i++)
+            {
+                var position = league.GetPositions(team[i].summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
+                if (position == null)
+                    team[i].tier = "Unranked";
+                else
+                    team[i].tier = position.Tier + " " + position.Rank;
+            }
+        }
     }
 }
