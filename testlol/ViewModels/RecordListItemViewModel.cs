@@ -34,7 +34,6 @@ namespace testlol.ViewModels
         public string KillRate { get; set; }
         public string TotalGold { get; set; }
         public int TotalDetecedWard { get; set; }
-        public string Tier { get; set; }
         public string PrimaryPerks { get; set; }
         public string SubPerks { get; set; }
         public long gametime { get; set; }
