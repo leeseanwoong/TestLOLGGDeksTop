@@ -66,17 +66,29 @@ namespace testlol.ViewModels
             get => tierIcon;
             set => SetProperty(ref tierIcon, value);
         }
-        private int wins;
-        public int Wins
+        private string wins;
+        public string Wins
         {
             get => wins;
             set => SetProperty(ref wins, value);
         }
-        private int losses;
-        public int Losses
+        private string losses;
+        public string Losses
         {
             get => losses;
             set => SetProperty(ref losses, value);
+        }
+        private string leaguePoints;
+        public string LeaguePoints
+        {
+            get => leaguePoints;
+            set => SetProperty(ref leaguePoints, value);
+        }
+        private string winRate;
+        public string WinRate 
+        {
+            get => winRate;
+            set => SetProperty(ref winRate, value);
         }
 
         private SummonerDTO summoner;
@@ -111,14 +123,17 @@ namespace testlol.ViewModels
                 return;
             if (Summoner != null)
             {
+                items.Clear();
                 var position = league_V4.GetPosition(Summoner);
                 SearchName = Summoner.Name;
                 SummonerLevel = Summoner.SummonerLevel;
                 ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Summoner.ProfileIconId + ".jpg";
                 Tier = position.Tier + " " + position.Rank;
-                Wins = position.Wins;
-                Losses = position.Losses;
+                Wins = position.Wins +"승 ";
+                Losses = position.Losses+"패 ";
+                WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses) ) +")";
                 TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
+                LeaguePoints = position.leaguePoints + " LP";
                 string matchlist = match_V5.GetMatchList(Summoner.puuid);
                 List<RuneDTO> rune = match_V5.GetRune();
                 matchlist = matchlist.Replace("\"", "");

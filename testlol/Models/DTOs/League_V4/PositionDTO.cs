@@ -13,5 +13,6 @@ namespace testlol.Models.DTOs.League_V4
         public int Wins { get; set; }
         public int Losses { get; set; }
         public string QueueType { get; set; }
+        public int leaguePoints { get; set; }
     }
 }

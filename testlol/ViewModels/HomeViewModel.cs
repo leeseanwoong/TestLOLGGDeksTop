@@ -26,9 +26,11 @@ namespace testlol.ViewModels
             ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon"+Constants.Summoner.ProfileIconId+".jpg";
             Tier = position.Tier;
             Rank = position.Rank;
+            LeaguePoints = position.leaguePoints + " LP";
             Wins = position.Wins;
             Losses = position.Losses;
             TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
+
         }
 
         #region property
@@ -65,6 +67,12 @@ namespace testlol.ViewModels
         {
             get => rank;
             set => SetProperty(ref rank, value);
+        }
+        private string leaguePoints;
+        public string LeaguePoints
+        {
+            get => leaguePoints;
+            set => SetProperty(ref leaguePoints, value);
         }
         private string tierIcon;
         public string TierIcon

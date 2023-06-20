@@ -35,19 +35,20 @@
                 <Image Source="{Binding ProfileIconId, TargetNullValue={x:Null}}" Height="150" Width="150" Margin="5"/>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding SearchName}" FontSize="30"/>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0}승  {1}패">
-                                <Binding Path="Wins"  />
-                                <Binding Path="Losses" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Wins}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Losses}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding WinRate}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Vertical">
-                <Image Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon, TargetNullValue={x:Null}}" Height="130" Width="130"/>
-                <TextBlock TextAlignment="Center" Text="{Binding Tier, UpdateSourceTrigger=PropertyChanged}"/>
+                <Image HorizontalAlignment="Center" Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon, TargetNullValue={x:Null}}" Height="120" Width="120"/>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock TextAlignment="Center" Text="{Binding Tier}" FontWeight="Bold" Margin="3"/>
+                    <TextBlock TextAlignment="Center" Text="{Binding LeaguePoints}" Margin="3"/>
+                </StackPanel>
+                
             </StackPanel>
         </Grid>
         <DataGrid IsReadOnly="True" Grid.Row="2" CanUserResizeColumns="False" 

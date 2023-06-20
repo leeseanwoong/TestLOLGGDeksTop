@@ -45,6 +45,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <TextBlock FontSize="18" Foreground="Gray" Text="{Binding Tier}" Margin="5" VerticalAlignment="Center"/>
                 <TextBlock FontSize="20" Foreground="Gray" Text="{Binding Rank}" Margin="5"/>
+                <TextBlock FontSize="18" Foreground="Gray" Text="{Binding Rank}" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>
