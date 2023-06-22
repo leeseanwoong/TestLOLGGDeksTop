@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -23,14 +24,13 @@ namespace testlol.ViewModels
             var position = league_V4.GetPosition(Constants.Summoner);
             Name = Constants.UserName;
             SummonerLevel = Constants.Summoner.SummonerLevel;
-            ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon"+Constants.Summoner.ProfileIconId+".jpg";
+            ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Constants.Summoner.ProfileIconId + ".jpg";
             Tier = position.Tier;
             Rank = position.Rank;
             LeaguePoints = position.leaguePoints + " LP";
             Wins = position.Wins;
             Losses = position.Losses;
             TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
-
         }
 
         #region property
@@ -58,7 +58,8 @@ namespace testlol.ViewModels
             set => SetProperty(ref summonerLevel, value);
         }
         private string tier;
-        public string Tier {
+        public string Tier
+        {
             get => tier;
             set => SetProperty(ref tier, value);
         }

@@ -47,9 +47,9 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding Path=MostChampions[0].ChampionPhoto}" Width="50" Height="50"/>
-                <Image Source="{Binding Path=MostChampions[1].ChampionPhoto}"  Width="50" Height="50" Grid.Row="1"/>
-                <Image Source="{Binding Path=MostChampions[2].ChampionPhoto}"  Width="50" Height="50" Grid.Row="2"/>
+                <Image Source="{Binding Path=MostChampions[0].ChampionPhoto,TargetNullValue={x:Null}}" Width="50" Height="50"/>
+                <Image Source="{Binding Path=MostChampions[1].ChampionPhoto,TargetNullValue={x:Null}}"  Width="50" Height="50" Grid.Row="1"/>
+                <Image Source="{Binding Path=MostChampions[2].ChampionPhoto,TargetNullValue={x:Null}}"  Width="50" Height="50" Grid.Row="2"/>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>

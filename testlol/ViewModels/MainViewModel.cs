@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using testlol.Managers;
 using testlol.Types;
+using testlol.Utills;
 
 namespace testlol.ViewModels
 {
@@ -53,13 +55,31 @@ namespace testlol.ViewModels
             switch (_menuViewModel.SelectedType.Type)
             {
                 case FunctionType.Home:
-                    MainContentViewModel.MainContent = new HomeViewModel();
+                    if (Constants.Summoner == null)
+                    {
+                        MessageBox.Show("계정이 연결되있지 않습니다.");
+                        return;
+                    }
+                    else
+                        MainContentViewModel.MainContent = new HomeViewModel();
                     break;
                 case FunctionType.Record:
-                    MainContentViewModel.MainContent = new RecordViewModel();
+                    if (Constants.Summoner == null)
+                    {
+                        MessageBox.Show("계정이 연결되있지 않습니다.");
+                        return;
+                    }
+                    else
+                        MainContentViewModel.MainContent = new RecordViewModel();
                     break;
                 case FunctionType.Queue:
-                    MainContentViewModel.MainContent = new QueueViewModel();
+                    if (Constants.Summoner == null)
+                    {
+                        MessageBox.Show("계정이 연결되있지 않습니다.");
+                        return;
+                    }
+                    else
+                        MainContentViewModel.MainContent = new QueueViewModel();
                     break;
                 case FunctionType.Search:
                     MainContentViewModel.MainContent = new SearchViewModel();

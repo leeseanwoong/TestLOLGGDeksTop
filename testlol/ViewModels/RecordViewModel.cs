@@ -33,22 +33,22 @@ namespace testlol.ViewModels
             int totalWinCount = 0;
             int totalLossesCount = 0;
             List<MostChampionDTO> mostChampions = new List<MostChampionDTO>();
-            
+
             for (int i = 0; i < arr.Length; i++)
             {
                 MostChampionDTO most = new MostChampionDTO();
                 MatchDTO matchData = match_V5.GetMatchData(arr[i]);
                 matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                ParticipantDTO userData = match_V5.GetUserData(matchData,Constants.UserName);
+                ParticipantDTO userData = match_V5.GetUserData(matchData, Constants.UserName);
                 if (userData.win == true)
                 {
                     totalWinCount = totalWinCount + 1;
-                    most.WinCount +=1;
+                    most.WinCount += 1;
                 }
                 else if (userData.win == false)
                 {
                     totalLossesCount = totalLossesCount + 1;
-                    most.LossesCount+=1;
+                    most.LossesCount += 1;
                 }
                 most.ChampionPhoto = userData.championPhoto;
                 most.ChampionName = userData.championName;
@@ -56,9 +56,9 @@ namespace testlol.ViewModels
                 most.Kills = userData.kills;
                 most.Deaths = userData.deaths;
                 most.Assists = userData.assists;
-                totalKills  = totalKills + userData.kills;
-                totalDeaths =  totalDeaths + userData.deaths;
-                totalAssists =  totalAssists + userData.assists;
+                totalKills = totalKills + userData.kills;
+                totalDeaths = totalDeaths + userData.deaths;
+                totalAssists = totalAssists + userData.assists;
                 most.KDA = Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
                 mostChampions.Add(most);
             }
@@ -134,7 +134,7 @@ namespace testlol.ViewModels
         {
             get
             {
-                if (members == null)
+                if (members == null && Constants.Summoner != null)
                 {
                     members = new ReadOnlyObservableCollection<RecordListItemViewModel>(innermembers);
                     Match_V5 match_V5 = new Match_V5();
@@ -144,7 +144,7 @@ namespace testlol.ViewModels
                     matchlist = matchlist.Replace("[", "");
                     matchlist = matchlist.Replace("]", "");
                     string[] arr = matchlist.Split(",");
-                    
+
                     for (int i = 0; i < arr.Length; i++)
                     {
                         List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
@@ -154,7 +154,7 @@ namespace testlol.ViewModels
                         match_V5.GetPerksImg(rune, matchData);
                         match_V5.GetStatsImg(rune, matchData);
                         match_V5.GetTeam(matchData, redTeam, blueTeam);
-                        ParticipantDTO userData = match_V5.GetUserData(matchData,Constants.UserName);
+                        ParticipantDTO userData = match_V5.GetUserData(matchData, Constants.UserName);
                         innermembers.Add(new RecordListItemViewModel()
                         {
                             Assists = userData.assists,
@@ -240,7 +240,7 @@ namespace testlol.ViewModels
         #endregion
 
         #region functions
-       
+
         #endregion
 
 

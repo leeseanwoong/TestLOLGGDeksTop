@@ -16,7 +16,7 @@
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch">
                 <Border Width="100" Height="100" Margin="20 20 0 10" BorderBrush="Gray" HorizontalAlignment="Left" BorderThickness="1" CornerRadius="15">
                     <Border.Background>
-                        <ImageBrush ImageSource="{Binding ProfileIconId}"/>
+                        <ImageBrush ImageSource="{Binding ProfileIconId, TargetNullValue={x:Null}}"/>
                     </Border.Background>
                 </Border>
                 <TextBlock Margin="20 15" FontSize="30" Text="{Binding Name}" Foreground="DarkGray"/>
