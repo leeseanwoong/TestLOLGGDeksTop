@@ -43,7 +43,11 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Vertical">
-                <Image HorizontalAlignment="Center" Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon, TargetNullValue={x:Null}}" Height="120" Width="120"/>
+                <Image HorizontalAlignment="Center" Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon, TargetNullValue={x:Null}}" Height="120" Width="120" >
+                    <Image.Effect>
+                        <DropShadowEffect BlurRadius="20" ShadowDepth="1"/>
+                    </Image.Effect>
+                </Image>
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <TextBlock TextAlignment="Center" Text="{Binding Tier}" FontWeight="Bold" Margin="3"/>
                     <TextBlock TextAlignment="Center" Text="{Binding LeaguePoints}" Margin="3"/>

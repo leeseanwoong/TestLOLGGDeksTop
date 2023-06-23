@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:testlol.Views"
         xmlns:vm="clr-namespace:testlol.ViewModels"
         mc:Ignorable="d"
-        Title="자세히 보기" Height="750" Width="1000">
+        Title="자세히 보기" Height="750" Width="1100">
     <Window.DataContext>
         <vm:DetailRecordViewModel />
     </Window.DataContext>

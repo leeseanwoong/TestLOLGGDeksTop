@@ -63,13 +63,13 @@ namespace testlol
 
                     var msg = await clientManager.UsingApiEventJObject("Get", "/lol-summoner/v1/current-summoner");
                     UserDTO username = JsonConvert.DeserializeObject<UserDTO>(msg.ToString());
-
-                    Constants.UserName = username.displayName;
-                    Constants.Summoner = GetSummoner(Constants.UserName);
-
-                    MessageBox.Show("연결 완료");
-                    Timer.Stop();
-                    
+                    if (Constants.Summoner == null)
+                    {
+                        Constants.UserName = username.displayName;
+                        Constants.Summoner = GetSummoner(Constants.UserName);
+                        MessageBox.Show("연결 완료");
+                        Timer.Stop();
+                    }
                 }
                 catch
                 {

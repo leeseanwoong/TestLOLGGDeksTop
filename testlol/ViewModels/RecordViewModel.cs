@@ -239,9 +239,6 @@ namespace testlol.ViewModels
         }
         #endregion
 
-        #region functions
-
-        #endregion
 
 
     }
