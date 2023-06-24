@@ -59,7 +59,7 @@ namespace testlol.ViewModels
                 totalKills = totalKills + userData.kills;
                 totalDeaths = totalDeaths + userData.deaths;
                 totalAssists = totalAssists + userData.assists;
-                most.KDA = Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
+                most.KDA = (most.Deaths == 0) ? Math.Round((double)most.Kills + most.Assists,2) : Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
                 mostChampions.Add(most);
             }
             for (int j = 0; j < mostChampions.Count; j++)
