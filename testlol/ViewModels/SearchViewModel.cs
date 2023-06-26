@@ -15,6 +15,7 @@ using testlol.Models.DTOs.League_V4;
 using System.ComponentModel;
 using System.Windows.Data;
 using testlol.Views;
+using testlol.Models.DTOs.Spectator_V4;
 
 namespace testlol.ViewModels
 {
@@ -85,7 +86,7 @@ namespace testlol.ViewModels
             set => SetProperty(ref leaguePoints, value);
         }
         private string winRate;
-        public string WinRate 
+        public string WinRate
         {
             get => winRate;
             set => SetProperty(ref winRate, value);
@@ -129,9 +130,9 @@ namespace testlol.ViewModels
                 SummonerLevel = Summoner.SummonerLevel;
                 ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Summoner.ProfileIconId + ".jpg";
                 Tier = position.Tier + " " + position.Rank;
-                Wins = position.Wins +"승 ";
-                Losses = position.Losses+"패 ";
-                WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses) ) +")";
+                Wins = position.Wins + "승 ";
+                Losses = position.Losses + "패 ";
+                WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")";
                 TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
                 LeaguePoints = position.leaguePoints + " LP";
                 string matchlist = match_V5.GetMatchList(Summoner.puuid);
@@ -192,6 +193,32 @@ namespace testlol.ViewModels
             }
 
         }
+
+        private Prism.Commands.DelegateCommand buttonQueue;
+        public ICommand ButtonQueue => buttonQueue = buttonQueue ?? new Prism.Commands.DelegateCommand(ButtonQueueCommand);
+        private void ButtonQueueCommand()
+        {
+            Spectator_V4 spectator_V4 = new Spectator_V4();
+            if (Summoner == null)
+                MessageBox.Show("소환사를 검색해주세요.");
+            else
+            {
+                CurrentGameInfoDTO GameInfo = spectator_V4.GetCurrentGameInfo(Summoner.Id);
+                if (GameInfo == null)
+                {
+                    MessageBox.Show(Summoner.Name + " 은 현재 게임중이 아닙니다.");
+                }
+                else
+                {
+                    var viewModel = new SearchUserQueueViewModel(GameInfo);
+                    SearchUserQueueView searchUserQueueView = new SearchUserQueueView();
+                    searchUserQueueView.DataContext = viewModel;
+
+                    searchUserQueueView.Show();
+                }
+            }
+        }
+
         private Utills.DelegateCommand buttonDetailPopup;
         public ICommand ButtonDetailPopup => buttonDetailPopup ?? new Utills.DelegateCommand(ButtonDeatilPopupCommand, CanButtonClick);
 

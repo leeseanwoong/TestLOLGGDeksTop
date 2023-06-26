@@ -1,0 +1,141 @@
+﻿<Window x:Class="testlol.Views.SearchUserQueueView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:testlol.Views"
+        xmlns:vm ="clr-namespace:testlol.ViewModels"
+        mc:Ignorable="d"
+        Title="SearchUserQueueView" Height="400" Width="1500">
+    <Window.DataContext>
+        <vm:SearchUserQueueViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="{Binding GameMode}" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" Background="SkyBlue" ItemsSource="{Binding BlueTeam}" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
+                    <DataGridTemplateColumn Header="Champion / Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="{Binding ChampionName}" Width="20" Height="20" Margin="3"/>
+                                    <TextBlock Text="{Binding SummonerName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="SS">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="랭크 승률">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Win}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Column ="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Height="30" Width="30" Source="{Binding Path=BlueBan[0].championName}"/>
+                <Image Grid.Row="1" Height="30" Width="30" Source="{Binding Path=BlueBan[1].championName}"/>
+                <Image Grid.Row="2" Height="30" Width="30" Source="{Binding Path=BlueBan[2].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="3" Height="30" Width="30" Source="{Binding Path=BlueBan[3].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="4" Height="30" Width="30" Source="{Binding Path=BlueBan[4].championName,TargetNullValue={x:Null}}"/>
+            </Grid>
+            <TextBlock Text="VS" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid Grid.Column ="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Height="30" Width="30" Source="{Binding Path=RedBan[0].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="1" Height="30" Width="30" Source="{Binding Path=RedBan[1].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="2" Height="30" Width="30" Source="{Binding Path=RedBan[2].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="3" Height="30" Width="30" Source="{Binding Path=RedBan[3].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="4" Height="30" Width="30" Source="{Binding Path=RedBan[4].championName,TargetNullValue={x:Null}}"/>
+            </Grid>
+            <DataGrid Grid.Column="4" Background="LightPink" ItemsSource="{Binding RedTeam}" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
+                    <DataGridTemplateColumn Header="Champion / Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="{Binding ChampionName}" Width="20" Height="20" Margin="3"/>
+                                    <TextBlock Text="{Binding SummonerName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="SS">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                        <Image Width="15" Height="15" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="랭크 승률">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Win}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        
+    </Grid>
+</Window>

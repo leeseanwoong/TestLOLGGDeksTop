@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using testlol.API;
 using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Spectator_V4;
@@ -12,29 +11,53 @@ using testlol.Utills;
 
 namespace testlol.ViewModels
 {
-    internal class QueueViewModel : ViewModelBase
+    internal class SearchUserQueueViewModel : ViewModelBase
     {
-        public QueueViewModel()
+        public SearchUserQueueViewModel()
         {
-            Spectator_V4 spectator_V4 = new Spectator_V4();
-            GameInfo = spectator_V4.GetCurrentGameInfo(Constants.Summoner.Id);
-            if (GameInfo == null)
-            {
-                Visible = Visibility.Hidden;
-                GameMode = "현재 게임중이 아닙니다.";
-            }
-            else
-            {
-                Visible = Visibility.Visible;
-                Match_V5 match = new Match_V5();
-                GameMode = match.GetQueueType((int)GameInfo.gameQueueConfigId);
-            }
+
         }
-        private Visibility visible;
-        public Visibility Visible
+        public SearchUserQueueViewModel(CurrentGameInfoDTO gameInfo)
         {
-            get => visible;
-            set => SetProperty(ref visible, value);
+            GameInfo = gameInfo;
+            Match_V5 match = new Match_V5();
+            GameMode = match.GetQueueType((int)GameInfo.gameQueueConfigId);
+            List<BanChampionDTO> blue = new List<BanChampionDTO>();
+            List<BanChampionDTO> red = new List<BanChampionDTO>();
+            foreach (var item in gameInfo.bannedChampions)
+            {
+                if (item.teamId == 100)
+                    blue.Add(item);
+                else
+                    red.Add(item);
+            }
+            Spectator_V4 spectator_V4 = new Spectator_V4();
+            ChampionsDTO champions = spectator_V4.GetChampions();
+            for (int i = 0; i < red.Count; i++)
+            {
+                foreach (var item in champions.data) 
+                {
+                    if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                    {
+                        red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+                    }
+
+                }
+            }
+            for (int i = 0; i < blue.Count; i++)
+            {
+                foreach (var item in champions.data) 
+                {
+                    if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                    {
+                        blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+                    }
+
+                }
+            }
+            BlueBan = blue;
+            RedBan = red;
+
         }
 
         private CurrentGameInfoDTO gameInfo;
@@ -49,6 +72,19 @@ namespace testlol.ViewModels
             get => gameMode;
             set => SetProperty(ref gameMode, value);
         }
+
+        private List<BanChampionDTO> blueBan;
+        public List<BanChampionDTO> BlueBan
+        {
+            get => blueBan;
+            set => SetProperty(ref blueBan, value);
+        }
+        private List<BanChampionDTO> redBan;
+        public List<BanChampionDTO> RedBan
+        {
+            get => redBan;
+            set => SetProperty(ref redBan, value);
+        }
         private ObservableCollection<QueueItemViewModel> innerRed
         { get; } = new ObservableCollection<QueueItemViewModel>();
 
@@ -58,7 +94,7 @@ namespace testlol.ViewModels
             get
             {
 
-                if (redTeam == null && GameInfo != null && Constants.Summoner != null)
+                if (redTeam == null && GameInfo != null )
                 {
                     redTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerRed);
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();
@@ -116,7 +152,7 @@ namespace testlol.ViewModels
             get
             {
 
-                if (blueTeam == null && GameInfo != null && Constants.Summoner != null)
+                if (blueTeam == null && GameInfo != null)
                 {
                     blueTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerBlue);
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();

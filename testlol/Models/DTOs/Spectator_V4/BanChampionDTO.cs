@@ -11,5 +11,6 @@ namespace testlol.Models.DTOs.Spectator_V4
         public int pickTurn { get; set; }
         public long championId { get; set; }
         public long teamId { get; set; }
+        public string championName { get; set; }
     }
 }

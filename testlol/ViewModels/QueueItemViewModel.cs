@@ -16,5 +16,6 @@ namespace testlol.ViewModels
         public string PrimaryPerks { get; set; }
         public string SubPerks { get; set; }
         public string SummonerName { get; set; }
+        public string BanChampionName { get; set; }
     }
 }

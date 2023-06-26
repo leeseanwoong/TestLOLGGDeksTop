@@ -20,18 +20,21 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
             <TextBox Text="{Binding SummonerName}" Margin="15" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Summoner" />
             <Button Grid.Column="1" Content="Search" Margin="5" Command="{Binding ButtonSearch}"/>
+            <Button Grid.Column="2" Content="Queue" Margin="5" Command="{Binding ButtonQueue}"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="0.5*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <StackPanel Grid.Column="0">
+                <StackPanel  Orientation="Horizontal">
                 <Image Source="{Binding ProfileIconId, TargetNullValue={x:Null}}" Height="150" Width="150" Margin="5"/>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding SearchName}" FontSize="30"/>
@@ -41,6 +44,7 @@
                         <TextBlock Text="{Binding WinRate}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
+            </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Vertical">
                 <Image HorizontalAlignment="Center" Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon, TargetNullValue={x:Null}}" Height="120" Width="120" >
