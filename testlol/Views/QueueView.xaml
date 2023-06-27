@@ -20,7 +20,7 @@
         <StackPanel Orientation="Horizontal">
             <Label Content="{Binding GameMode}" FontSize="15" VerticalAlignment="Center"/>
         </StackPanel>
-        <DataGrid Visibility="{Binding Visibility}" Grid.Row="1" Background="SkyBlue" ItemsSource="{Binding BlueTeam}" IsReadOnly="True" AutoGenerateColumns="False">
+        <DataGrid Visibility="{Binding Visible}" Grid.Row="1" Background="SkyBlue" ItemsSource="{Binding BlueTeam}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
                 <DataGridTemplateColumn Header="Champion / Name">
@@ -60,7 +60,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid Visibility="{Binding Visibility}" Grid.Row="2" Background="LightPink" ItemsSource="{Binding RedTeam}" IsReadOnly="True" AutoGenerateColumns="False">
+        <DataGrid Visibility="{Binding Visible}" Grid.Row="2" Background="LightPink" ItemsSource="{Binding RedTeam}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Rank" Binding="{Binding tier}"/>
                 <DataGridTemplateColumn Header="Champion / Name">

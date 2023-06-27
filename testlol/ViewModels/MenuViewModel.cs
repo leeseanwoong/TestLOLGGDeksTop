@@ -18,7 +18,7 @@ namespace testlol.ViewModels
 {
     internal class MenuViewModel : ViewModelBase
     {
-        public RiotClientManager clientManager;
+        public RiotClientManager clientManager = new RiotClientManager();
 
         private SummonerDTO GetSummoner(string SummerName)
         {
@@ -27,13 +27,12 @@ namespace testlol.ViewModels
         }
         public MenuViewModel()
         {
-            if (Constants.Summoner == null)
+            if (Constants.UserName == null)
             {
                 System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
-                Timer.Interval = TimeSpan.FromTicks(10000000);
+                Timer.Interval = TimeSpan.FromTicks(50000000);
                 Timer.Tick += async (s, a) =>
                 {
-                    clientManager = new RiotClientManager();
                     try
                     {
                         Process[] processes = Process.GetProcessesByName(ClientData.CLIENT_NAME);
@@ -56,7 +55,7 @@ namespace testlol.ViewModels
                             Console.WriteLine($"ApiUri : {ClientData.ApiUrl}");
                         }
 
-                        clientManager.Connect();
+                        clientManager.Connect(Timer);
 
                         var msg = await clientManager.UsingApiEventJObject("Get", "/lol-summoner/v1/current-summoner");
                         UserDTO username = JsonConvert.DeserializeObject<UserDTO>(msg.ToString());
@@ -66,6 +65,7 @@ namespace testlol.ViewModels
                             Constants.Summoner = GetSummoner(Constants.UserName);
                             MessageBox.Show("연결 완료");
                             Timer.Stop();
+                            
                         }
 
                     }
