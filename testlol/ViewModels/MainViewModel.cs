@@ -93,6 +93,9 @@ namespace testlol.ViewModels
                 case FunctionType.Search:
                     MainContentViewModel.MainContent = new SearchViewModel();
                     break;
+                case FunctionType.Patch:
+                    MainContentViewModel.MainContent = new PatchViewModel();
+                    break;
             }
         }
     }

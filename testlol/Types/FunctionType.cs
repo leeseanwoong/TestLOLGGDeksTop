@@ -12,5 +12,6 @@ namespace testlol.Types
             Record,
             Queue,
             Search,
+            Patch,
     }
 }
