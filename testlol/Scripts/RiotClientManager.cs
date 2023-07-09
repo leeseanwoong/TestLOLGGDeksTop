@@ -26,7 +26,7 @@ namespace testlol.Scripts
         }
 
         // 웹 클라 연결
-        public bool Connect(System.Windows.Threading.DispatcherTimer Timer)
+        public bool Connect()
         {
             try
             {
@@ -35,13 +35,6 @@ namespace testlol.Scripts
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"riot:{ClientData.ToKen}")));
                 httpClient.BaseAddress = new Uri(ClientData.ApiUrl);
-
-                LeagueClosed += () =>
-                {
-                    MessageBox.Show("연결해제");
-                    Constants.Summoner = null;
-                    Timer.Start();
-                };
 
                 ClientData.clientProcess.EnableRaisingEvents = true;
                 ClientData.clientProcess.Exited += ClientProcess_Exited;
@@ -60,6 +53,7 @@ namespace testlol.Scripts
         private void ConnectInit()
         {
             this.httpClient = null;
+
 
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;

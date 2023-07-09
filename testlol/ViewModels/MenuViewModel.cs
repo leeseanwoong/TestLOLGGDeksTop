@@ -18,6 +18,8 @@ namespace testlol.ViewModels
 {
     internal class MenuViewModel : ViewModelBase
     {
+        private bool isConnected = false;
+
         public RiotClientManager clientManager = new RiotClientManager();
 
         private SummonerDTO GetSummoner(string SummerName)
@@ -27,10 +29,16 @@ namespace testlol.ViewModels
         }
         public MenuViewModel()
         {
-            if (Constants.UserName == null)
+            ClientConnection();
+        }
+
+        private void ClientConnection()
+        {
+            if (!isConnected)
             {
+                
                 System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
-                Timer.Interval = TimeSpan.FromTicks(50000000);
+                Timer.Interval = TimeSpan.FromTicks(10000000);
                 Timer.Tick += async (s, a) =>
                 {
                     try
@@ -50,12 +58,9 @@ namespace testlol.ViewModels
                             ClientData.Port = ushort.Parse(items[2]);
                             ClientData.ApiUrl = "https://127.0.0.1:" + ClientData.Port.ToString() + "/";
 
-                            Console.WriteLine($"Token : {ClientData.ToKen}");
-                            Console.WriteLine($"Port : {ClientData.Port}");
-                            Console.WriteLine($"ApiUri : {ClientData.ApiUrl}");
                         }
 
-                        clientManager.Connect(Timer);
+                        clientManager.Connect();
 
                         var msg = await clientManager.UsingApiEventJObject("Get", "/lol-summoner/v1/current-summoner");
                         UserDTO username = JsonConvert.DeserializeObject<UserDTO>(msg.ToString());
@@ -65,7 +70,7 @@ namespace testlol.ViewModels
                             Constants.Summoner = GetSummoner(Constants.UserName);
                             MessageBox.Show("연결 완료");
                             Timer.Stop();
-                            
+
                         }
 
                     }
@@ -74,9 +79,22 @@ namespace testlol.ViewModels
                         Console.WriteLine("Connection Failed");
                     }
                 };
+                clientManager.LeagueClosed += () =>
+                {
+                    LeagueCloesd(Timer);
+                };
                 Timer.Start();
+                isConnected = true;
             }
         }
+
+        private void LeagueCloesd(System.Windows.Threading.DispatcherTimer timer)
+        {
+            MessageBox.Show("연결해제");
+            Constants.Summoner = null;
+            timer.Start();
+        }
+
         private ObservableCollection<MenuItemViewModel> _items;
 
         public ObservableCollection<MenuItemViewModel> Items
