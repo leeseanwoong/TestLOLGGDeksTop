@@ -16,7 +16,7 @@ namespace testlol.API
 
         }
 
-        public string GetMatchList(string puuid)
+        public IEnumerable<string> GetMatchList(string puuid)  //ieumerable = get밖에 없어서 수정 불가
         {
             string path = "match/v5/matches/by-puuid/" + puuid;
 
@@ -25,7 +25,7 @@ namespace testlol.API
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return content;
+                return JsonConvert.DeserializeObject<IEnumerable<string>>(content);
             }
             else
             {
@@ -177,17 +177,7 @@ namespace testlol.API
                 }
             }
         }
-        /*
-         * HealthScaling = 5001, // 체력
-        Armor = 5002, // 방어력
-        MagicRes = 5003, // 마법저항력
-        AttackSpeed = 5005, // 공격 : 속도
-        CdrScaling = 5007, // 공격 : 쿨감
-        Adaptive = 5008, // 적응형 능력치
-        "defense": 5002, 맨 아래
-                        "flex": 5008, 중앙
-                        "offense": 5005 맨 위
-         */
+
         public void GetStatsImg(List<RuneDTO> rune, MatchDTO matchDTO)
         {
             for (int i = 0; i < matchDTO.info.participants.Count; i++) //10번돔 - 멤버들전원

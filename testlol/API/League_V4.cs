@@ -20,7 +20,10 @@ namespace testlol.API
         {
             string path = "league/v4/entries/by-summoner/" + summonerId;
 
-            var response = GET(GetUrl(path));
+            var response = GET(GetUrl(path)); //여기 까지만
+            
+
+            //여기서 부터 매니저에서 받아서 처리
             string content = response.Content.ReadAsStringAsync().Result;
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)

@@ -129,63 +129,39 @@ namespace testlol.ViewModels
                 SearchName = Summoner.Name;
                 SummonerLevel = Summoner.SummonerLevel;
                 ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Summoner.ProfileIconId + ".jpg";
-                Tier = position.Tier + " " + position.Rank;
+                if(position.Tier == null)
+                {
+                    Tier = "UnRanked";
+                    TierIcon = null;
+                    WinRate = null;
+                }
+                else
+                {
+                    Tier = position.Tier + " " + position.Rank;
+                    TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
+                    LeaguePoints = position.leaguePoints + " LP";
+                    WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")";
+                }
+                
                 Wins = position.Wins + "승 ";
                 Losses = position.Losses + "패 ";
-                WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")";
-                TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
-                LeaguePoints = position.leaguePoints + " LP";
-                string matchlist = match_V5.GetMatchList(Summoner.puuid);
+               
+              
+                var matchlist = match_V5.GetMatchList(Summoner.puuid);
                 List<RuneDTO> rune = match_V5.GetRune();
-                matchlist = matchlist.Replace("\"", "");
-                matchlist = matchlist.Replace("[", "");
-                matchlist = matchlist.Replace("]", "");
-                string[] arr = matchlist.Split(",");
-
-                for (int i = 0; i < arr.Length; i++)
+                foreach (var item in matchlist)
                 {
                     List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
                     List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
-                    MatchDTO matchData = match_V5.GetMatchData(arr[i]);
+                    MatchDTO matchData = match_V5.GetMatchData(item);
                     matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
                     match_V5.GetPerksImg(rune, matchData);
                     match_V5.GetStatsImg(rune, matchData);
                     match_V5.GetTeam(matchData, redTeam, blueTeam);
                     ParticipantDTO userData = match_V5.GetUserData(matchData, Summoner.Name);
-                    Items.Add(new RecordListItemViewModel()
-                    {
-                        Assists = userData.assists,
-                        Kills = userData.kills,
-                        Deaths = userData.deaths,
-                        KDA = userData.KDA,
-                        Win = match_V5.GetWinLose(userData.win),
-                        QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                        GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
-                        ChampionPhoto = userData.championPhoto,
-                        Summoner1Casts = match_V5.GetSpellName(userData.Summoner1Id),
-                        Summoner2Casts = match_V5.GetSpellName(userData.Summoner2Id),
-                        Item0 = match_V5.ReturnItemPhoto(userData.item0),
-                        Item1 = match_V5.ReturnItemPhoto(userData.item1),
-                        Item3 = match_V5.ReturnItemPhoto(userData.item2),
-                        Item2 = match_V5.ReturnItemPhoto(userData.item3),
-                        Item4 = match_V5.ReturnItemPhoto(userData.item4),
-                        Item5 = match_V5.ReturnItemPhoto(userData.item5),
-                        Item6 = match_V5.ReturnItemPhoto(userData.item6),
-                        BlueTeam = blueTeam,
-                        RedTeam = redTeam,
-                        ChampionLevel = userData.champLevel,
-                        TotalCS = userData.totalCs,
-                        AvgCS = string.Format("{0:0.0}", userData.totalCs / ((double)matchData.info.gameDuration / 60)),
-                        TotalDetecedWard = userData.detectorWardsPlaced,
-                        TotalGold = string.Format("{0:#,###0}", userData.goldEarned),
-                        KillRate = string.Format("{0:P0}", userData.killRate),
-                        PrimaryPerks = userData.perks.styles[0].selections[0].perkImage,
-                        SubPerks = userData.perks.styles[1].styleIcon,
-                        gametime = matchData.info.gameDuration,
-                        teams = matchData.info.teams,
-                        Perks = userData.perks,
-                    });
+                    Items.Add(RecordListItemViewModel.From(match_V5 ,userData, matchData, redTeam, blueTeam));
                 }
+            
             }
             else
             {

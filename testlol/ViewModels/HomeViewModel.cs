@@ -20,17 +20,27 @@ namespace testlol.ViewModels
 
         public HomeViewModel()
         {
-            League_V4 league_V4 = new League_V4();
+            League_V4 league_V4 = new League_V4(); // 매니저 만들어서 싱글톤으로 뺴서 사용
             var position = league_V4.GetPosition(Constants.Summoner);
+            if(position.Tier == null)
+            {
+                Tier = "UnRanked"; // 이건 스트링을 따로 모아놓는 곳에 저장
+                TierIcon = null;
+            }
+            else
+            {
+                Tier = position.Tier;
+                Rank = position.Rank;
+                LeaguePoints = position.leaguePoints + " LP";
+                TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png"; // 상대 경로로 바꾸기, Img경로 따로 뺴서 만들기
+            }
             Name = Constants.UserName;
             SummonerLevel = Constants.Summoner.SummonerLevel;
             ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Constants.Summoner.ProfileIconId + ".jpg";
-            Tier = position.Tier;
-            Rank = position.Rank;
-            LeaguePoints = position.leaguePoints + " LP";
+            
             Wins = position.Wins;
             Losses = position.Losses;
-            TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
+            
         }
 
         #region property

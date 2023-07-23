@@ -69,38 +69,29 @@ namespace testlol.ViewModels
                     ChampionsDTO champions = spectator_V4.GetChampions();
                     participants = GameInfo.participants;
                     List<RuneDTO> rune = match_V5.GetRune();
+                    string compare = "red";
                     foreach (var item in participants)
                     {
                         if (item.teamid == 200)
                             red.Add(item);
                     }
-                    for (int i = 0; i < red.Count; i++)
+
+                    foreach (var item in red)
                     {
-                        var position = league.GetPositions(red[i].summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
+                        var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
                         if (position == null)
                             position.Tier = "UnRanked";
 
-                        foreach (var item in champions.data) // 챔피언 아이디 값으로 이름 찾기
+                        foreach (var data in champions.data) // 챔피언 아이디 값으로 이름 찾기
                         {
-                            if (long.Parse(champions.data[item.Key].key) == red[i].championid)
+                            if (long.Parse(champions.data[data.Key].key) == item.championid)
                             {
-                                red[i].championName = champions.data[item.Key].id;
+                                item.championName = champions.data[data.Key].id;
                             }
 
                         }
-
-                        GetPerks(red[i].perks, rune);
-                        innerRed.Add(new QueueItemViewModel()
-                        {
-                            tier = position.Tier + " " + position.Rank,
-                            SummonerName = red[i].summonerName,
-                            Summoner1Casts = league.GetSpellName((int)red[i].spell1Id),
-                            Summoner2Casts = league.GetSpellName((int)red[i].spell2Id),
-                            Win = position.Wins + "승 " + position.Losses + "패 " + "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")",
-                            PrimaryPerks = red[i].perks.perksImgs[0],
-                            SubPerks = red[i].perks.perkSubStyleIcon,
-                            ChampionName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + red[i].championName + ".png",
-                        });
+                        GetPerks(item.perks, rune);
+                        innerRed.Add(QueueItemViewModel.From(compare, position, league, item));
                     }
 
                 }
@@ -127,38 +118,30 @@ namespace testlol.ViewModels
                     ChampionsDTO champions = spectator_V4.GetChampions();
                     participants = GameInfo.participants;
                     List<RuneDTO> rune = match_V5.GetRune();
+                    string compare = "blue";
                     foreach (var item in participants)
                     {
                         if (item.teamid == 100)
                             blue.Add(item);
                     }
-                    for (int i = 0; i < blue.Count; i++)
+
+                    foreach (var item in blue)
                     {
-                        var position = league.GetPositions(blue[i].summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
+                        var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
                         if (position == null)
                             position.Tier = "UnRanked";
-                        foreach (var item in champions.data)
+                        foreach (var data in champions.data)
                         {
-                            if (long.Parse(champions.data[item.Key].key) == blue[i].championid)
+                            if (long.Parse(champions.data[data.Key].key) == item.championid)
                             {
-                                blue[i].championName = champions.data[item.Key].id;
+                                item.championName = champions.data[data.Key].id;
                             }
 
                         }
 
-                        GetPerks(blue[i].perks, rune);
+                        GetPerks(item.perks, rune);
 
-                        innerBlue.Add(new QueueItemViewModel()
-                        {
-                            tier = position.Tier + " " + position.Rank,
-                            SummonerName = blue[i].summonerName,
-                            Summoner1Casts = league.GetSpellName((int)blue[i].spell1Id),
-                            Summoner2Casts = league.GetSpellName((int)blue[i].spell2Id),
-                            Win = position.Wins + "승 " + position.Losses + "패 " + "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")",
-                            PrimaryPerks = blue[i].perks.perksImgs[0],
-                            SubPerks = blue[i].perks.perkSubStyleIcon,
-                            ChampionName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + blue[i].championName + ".png",
-                        });
+                        innerBlue.Add(QueueItemViewModel.From(compare, position, league, item));
                     }
 
                 }

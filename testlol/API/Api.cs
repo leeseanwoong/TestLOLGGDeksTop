@@ -54,7 +54,6 @@ namespace testlol.API
                 return "칼바람";
             else
                 return "";
-
         }
 
         public string GetSpellName(int spell)

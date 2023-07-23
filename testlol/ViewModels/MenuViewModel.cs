@@ -21,6 +21,8 @@ namespace testlol.ViewModels
         private bool isConnected = false;
 
         public RiotClientManager clientManager = new RiotClientManager();
+        
+        
 
         private SummonerDTO GetSummoner(string SummerName)
         {
@@ -70,7 +72,6 @@ namespace testlol.ViewModels
                             Constants.Summoner = GetSummoner(Constants.UserName);
                             MessageBox.Show("연결 완료");
                             Timer.Stop();
-
                         }
 
                     }
@@ -79,20 +80,16 @@ namespace testlol.ViewModels
                         Console.WriteLine("Connection Failed");
                     }
                 };
-                clientManager.LeagueClosed += () =>
-                {
-                    LeagueCloesd(Timer);
-                };
-                Timer.Start();
+                clientManager.LeagueClosed += OnLeagueColsed;
+                    Timer.Start();
                 isConnected = true;
             }
         }
 
-        private void LeagueCloesd(System.Windows.Threading.DispatcherTimer timer)
+        private void OnLeagueColsed()
         {
-            MessageBox.Show("연결해제");
-            Constants.Summoner = null;
-            timer.Start();
+            MessageBox.Show("연결 해제");
+           
         }
 
         private ObservableCollection<MenuItemViewModel> _items;

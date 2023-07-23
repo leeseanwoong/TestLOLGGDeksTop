@@ -20,31 +20,31 @@ namespace testlol.ViewModels
             Red = red;
             Blue = blue;
             GameDuration = gametime;
-            for (int i = 0; i < teams.Count; i++)
+
+            foreach (var item in teams)
             {
-                if (teams[i].teamId == 100) //블루
+                if (item.teamId == 100) //블루
                 {
-                    BlueBaronKill = teams[i].objectives.baron.kills;
-                    BlueDragonKill = teams[i].objectives.dragon.kills;
-                    BlueTowerKill = teams[i].objectives.tower.kills;
-                    BlueChampionKill = teams[i].objectives.champion.kills;
-                    BlueInhibitorKill = teams[i].objectives.inhibitor.kills;
-                    BlueRiftHeraldKill = teams[i].objectives.riftHerald.kills;
+                    BlueBaronKill = item.objectives.baron.kills;
+                    BlueDragonKill = item.objectives.dragon.kills;
+                    BlueTowerKill = item.objectives.tower.kills;
+                    BlueChampionKill = item.objectives.champion.kills;
+                    BlueInhibitorKill = item.objectives.inhibitor.kills;
+                    BlueRiftHeraldKill = item.objectives.riftHerald.kills;
                     BlueTotalAssists = GetTotalAssists(blue);
                     BlueTotalDeaths = GetTotalDeaths(blue);
                 }
-                else if (teams[i].teamId == 200)
+                else if (item.teamId == 200)
                 {
-                    RedBaronKill = teams[i].objectives.baron.kills;
-                    RedDragonKill = teams[i].objectives.dragon.kills;
-                    RedTowerKill = teams[i].objectives.tower.kills;
-                    RedChampionKill = teams[i].objectives.champion.kills;
-                    RedInhibitorKill = teams[i].objectives.inhibitor.kills;
-                    RedRiftHeraldKill = teams[i].objectives.riftHerald.kills;
+                    RedBaronKill = item.objectives.baron.kills;
+                    RedDragonKill = item.objectives.dragon.kills;
+                    RedTowerKill = item.objectives.tower.kills;
+                    RedChampionKill = item.objectives.champion.kills;
+                    RedInhibitorKill = item.objectives.inhibitor.kills;
+                    RedRiftHeraldKill = item.objectives.riftHerald.kills;
                     RedTotalAssists = GetTotalAssists(red);
                     RedTotalDeaths = GetTotalDeaths(red);
                 }
-
             }
             if (red[1].win == true)
             {
@@ -202,39 +202,14 @@ namespace testlol.ViewModels
                 
                 if (redTeam == null && red!=null)
                 {
+                    string compare = "red";
                     redTeam = new ReadOnlyObservableCollection<DetailListItemViewModel>(innerRed);
                     Match_V5 match_V5 = new Match_V5();
+                    int maxDamge = GetMaxDamge(Red, Blue);
+                    int maxDamgeTaken = GetMaxDamgeTaken(Red, Blue);
                     for (int i = 0; i < 5; i++)
                     {
-                        innerRed.Add(new DetailListItemViewModel()
-                        { 
-                            tier = Red[i].tier,
-                            ChampionLevel = Red[i].champLevel,
-                            Summoner1Casts = match_V5.GetSpellName(Red[i].Summoner1Id),
-                            Summoner2Casts = match_V5.GetSpellName(Red[i].Summoner2Id),
-                            PrimaryPerks= Red[i].perks.styles[0].selections[0].perkImage,
-                            SubPerks = Red[i].perks.styles[1].styleIcon,
-                            Item0 = match_V5.ReturnItemPhoto(Red[i].item0),
-                            Item1 = match_V5.ReturnItemPhoto(Red[i].item1),
-                            Item2 = match_V5.ReturnItemPhoto(Red[i].item2),
-                            Item3 = match_V5.ReturnItemPhoto(Red[i].item3),
-                            Item4 = match_V5.ReturnItemPhoto(Red[i].item4),
-                            Item5 = match_V5.ReturnItemPhoto(Red[i].item5),
-                            Item6 = match_V5.ReturnItemPhoto(Red[i].item6),
-                            SummonerName = Red[i].summonerName,
-                            ChampionName = Red[i].championPhoto,
-                            KDA = Red[i].KDA,
-                            TotalDamgeTaken = string.Format("{0:#,###0}", Red[i].totalDamageTaken),
-                            TotalDamge = string.Format("{0:#,###0}", Red[i].totalDamageDealtToChampions),
-                            MaxDamge = GetMaxDamge(Red,Blue),
-                            MaxDamgeTaken = GetMaxDamgeTaken(Red,Blue),
-                            TotalCS = Red[i].totalCs,
-                            AvgCS = string.Format("{0:0.0}", Red[i].totalCs / ((double)GameDuration / 60)),
-                            TotalGold = string.Format("{0:#,###0G}", Red[i].goldEarned),
-                            visionSocreAndDetectedWards = Red[i].detectorWardsPlaced+" / " + Red[i].visionScore,
-                            wardPslacedandkilled = Red[i].wardsPlaced + " / "+ Red[i].wardsKilled,
-                            kdaScore = Red[i].kills + " / "+ Red[i].deaths+" / "+ Red[i].assists+"("+ String.Format("{0:P0}",Red[i].killRate)+")",
-                        });
+                        innerRed.Add(DetailListItemViewModel.From(compare ,match_V5, Red, Blue, i, GameDuration, maxDamge, maxDamgeTaken));
                     }
                     
                 }
@@ -253,86 +228,72 @@ namespace testlol.ViewModels
 
                 if (blueTeam == null && blue != null)
                 {
+                    string compare = "blue";
                     blueTeam = new ReadOnlyObservableCollection<DetailListItemViewModel>(innerBlue);
                     Match_V5 match_V5 = new Match_V5();
+                    int maxDamge = GetMaxDamge(Red, Blue);
+                    int maxDamgeTaken = GetMaxDamgeTaken(Red, Blue);
                     for (int i = 0; i < 5; i++)
                     {
-                        innerBlue.Add(new DetailListItemViewModel()
-                        {
-                            tier = Blue[i].tier,
-                            ChampionLevel = Blue[i].champLevel,
-                            Summoner1Casts = match_V5.GetSpellName(Blue[i].Summoner1Id),
-                            Summoner2Casts = match_V5.GetSpellName(Blue[i].Summoner2Id),
-                            PrimaryPerks = Blue[i].perks.styles[0].selections[0].perkImage,
-                            SubPerks = Blue[i].perks.styles[1].styleIcon,
-                            Item0 = match_V5.ReturnItemPhoto(Blue[i].item0),
-                            Item1 = match_V5.ReturnItemPhoto(Blue[i].item1),
-                            Item2 = match_V5.ReturnItemPhoto(Blue[i].item2),
-                            Item3 = match_V5.ReturnItemPhoto(Blue[i].item3),
-                            Item4 = match_V5.ReturnItemPhoto(Blue[i].item4),
-                            Item5 = match_V5.ReturnItemPhoto(Blue[i].item5),
-                            Item6 = match_V5.ReturnItemPhoto(Blue[i].item6),
-                            SummonerName = Blue[i].summonerName,
-                            ChampionName = Blue[i].championPhoto,
-                            KDA = Blue[i].KDA,
-                            TotalDamgeTaken = string.Format("{0:#,###0}", Blue[i].totalDamageTaken),
-                            TotalDamge = string.Format("{0:#,###0}", Blue[i].totalDamageDealtToChampions),
-                            MaxDamge = GetMaxDamge(Red, Blue),
-                            MaxDamgeTaken = GetMaxDamgeTaken(Red, Blue),
-                            TotalCS = Blue[i].totalCs,
-                            AvgCS = string.Format("{0:0.0}", Blue[i].totalCs / ((double)GameDuration / 60)),
-                            TotalGold = string.Format("{0:#,###0G}", Blue[i].goldEarned),
-                            visionSocreAndDetectedWards = Blue[i].detectorWardsPlaced + " / " + Blue[i].visionScore,
-                            wardPslacedandkilled = Blue[i].wardsPlaced + " / " + Blue[i].wardsKilled,
-                            kdaScore = Blue[i].kills + " / " + Blue[i].deaths + " / " + Blue[i].assists + "(" + String.Format("{0:P0}", Blue[i].killRate) + ")",
-                        });
+                        innerBlue.Add(DetailListItemViewModel.From(compare, match_V5, Red, Blue, i, GameDuration, maxDamge, maxDamgeTaken));
                     }
 
                 }
                 return blueTeam;
             }
         }
+
+        #region func
         private int GetMaxDamge(List<ParticipantDTO> red, List<ParticipantDTO> blue)
         {
             int maxDamge = 0;
-            for (int i = 0; i < red.Count; i++)
+            foreach (var item in red)
             {
-                if (maxDamge <= red[i].totalDamageDealtToChampions)
-                    maxDamge = red[i].totalDamageDealtToChampions;
-                if (maxDamge <= blue[i].totalDamageDealtToChampions)
-                    maxDamge = blue[i].totalDamageDealtToChampions;
+                if (maxDamge <= item.totalDamageDealtToChampions)
+                    maxDamge = item.totalDamageDealtToChampions;
+
+            }
+            foreach (var item in blue)
+            {
+                if (maxDamge <= item.totalDamageDealtToChampions)
+                    maxDamge = item.totalDamageDealtToChampions;
             }
             return maxDamge;
         }
         private int GetMaxDamgeTaken(List<ParticipantDTO> red, List<ParticipantDTO> blue)
         {
             int maxDamge = 0;
-            for (int i = 0; i < red.Count; i++)
+            foreach (var item in red)
             {
-                if (maxDamge <= red[i].totalDamageTaken)
-                    maxDamge = red[i].totalDamageTaken;
-                if (maxDamge <= blue[i].totalDamageTaken)
-                    maxDamge = blue[i].totalDamageTaken;
+                if (maxDamge <= item.totalDamageTaken)
+                    maxDamge = item.totalDamageTaken;
+
+            }
+            foreach (var item in blue)
+            {
+                if (maxDamge <= item.totalDamageTaken)
+                    maxDamge = item.totalDamageTaken;
             }
             return maxDamge;
         }
         private int GetTotalDeaths(List<ParticipantDTO> team)
         {
             int Total = 0;
-            for (int i = 0; i < team.Count; i++)
+            foreach (var item in team)
             {
-                Total = Total + team[i].deaths;
+                Total = Total + item.deaths;
             }
             return Total;
         }
         private int GetTotalAssists(List<ParticipantDTO> team)
         {
             int Total = 0;
-            for (int i = 0; i < team.Count; i++)
+            foreach (var item in team)
             {
-                Total = Total + team[i].assists;
+                Total = Total + item.assists;
             }
             return Total;
-        }
+        } 
+        #endregion
     }
 }

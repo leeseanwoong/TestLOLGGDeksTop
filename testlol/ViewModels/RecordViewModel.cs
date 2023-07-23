@@ -21,12 +21,9 @@ namespace testlol.ViewModels
         public RecordViewModel()
         {
             Match_V5 match_V5 = new Match_V5();
-            string matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
-            matchlist = matchlist.Replace("\"", "");
-            matchlist = matchlist.Replace("[", "");
-            matchlist = matchlist.Replace("]", "");
-            string[] arr = matchlist.Split(",");
-            int totalGameCount = arr.Length;
+            var matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
+            
+            int totalGameCount = matchlist.Count();
             int totalKills = 0;
             int totalDeaths = 0;
             int totalAssists = 0;
@@ -34,10 +31,10 @@ namespace testlol.ViewModels
             int totalLossesCount = 0;
             List<MostChampionDTO> mostChampions = new List<MostChampionDTO>();
 
-            for (int i = 0; i < arr.Length; i++)
+            foreach (var item in matchlist)
             {
                 MostChampionDTO most = new MostChampionDTO();
-                MatchDTO matchData = match_V5.GetMatchData(arr[i]);
+                MatchDTO matchData = match_V5.GetMatchData(item);
                 matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
                 ParticipantDTO userData = match_V5.GetUserData(matchData, Constants.UserName);
                 if (userData.win == true)
@@ -59,9 +56,10 @@ namespace testlol.ViewModels
                 totalKills = totalKills + userData.kills;
                 totalDeaths = totalDeaths + userData.deaths;
                 totalAssists = totalAssists + userData.assists;
-                most.KDA = (most.Deaths == 0) ? Math.Round((double)most.Kills + most.Assists,2) : Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
+                most.KDA = (most.Deaths == 0) ? Math.Round((double)most.Kills + most.Assists, 2) : Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
                 mostChampions.Add(most);
             }
+
             for (int j = 0; j < mostChampions.Count; j++)
             {
                 for (int k = 0; k < mostChampions.Count; k++)
@@ -84,6 +82,7 @@ namespace testlol.ViewModels
                     }
                 }
             }
+         
             var mostList = mostChampions.OrderByDescending(x => x.ChampCount).ToList();
             TotalGameCount = totalGameCount + " 전 " + totalWinCount + " 승 " + totalLossesCount + " 패";
             TotalWinRate = String.Format("{0:P0}", (double)totalWinCount / totalGameCount);
@@ -138,59 +137,25 @@ namespace testlol.ViewModels
                 {
                     members = new ReadOnlyObservableCollection<RecordListItemViewModel>(innermembers);
                     Match_V5 match_V5 = new Match_V5();
-                    string matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
+                    var matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
+                    
                     List<RuneDTO> rune = match_V5.GetRune();
-                    matchlist = matchlist.Replace("\"", "");
-                    matchlist = matchlist.Replace("[", "");
-                    matchlist = matchlist.Replace("]", "");
-                    string[] arr = matchlist.Split(",");
 
-                    for (int i = 0; i < arr.Length; i++)
+                    foreach (var item in matchlist)
                     {
                         List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
                         List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
-                        MatchDTO matchData = match_V5.GetMatchData(arr[i]);
+                        MatchDTO matchData = match_V5.GetMatchData(item);
                         matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
                         match_V5.GetPerksImg(rune, matchData);
                         match_V5.GetStatsImg(rune, matchData);
                         match_V5.GetTeam(matchData, redTeam, blueTeam);
                         ParticipantDTO userData = match_V5.GetUserData(matchData, Constants.UserName);
-                        innermembers.Add(new RecordListItemViewModel()
-                        {
-                            Assists = userData.assists,
-                            Kills = userData.kills,
-                            Deaths = userData.deaths,
-                            KDA = userData.KDA,
-                            Win = match_V5.GetWinLose(userData.win),
-                            QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                            GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
-                            ChampionPhoto = userData.championPhoto,
-                            Summoner1Casts = match_V5.GetSpellName(userData.Summoner1Id),
-                            Summoner2Casts = match_V5.GetSpellName(userData.Summoner2Id),
-                            Item0 = match_V5.ReturnItemPhoto(userData.item0),
-                            Item1 = match_V5.ReturnItemPhoto(userData.item1),
-                            Item3 = match_V5.ReturnItemPhoto(userData.item2),
-                            Item2 = match_V5.ReturnItemPhoto(userData.item3),
-                            Item4 = match_V5.ReturnItemPhoto(userData.item4),
-                            Item5 = match_V5.ReturnItemPhoto(userData.item5),
-                            Item6 = match_V5.ReturnItemPhoto(userData.item6),
-                            BlueTeam = blueTeam,
-                            RedTeam = redTeam,
-                            ChampionLevel = userData.champLevel,
-                            TotalCS = userData.totalCs,
-                            AvgCS = string.Format("{0:0.0}", userData.totalCs / ((double)matchData.info.gameDuration / 60)),
-                            TotalDetecedWard = userData.detectorWardsPlaced,
-                            TotalGold = string.Format("{0:#,###0}", userData.goldEarned),
-                            KillRate = string.Format("{0:P0}", userData.killRate),
-                            PrimaryPerks = userData.perks.styles[0].selections[0].perkImage,
-                            SubPerks = userData.perks.styles[1].styleIcon,
-                            gametime = matchData.info.gameDuration,
-                            teams = matchData.info.teams,
-                            Perks = userData.perks,
-                        });
+
+                        innermembers.Add(RecordListItemViewModel.From(match_V5 ,userData, matchData, redTeam, blueTeam));
                     }
                 }
-                return members;
+                return members; 
             }
         }
 
