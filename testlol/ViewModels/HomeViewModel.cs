@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using testlol.API;
+using testlol.Managers;
 using testlol.Models.DTOs.League_V4;
 using testlol.Models.DTOs.Sumonner_V4;
 using testlol.Utills;
@@ -21,7 +22,7 @@ namespace testlol.ViewModels
         public HomeViewModel()
         {
             League_V4 league_V4 = new League_V4(); // 매니저 만들어서 싱글톤으로 뺴서 사용
-            var position = league_V4.GetPosition(Constants.Summoner);
+            var position = league_V4.GetPosition(UserDataManager.Instance.Summoner);
             if(position.Tier == null)
             {
                 Tier = "UnRanked"; // 이건 스트링을 따로 모아놓는 곳에 저장
@@ -34,9 +35,9 @@ namespace testlol.ViewModels
                 LeaguePoints = position.leaguePoints + " LP";
                 TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png"; // 상대 경로로 바꾸기, Img경로 따로 뺴서 만들기
             }
-            Name = Constants.UserName;
-            SummonerLevel = Constants.Summoner.SummonerLevel;
-            ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Constants.Summoner.ProfileIconId + ".jpg";
+            Name = UserDataManager.Instance.UserName;
+            SummonerLevel = UserDataManager.Instance.Summoner.SummonerLevel;
+            ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + UserDataManager.Instance.Summoner.ProfileIconId + ".jpg";
             
             Wins = position.Wins;
             Losses = position.Losses;

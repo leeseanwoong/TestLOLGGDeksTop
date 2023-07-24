@@ -8,7 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using testlol.API;
+using testlol.Managers;
 using testlol.Models.DTOs;
 using testlol.Models.DTOs.Sumonner_V4;
 using testlol.Scripts;
@@ -21,7 +23,8 @@ namespace testlol.ViewModels
         private bool isConnected = false;
 
         public RiotClientManager clientManager = new RiotClientManager();
-        
+
+        private DispatcherTimer timer = new DispatcherTimer();
         
 
         private SummonerDTO GetSummoner(string SummerName)
@@ -38,10 +41,8 @@ namespace testlol.ViewModels
         {
             if (!isConnected)
             {
-                
-                System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
-                Timer.Interval = TimeSpan.FromTicks(10000000);
-                Timer.Tick += async (s, a) =>
+                timer.Interval = TimeSpan.FromTicks(10000000);
+                timer.Tick += async (s, a) =>
                 {
                     try
                     {
@@ -66,12 +67,12 @@ namespace testlol.ViewModels
 
                         var msg = await clientManager.UsingApiEventJObject("Get", "/lol-summoner/v1/current-summoner");
                         UserDTO username = JsonConvert.DeserializeObject<UserDTO>(msg.ToString());
-                        if (Constants.Summoner == null)
+                        if (UserDataManager.Instance.Summoner == null)
                         {
-                            Constants.UserName = username.displayName;
-                            Constants.Summoner = GetSummoner(Constants.UserName);
+                            UserDataManager.Instance.UserName = username.displayName;
+                            UserDataManager.Instance.Summoner = GetSummoner(UserDataManager.Instance.UserName);
                             MessageBox.Show("연결 완료");
-                            Timer.Stop();
+                            timer.Stop();
                         }
 
                     }
@@ -80,8 +81,10 @@ namespace testlol.ViewModels
                         Console.WriteLine("Connection Failed");
                     }
                 };
+                
                 clientManager.LeagueClosed += OnLeagueColsed;
-                    Timer.Start();
+                timer.Start();
+
                 isConnected = true;
             }
         }
@@ -89,7 +92,8 @@ namespace testlol.ViewModels
         private void OnLeagueColsed()
         {
             MessageBox.Show("연결 해제");
-           
+            UserDataManager.Instance.Summoner = null;
+            timer.Start();
         }
 
         private ObservableCollection<MenuItemViewModel> _items;

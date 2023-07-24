@@ -64,7 +64,7 @@ namespace testlol.ViewModels
             switch (_menuViewModel.SelectedType.Type)
             {
                 case FunctionType.Home:
-                    if (Constants.Summoner == null)
+                    if (UserDataManager.Instance.Summoner == null)
                     {
                         MessageBox.Show("계정이 연결되있지 않습니다.");
                         return;
@@ -73,7 +73,7 @@ namespace testlol.ViewModels
                         MainContentViewModel.MainContent = new HomeViewModel();
                     break;
                 case FunctionType.Record:
-                    if (Constants.Summoner == null)
+                    if (UserDataManager.Instance.Summoner == null)
                     {
                         MessageBox.Show("계정이 연결되있지 않습니다.");
                         return;
@@ -82,7 +82,7 @@ namespace testlol.ViewModels
                         MainContentViewModel.MainContent = new RecordViewModel();
                     break;
                 case FunctionType.Queue:
-                    if (Constants.Summoner == null)
+                    if (UserDataManager.Instance.Summoner == null)
                     {
                         MessageBox.Show("계정이 연결되있지 않습니다.");
                         return;

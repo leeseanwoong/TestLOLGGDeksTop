@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using testlol.API;
+using testlol.Managers;
 using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Spectator_V4;
 using testlol.Utills;
@@ -17,7 +18,7 @@ namespace testlol.ViewModels
         public QueueViewModel()
         {
             Spectator_V4 spectator_V4 = new Spectator_V4();
-            GameInfo = spectator_V4.GetCurrentGameInfo(Constants.Summoner.Id);
+            GameInfo = spectator_V4.GetCurrentGameInfo(UserDataManager.Instance.Summoner.Id);
             if (GameInfo == null)
             {
                 Visible = Visibility.Hidden;
@@ -58,7 +59,7 @@ namespace testlol.ViewModels
             get
             {
 
-                if (redTeam == null && GameInfo != null && Constants.Summoner != null)
+                if (redTeam == null && GameInfo != null && UserDataManager.Instance.Summoner != null)
                 {
                     redTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerRed);
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();
@@ -107,7 +108,7 @@ namespace testlol.ViewModels
             get
             {
 
-                if (blueTeam == null && GameInfo != null && Constants.Summoner != null)
+                if (blueTeam == null && GameInfo != null && UserDataManager.Instance.Summoner != null)
                 {
                     blueTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerBlue);
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();

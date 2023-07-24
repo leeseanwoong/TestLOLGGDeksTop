@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using testlol.API;
+using testlol.Managers;
 using testlol.Models.DTOs.Match_V5;
 using testlol.Types;
 using testlol.Utills;
@@ -21,7 +22,7 @@ namespace testlol.ViewModels
         public RecordViewModel()
         {
             Match_V5 match_V5 = new Match_V5();
-            var matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
+            var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
             
             int totalGameCount = matchlist.Count();
             int totalKills = 0;
@@ -36,7 +37,7 @@ namespace testlol.ViewModels
                 MostChampionDTO most = new MostChampionDTO();
                 MatchDTO matchData = match_V5.GetMatchData(item);
                 matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                ParticipantDTO userData = match_V5.GetUserData(matchData, Constants.UserName);
+                ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.UserName);
                 if (userData.win == true)
                 {
                     totalWinCount = totalWinCount + 1;
@@ -133,11 +134,11 @@ namespace testlol.ViewModels
         {
             get
             {
-                if (members == null && Constants.Summoner != null)
+                if (members == null && UserDataManager.Instance.Summoner != null)
                 {
                     members = new ReadOnlyObservableCollection<RecordListItemViewModel>(innermembers);
                     Match_V5 match_V5 = new Match_V5();
-                    var matchlist = match_V5.GetMatchList(Constants.Summoner.puuid);
+                    var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
                     
                     List<RuneDTO> rune = match_V5.GetRune();
 
@@ -150,7 +151,7 @@ namespace testlol.ViewModels
                         match_V5.GetPerksImg(rune, matchData);
                         match_V5.GetStatsImg(rune, matchData);
                         match_V5.GetTeam(matchData, redTeam, blueTeam);
-                        ParticipantDTO userData = match_V5.GetUserData(matchData, Constants.UserName);
+                        ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.UserName);
 
                         innermembers.Add(RecordListItemViewModel.From(match_V5 ,userData, matchData, redTeam, blueTeam));
                     }
