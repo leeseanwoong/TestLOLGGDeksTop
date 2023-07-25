@@ -25,6 +25,7 @@ namespace testlol.ViewModels
             var position = league_V4.GetPosition(UserDataManager.Instance.Summoner);
             if(position.Tier == null)
             {
+                TierIcon = "https://z.fow.kr/img/emblem/unranked.png";
                 Tier = "UnRanked"; // 이건 스트링을 따로 모아놓는 곳에 저장
                 TierIcon = null;
             }
@@ -33,7 +34,7 @@ namespace testlol.ViewModels
                 Tier = position.Tier;
                 Rank = position.Rank;
                 LeaguePoints = position.leaguePoints + " LP";
-                TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png"; // 상대 경로로 바꾸기, Img경로 따로 뺴서 만들기
+                TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png"; // 상대 경로로 바꾸기, Img경로 따로 뺴서 만들기
             }
             Name = UserDataManager.Instance.UserName;
             SummonerLevel = UserDataManager.Instance.Summoner.SummonerLevel;

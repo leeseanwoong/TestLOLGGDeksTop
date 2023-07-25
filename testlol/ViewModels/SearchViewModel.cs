@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using testlol.Views;
 using testlol.Models.DTOs.Spectator_V4;
+using static System.Net.WebRequestMethods;
 
 namespace testlol.ViewModels
 {
@@ -132,13 +133,13 @@ namespace testlol.ViewModels
                 if(position.Tier == null)
                 {
                     Tier = "UnRanked";
-                    TierIcon = null;
+                    TierIcon = "https://z.fow.kr/img/emblem/unranked.png";
                     WinRate = null;
                 }
                 else
                 {
                     Tier = position.Tier + " " + position.Rank;
-                    TierIcon = "C:\\Users\\user\\source\\repos\\testlol\\testlol\\TierIcon\\Tier_" + position.Tier + ".png";
+                    TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png";
                     LeaguePoints = position.leaguePoints + " LP";
                     WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")";
                 }

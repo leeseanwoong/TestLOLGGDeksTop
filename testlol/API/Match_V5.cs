@@ -35,7 +35,7 @@ namespace testlol.API
 
         public List<RuneDTO> GetRune()
         {
-            string path = "https://ddragon.leagueoflegends.com/cdn/13.7.1/data/ko_KR/runesReforged.json";
+            string path = "https://ddragon.leagueoflegends.com/cdn/13.14.1/data/ko_KR/runesReforged.json";
 
             var response = GET(path);
             string content = response.Content.ReadAsStringAsync().Result;
@@ -81,7 +81,7 @@ namespace testlol.API
         }
         public string ReturnItemPhoto(int Item)
         {
-            return "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/" + Item + ".png";
+            return "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/item/" + Item + ".png";
         }
         public void GetTeam(MatchDTO matchdata, List<ParticipantDTO> redteam, List<ParticipantDTO> blueteam)
         {
@@ -235,7 +235,7 @@ namespace testlol.API
         {
             for (int i = 0; i < participantDTOs.Count; i++)
             {
-                participantDTOs[i].championPhoto = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + participantDTOs[i].championName + ".png";
+                participantDTOs[i].championPhoto = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + participantDTOs[i].championName + ".png";
                 participantDTOs[i].totalCs = participantDTOs[i].neutralMinionsKilled + participantDTOs[i].totalMinionsKilled;
                 if (participantDTOs[i].deaths == 0)
                     participantDTOs[i].KDA = string.Format("{0:0.00}", (participantDTOs[i].assists + participantDTOs[i].kills));
