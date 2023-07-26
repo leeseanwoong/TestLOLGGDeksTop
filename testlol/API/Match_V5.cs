@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using testlol.Managers;
 using testlol.Models.DTOs.Match_V5;
+using testlol.Models.DTOs.Spectator_V4;
 using testlol.Utills;
 
 namespace testlol.API
@@ -16,21 +19,17 @@ namespace testlol.API
 
         }
 
+        private ApiManager apiManager = new ApiManager();
+
         public IEnumerable<string> GetMatchList(string puuid)  //ieumerable = get밖에 없어서 수정 불가
         {
             string path = "match/v5/matches/by-puuid/" + puuid;
 
             var response = GET(GetAsiaMatchUrl(path));
-            string content = response.Content.ReadAsStringAsync().Result;
+            
+            var result = apiManager.ReturnMatchList(response);
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<IEnumerable<string>>(content);
-            }
-            else
-            {
-                return null;
-            }
+            return result;
         }
 
         public List<RuneDTO> GetRune()
@@ -38,16 +37,10 @@ namespace testlol.API
             string path = "https://ddragon.leagueoflegends.com/cdn/13.14.1/data/ko_KR/runesReforged.json";
 
             var response = GET(path);
-            string content = response.Content.ReadAsStringAsync().Result;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<List<RuneDTO>>(content);
-            }
-            else
-            {
-                return null;
-            }
+            var result = apiManager.ReturnRune(response);
+
+            return result;
         }
 
         public MatchDTO GetMatchData(string matchId)
@@ -55,28 +48,25 @@ namespace testlol.API
             string path = "match/v5/matches/" + matchId;
 
             var response = GET(GetAsiaUrl(path));
-            string content=response.Content.ReadAsStringAsync().Result;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<MatchDTO>(content);
-            }
-            else
-            {
-                return null;
-            }
+            
+            var result = apiManager.ReturnMatchData(response);
+            
+            return result;
         }
+
+        #region Utill
         public ParticipantDTO GetUserData(MatchDTO matchDTO, string summonerName)
         {
             ParticipantDTO userData = new ParticipantDTO();
-            for(int i = 0; i < matchDTO.info.participants.Count; i++)
-            {
-                if (summonerName == matchDTO.info.participants[i].summonerName)
-                {
-                    userData = matchDTO.info.participants[i];
-                }
 
+            foreach (var item in matchDTO.info.participants)
+            {
+                if (summonerName == item.summonerName)
+                {
+                    userData = item;
+                }
             }
+
             return userData;
         }
         public string ReturnItemPhoto(int Item)
@@ -87,54 +77,95 @@ namespace testlol.API
         {
             int bluetotalkill = 0;
             int redtotalkill = 0;
-            for (int i = 0; i < matchdata.info.participants.Count; i++)
+
+            foreach (var team in matchdata.info.participants)
             {
-                if (matchdata.info.participants[i].teamId == 100)
+                if (team.teamId == 100)
                 {
-                    blueteam.Add(matchdata.info.participants[i]);
-                    bluetotalkill = bluetotalkill + matchdata.info.participants[i].kills;
+                    blueteam.Add(team);
+                    bluetotalkill = bluetotalkill + team.kills;
 
                 }
-                else if (matchdata.info.participants[i].teamId == 200)
+                else if (team.teamId == 200)
                 {
-                    redteam.Add(matchdata.info.participants[i]);
-                    redtotalkill = redtotalkill + matchdata.info.participants[i].kills;
+                    redteam.Add(team);
+                    redtotalkill = redtotalkill + team.kills;
                 }
             }
-            for (int j = 0; j < matchdata.info.participants.Count; j++)
-            {
-                if (matchdata.info.participants[j].teamId == 100)
-                {
-                    for (int k = 0; k < blueteam.Count; k++)
-                    {
-                        if (matchdata.info.participants[j].summonerName == blueteam[k].summonerName)
-                        {
-                            matchdata.info.participants[j].killRate = (double)(matchdata.info.participants[j].kills + matchdata.info.participants[j].assists) / bluetotalkill;
-                        }
-                    }
-                }
-                else if (matchdata.info.participants[j].teamId == 200)
-                {
-                    for (int k = 0; k < redteam.Count; k++)
-                    {
-                        if (matchdata.info.participants[j].summonerName == redteam[k].summonerName)
-                        {
-                            matchdata.info.participants[j].killRate = (double)(matchdata.info.participants[j].kills + matchdata.info.participants[j].assists) / redtotalkill;
-                        }
-                    }
-                }
 
+            foreach (var item in matchdata.info.participants)
+            {
+                if (item.teamId == 100)
+                {
+                    foreach (var team in blueteam)
+                    {
+                        if (item.summonerName == team.summonerName)
+                        {
+                            item.killRate = (double)(item.kills + item.assists) / bluetotalkill;
+                        }
+                    }
+                }
+                else if (item.teamId == 200)
+                {
+                    foreach (var team in redteam)
+                    {
+                        if (item.summonerName == team.summonerName)
+                        {
+                            item.killRate = (double)(item.kills + item.assists) / redtotalkill;
+                        }
+                    }
+                }
             }
         }
 
-        
+        public void GetPerks(PerkDTO perk, List<RuneDTO> runes)
+        {
+            perk.perksImgs = new List<string>();
+
+            foreach (var rune in runes)
+            {
+                if (perk.perkStyle == rune.id)
+                {
+                    perk.perksStyleIcon = "https://ddragon.leagueoflegends.com/cdn/img/" + rune.icon;
+                    break;
+                }
+            }
+            foreach (var perks in perk.perkIds)
+            {
+                foreach (var rune in runes)
+                {
+                    foreach (var slot in rune.slots)
+                    {
+                        foreach (var item in slot.runes)
+                        {
+                            if (perks == item.id)
+                                perk.perksImgs.Add("https://ddragon.leagueoflegends.com/cdn/img/" + item.icon);
+                            else
+                            {
+                                if (perks == 5008) // 맨 위쪽
+                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png"); // 적응형 능력치
+                                else if (perks == 5005)
+                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsattackspeedicon.png");
+                                else if (perks == 5007)
+                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodscdrscalingicon.png");
+                                else if (perks == 5002)
+                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png");
+                                else if (perks == 5003)
+                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png");
+                                else if (perks == 5001)
+                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png");
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         public string GetGameTime(long GameDuration)
         {
             TimeSpan t = TimeSpan.FromSeconds(GameDuration);
             return $"{t.Minutes}분 {t.Seconds}초";
         }
-
 
         public string GetWinLose(bool win)
         {
@@ -180,69 +211,69 @@ namespace testlol.API
 
         public void GetStatsImg(List<RuneDTO> rune, MatchDTO matchDTO)
         {
-            for (int i = 0; i < matchDTO.info.participants.Count; i++) //10번돔 - 멤버들전원
+            foreach (var item in matchDTO.info.participants)
             {
-                if (matchDTO.info.participants[i].perks.statPerks.offense == 5008) // 맨 위쪽
+                if (item.perks.statPerks.offense == 5008) // 맨 위쪽
                 {
-                    matchDTO.info.participants[i].perks.statPerks.offenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png"; // 적응형 능력치
-                    matchDTO.info.participants[i].perks.statPerks.offenseDesc = "적응형 능력치 + 9";
+                    item.perks.statPerks.offenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png"; // 적응형 능력치
+                    item.perks.statPerks.offenseDesc = "적응형 능력치 + 9";
                 }
-                else if (matchDTO.info.participants[i].perks.statPerks.offense == 5005)
+                else if (item.perks.statPerks.offense == 5005)
                 {
-                    matchDTO.info.participants[i].perks.statPerks.offenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsattackspeedicon.png";
-                    matchDTO.info.participants[i].perks.statPerks.offenseDesc = "공격 속도 + 10%";
+                    item.perks.statPerks.offenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsattackspeedicon.png";
+                    item.perks.statPerks.offenseDesc = "공격 속도 + 10%";
                 }
-                else if (matchDTO.info.participants[i].perks.statPerks.offense == 5007)
+                else if (item.perks.statPerks.offense == 5007)
                 {
-                    matchDTO.info.participants[i].perks.statPerks.offenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodscdrscalingicon.png";
-                    matchDTO.info.participants[i].perks.statPerks.offenseDesc = "스킬 가속 + 8";
-                }
-
-                if (matchDTO.info.participants[i].perks.statPerks.flex == 5008)
-                {
-                    matchDTO.info.participants[i].perks.statPerks.flexImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png";
-                    matchDTO.info.participants[i].perks.statPerks.flexDesc = "적응형 능력치 + 9";
-                }
-                else if (matchDTO.info.participants[i].perks.statPerks.flex == 5002)
-                {
-                    matchDTO.info.participants[i].perks.statPerks.flexImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png";
-                    matchDTO.info.participants[i].perks.statPerks.flexDesc = "방어력 +6";
-                }
-                else if (matchDTO.info.participants[i].perks.statPerks.flex == 5003)
-                {
-                    matchDTO.info.participants[i].perks.statPerks.flexImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png";
-                    matchDTO.info.participants[i].perks.statPerks.flexDesc = "마법 저항력 +8";
+                    item.perks.statPerks.offenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodscdrscalingicon.png";
+                    item.perks.statPerks.offenseDesc = "스킬 가속 + 8";
                 }
 
-                if (matchDTO.info.participants[i].perks.statPerks.defense == 5001)
+                if (item.perks.statPerks.flex == 5008)
                 {
-                    matchDTO.info.participants[i].perks.statPerks.defenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png";
-                    matchDTO.info.participants[i].perks.statPerks.defenseDesc = "체력 +15~140 (레벨에 비례)";
+                    item.perks.statPerks.flexImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png";
+                    item.perks.statPerks.flexDesc = "적응형 능력치 + 9";
                 }
-                else if (matchDTO.info.participants[i].perks.statPerks.defense == 5002)
+                else if (item.perks.statPerks.flex == 5002)
                 {
-                    matchDTO.info.participants[i].perks.statPerks.defenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png";
-                    matchDTO.info.participants[i].perks.statPerks.defenseDesc = "방어력 +6";
+                    item.perks.statPerks.flexImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png";
+                    item.perks.statPerks.flexDesc = "방어력 +6";
                 }
-                else if (matchDTO.info.participants[i].perks.statPerks.defense == 5003)
+                else if (item.perks.statPerks.flex == 5003)
                 {
-                    matchDTO.info.participants[i].perks.statPerks.defenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png";
-                    matchDTO.info.participants[i].perks.statPerks.defenseDesc = "마법 저항력 +8";
+                    item.perks.statPerks.flexImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png";
+                    item.perks.statPerks.flexDesc = "마법 저항력 +8";
+                }
+
+                if (item.perks.statPerks.defense == 5001)
+                {
+                    item.perks.statPerks.defenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png";
+                    item.perks.statPerks.defenseDesc = "체력 +15~140 (레벨에 비례)";
+                }
+                else if (item.perks.statPerks.defense == 5002)
+                {
+                    item.perks.statPerks.defenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png";
+                    item.perks.statPerks.defenseDesc = "방어력 +6";
+                }
+                else if (item.perks.statPerks.defense == 5003)
+                {
+                    item.perks.statPerks.defenseImg = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png";
+                    item.perks.statPerks.defenseDesc = "마법 저항력 +8";
                 }
             }
         }
         public List<ParticipantDTO> InitParticipants(List<ParticipantDTO> participantDTOs)
         {
-            for (int i = 0; i < participantDTOs.Count; i++)
+            foreach (var item in participantDTOs)
             {
-                participantDTOs[i].championPhoto = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + participantDTOs[i].championName + ".png";
-                participantDTOs[i].totalCs = participantDTOs[i].neutralMinionsKilled + participantDTOs[i].totalMinionsKilled;
-                if (participantDTOs[i].deaths == 0)
-                    participantDTOs[i].KDA = string.Format("{0:0.00}", (participantDTOs[i].assists + participantDTOs[i].kills));
+                item.championPhoto = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + item.championName + ".png";
+                item.totalCs = item.neutralMinionsKilled + item.totalMinionsKilled;
+                if (item.deaths == 0)
+                    item.KDA = string.Format("{0:0.00}", (item.assists + item.kills));
                 else
                 {
-                    double kda = (double)(participantDTOs[i].kills + participantDTOs[i].assists) / participantDTOs[i].deaths;
-                    participantDTOs[i].KDA = string.Format("{0:0.00}", kda);
+                    double kda = (double)(item.kills + item.assists) / item.deaths;
+                    item.KDA = string.Format("{0:0.00}", kda);
                 }
             }
             return participantDTOs;
@@ -251,15 +282,16 @@ namespace testlol.API
         {
             League_V4 league = new League_V4();
 
-
-            for (int i = 0; i < team.Count; i++)
+            foreach (var item in team)
             {
-                var position = league.GetPositions(team[i].summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
+                var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
                 if (position == null)
-                    team[i].tier = "Unranked";
+                    item.tier = "Unranked";
                 else
-                    team[i].tier = position.Tier + " " + position.Rank;
+                    item.tier = position.Tier + " " + position.Rank;
             }
-        }
+        } 
+
+        #endregion
     }
 }

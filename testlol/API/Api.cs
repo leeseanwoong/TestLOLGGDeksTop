@@ -60,7 +60,6 @@ namespace testlol.API
         {
             if (spell == 1)
             {
-
                 return "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/spell/SummonerBoost.png";
             }
             else if (spell == 3)

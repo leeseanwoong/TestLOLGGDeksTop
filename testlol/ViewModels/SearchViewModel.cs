@@ -109,8 +109,7 @@ namespace testlol.ViewModels
 
         #endregion
 
-
-
+        #region Button
         private Prism.Commands.DelegateCommand buttonSearch;
 
         public ICommand ButtonSearch => buttonSearch = buttonSearch ?? new Prism.Commands.DelegateCommand(ButtonSearchCommand);
@@ -130,7 +129,7 @@ namespace testlol.ViewModels
                 SearchName = Summoner.Name;
                 SummonerLevel = Summoner.SummonerLevel;
                 ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + Summoner.ProfileIconId + ".jpg";
-                if(position.Tier == null)
+                if (position.Tier == null)
                 {
                     Tier = "UnRanked";
                     TierIcon = "https://z.fow.kr/img/emblem/unranked.png";
@@ -143,11 +142,11 @@ namespace testlol.ViewModels
                     LeaguePoints = position.leaguePoints + " LP";
                     WinRate = "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")";
                 }
-                
+
                 Wins = position.Wins + "승 ";
                 Losses = position.Losses + "패 ";
-               
-              
+
+
                 var matchlist = match_V5.GetMatchList(Summoner.puuid);
                 List<RuneDTO> rune = match_V5.GetRune();
                 foreach (var item in matchlist)
@@ -160,9 +159,9 @@ namespace testlol.ViewModels
                     match_V5.GetStatsImg(rune, matchData);
                     match_V5.GetTeam(matchData, redTeam, blueTeam);
                     ParticipantDTO userData = match_V5.GetUserData(matchData, Summoner.Name);
-                    Items.Add(RecordListItemViewModel.From(match_V5 ,userData, matchData, redTeam, blueTeam));
+                    Items.Add(RecordListItemViewModel.From(match_V5, userData, matchData, redTeam, blueTeam));
                 }
-            
+
             }
             else
             {
@@ -235,6 +234,7 @@ namespace testlol.ViewModels
                 perksView.Show();
             }
 
-        }
+        } 
+        #endregion
     }
 }

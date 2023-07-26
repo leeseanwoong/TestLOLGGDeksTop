@@ -91,7 +91,7 @@ namespace testlol.ViewModels
                             }
 
                         }
-                        GetPerks(item.perks, rune);
+                        match_V5.GetPerks(item.perks, rune);
                         innerRed.Add(QueueItemViewModel.From(compare, position, league, item));
                     }
 
@@ -140,7 +140,7 @@ namespace testlol.ViewModels
 
                         }
 
-                        GetPerks(item.perks, rune);
+                        match_V5.GetPerks(item.perks, rune);
 
                         innerBlue.Add(QueueItemViewModel.From(compare, position, league, item));
                     }
@@ -150,76 +150,5 @@ namespace testlol.ViewModels
             }
         }
 
-        private void GetPerks(PerkDTO perk, List<RuneDTO> runes)
-        {
-            perk.perksImgs = new List<string>();
-            for (int i = 0; i < runes.Count; i++) //스타일 아이콘 찾기
-            {
-                if (perk.perkStyle == runes[i].id)
-                {
-                    perk.perksStyleIcon = "https://ddragon.leagueoflegends.com/cdn/img/" + runes[i].icon;
-                    break;
-                }
-
-            }
-            for (int i = 0; i < runes.Count; i++)
-            {
-                if (perk.perkSubStyle == runes[i].id)
-                {
-                    perk.perkSubStyleIcon = "https://ddragon.leagueoflegends.com/cdn/img/" + runes[i].icon;
-                    break;
-                }
-            }
-            for (int i = 0; i < perk.perkIds.Count; i++)
-            {
-                for (int j = 0; j < runes.Count; j++)
-                {
-                    for (int k = 0; k < runes[j].slots.Count; k++)
-                    {
-                        for (int t = 0; t < runes[j].slots[k].runes.Count; t++)
-                        {
-                            if (perk.perkIds[i] == runes[j].slots[k].runes[t].id)
-                            {
-
-                                perk.perksImgs.Add("https://ddragon.leagueoflegends.com/cdn/img/" + runes[j].slots[k].runes[t].icon);
-                            }
-                            else
-                            {
-                                if (perk.perkIds[i] == 5008) // 맨 위쪽
-                                {
-                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png"); // 적응형 능력치
-                                }
-                                else if (perk.perkIds[i] == 5005)
-                                {
-                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsattackspeedicon.png");
-
-                                }
-                                else if (perk.perkIds[i] == 5007)
-                                {
-                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodscdrscalingicon.png");
-
-                                }
-                                else if (perk.perkIds[i] == 5002)
-                                {
-                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png");
-
-                                }
-                                else if (perk.perkIds[i] == 5003)
-                                {
-                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png");
-
-                                }
-
-                                else if (perk.perkIds[i] == 5001)
-                                {
-                                    perk.perksImgs.Add("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png");
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using testlol.Managers;
 using testlol.Models.DTOs.Spectator_V4;
 
 namespace testlol.API
@@ -16,37 +17,27 @@ namespace testlol.API
 
         }
 
+        private ApiManager apiManager = new ApiManager();
+
         public CurrentGameInfoDTO GetCurrentGameInfo(string id)
         {
             string path = "spectator/v4/active-games/by-summoner/" + id;
 
             var response = GET(GetUrl(path));
-            string content = response.Content.ReadAsStringAsync().Result;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<CurrentGameInfoDTO>(content);
-            }
-            else
-            {
-                return null;
-            }
+            var result = apiManager.ReturnCurrentGameInfo(response);
+
+            return result;
         }
         public ChampionsDTO GetChampions()
         {
-            string path = "http://ddragon.leagueoflegends.com/cdn/13.10.1/data/en_US/champion.json";
+            string path = "http://ddragon.leagueoflegends.com/cdn/13.14.1/data/en_US/champion.json";
 
             var response = GET(path);
-            string content = response.Content.ReadAsStringAsync().Result;
+            
+            var result = apiManager.ReturnChampion(response);
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<ChampionsDTO>(content);
-            }
-            else
-            {
-                return null;
-            }
+            return result;
         }
     }
 }
