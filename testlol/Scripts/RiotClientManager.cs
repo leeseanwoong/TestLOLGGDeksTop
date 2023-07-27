@@ -3,31 +3,46 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using testlol.Models.DTOs;
 using testlol.Utills;
 
 namespace testlol.Scripts
 {
     class RiotClientManager
     {
+        private HttpClient httpClient;
+        private bool isConnected = false;
         public delegate void LeagueClosedHandler();
         public event LeagueClosedHandler LeagueClosed; // 클라이언트 닫을 때 
+        private bool isLeagueClosed = false;
 
-        private HttpClient httpClient = null;
 
-        public RiotClientManager()
+        // Riot LCU API를 통해 사용자 정보를 가져오는 메서드
+        public async Task<UserDTO> GetUserInfo()
         {
-            
+            var response = await UsingApiEventJObject("Get", "lol-summoner/v1/current-summoner");
+
+            if (response != null)
+            {
+                return JsonConvert.DeserializeObject<UserDTO>(response.ToString());
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        // 웹 클라 연결
         public bool Connect()
         {
+            ConnectInit();
             try
             {
                 ConnectInit();
@@ -37,7 +52,13 @@ namespace testlol.Scripts
                 httpClient.BaseAddress = new Uri(ClientData.ApiUrl);
 
                 ClientData.clientProcess.EnableRaisingEvents = true;
-                ClientData.clientProcess.Exited += ClientProcess_Exited;
+                isLeagueClosed = false;
+                if (!isLeagueClosed)
+                {
+                    ClientData.clientProcess.Exited += ClientProcess_Exited;
+                    isLeagueClosed=true;
+                }
+                
 
                 return true;
             }
@@ -49,11 +70,17 @@ namespace testlol.Scripts
             }
         }
 
+        private void  ClientProcess_Exited(object? sender, EventArgs e)
+        {
+            LeagueClosed();
+        }
+
         // Client 핸들 초기화
         private void ConnectInit()
         {
-            this.httpClient = null;
+            
 
+            this.httpClient = null;
 
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
@@ -64,6 +91,31 @@ namespace testlol.Scripts
                 };
 
             httpClient = new HttpClient(handler);
+
+            try
+            {
+                Process[] processes = Process.GetProcessesByName(ClientData.CLIENT_NAME);
+                ClientData.clientProcess = processes[0];
+
+                ClientData.LeaguePath = Path.GetDirectoryName(ClientData.clientProcess.MainModule.FileName);
+                var lockFilePath = Path.Combine(ClientData.LeaguePath, "lockfile");
+
+                using (var fileStream = new FileStream(lockFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var reader = new StreamReader(fileStream))
+                {
+                    var text = reader.ReadToEnd();
+                    string[] items = text.Split(':');
+                    ClientData.ToKen = items[3];
+                    ClientData.Port = ushort.Parse(items[2]);
+                    ClientData.ApiUrl = "https://127.0.0.1:" + ClientData.Port.ToString() + "/";
+                }
+                isConnected = true;
+            }
+            catch
+            {
+                isConnected = false;
+                Console.WriteLine("connection failed");
+            }
         }
 
         /// <summary>
@@ -102,12 +154,6 @@ namespace testlol.Scripts
                 default:
                     throw new Exception("Unsupported HTTP method");
             }
-        }
-
-        // 롤 클라이언트 종료 이벤트
-        private void ClientProcess_Exited(object sender, EventArgs e)
-        {
-            LeagueClosed();
         }
     }
 }

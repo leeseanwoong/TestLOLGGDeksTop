@@ -13,7 +13,6 @@ namespace testlol.Managers
         public static UserDataManager Instance => _instance ?? (_instance = new UserDataManager());
 
         public SummonerDTO Summoner { get; set; }
-        public string UserName { get; set; }
 
 
     }

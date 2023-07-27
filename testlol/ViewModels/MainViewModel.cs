@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using testlol.API;
 using testlol.Managers;
 using testlol.Models.DTOs;
@@ -20,8 +21,61 @@ namespace testlol.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
-        
-        
+        private RiotClientManager riotClientManager;
+
+
+        private DispatcherTimer timer;
+        public MainViewModel()
+        {
+            riotClientManager = new RiotClientManager();
+
+            riotClientManager.LeagueClosed += RiotClientManager_LeagueClosed;
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(7); // 7초마다 호출
+            timer.Tick += Timer_Tick;
+            timer.Start();
+
+        }
+
+        private void RiotClientManager_LeagueClosed()
+        {
+            timer.Start();
+            MessageBox.Show("연결 해제");
+
+        }
+
+        private async void Timer_Tick(object? sender, EventArgs e)
+        {
+            try
+            {
+                riotClientManager.Connect();
+
+                var response = await riotClientManager.UsingApiEventJObject("Get", "lol-summoner/v1/current-summoner");
+                UserDTO user = JsonConvert.DeserializeObject<UserDTO>(response.ToString());
+
+                if (user.displayName != null)
+                {
+                    timer.Stop();
+
+                    UserDataManager.Instance.Summoner = GetSummoner(user.displayName);
+                    MessageBox.Show("연결 완료");
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Connection Failed");
+            }
+
+
+        }
+
+        private SummonerDTO GetSummoner(string SummerName)
+        {
+            Summoner_V4 summoner_V4 = new Summoner_V4();
+            return summoner_V4.GetSummonerByName(SummerName);
+        }
+
         private MenuViewModel _menuViewModel;
 
         public MenuViewModel MenuViewModel

@@ -36,7 +36,7 @@ namespace testlol.ViewModels
                 LeaguePoints = position.leaguePoints + " LP";
                 TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png"; // 상대 경로로 바꾸기, Img경로 따로 뺴서 만들기
             }
-            Name = UserDataManager.Instance.UserName;
+            Name = UserDataManager.Instance.Summoner.Name;
             SummonerLevel = UserDataManager.Instance.Summoner.SummonerLevel;
             ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + UserDataManager.Instance.Summoner.ProfileIconId + ".jpg";
             
