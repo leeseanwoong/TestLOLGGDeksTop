@@ -52,7 +52,6 @@ namespace testlol.Scripts
                 httpClient.BaseAddress = new Uri(ClientData.ApiUrl);
 
                 ClientData.clientProcess.EnableRaisingEvents = true;
-                isLeagueClosed = false;
                 if (!isLeagueClosed)
                 {
                     ClientData.clientProcess.Exited += ClientProcess_Exited;
