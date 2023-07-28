@@ -23,6 +23,7 @@ namespace testlol.ViewModels
     {
         private RiotClientManager riotClientManager;
 
+        private Object _lock = new Object();
 
         private DispatcherTimer timer;
         public MainViewModel()
@@ -40,17 +41,21 @@ namespace testlol.ViewModels
 
         private void RiotClientManager_LeagueClosed()
         {
-            timer.Start();
-            MessageBox.Show("연결 해제");
-
+            lock (_lock)
+            {
+                timer.Start();
+            }
         }
 
         private async void Timer_Tick(object? sender, EventArgs e)
         {
             try
             {
-                riotClientManager.Connect();
-
+                lock (_lock)
+                {
+                    riotClientManager.Connect();
+                }
+                
                 var response = await riotClientManager.UsingApiEventJObject("Get", "lol-summoner/v1/current-summoner");
                 UserDTO user = JsonConvert.DeserializeObject<UserDTO>(response.ToString());
 
@@ -59,7 +64,12 @@ namespace testlol.ViewModels
                     timer.Stop();
 
                     UserDataManager.Instance.Summoner = GetSummoner(user.displayName);
-                    MessageBox.Show("연결 완료");
+
+                    lock(_lock)
+                    {
+                        MessageBox.Show("연결 완료");
+                    }
+                    
                 }
             }
             catch

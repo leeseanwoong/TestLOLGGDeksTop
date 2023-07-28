@@ -19,11 +19,10 @@ namespace testlol.Scripts
     class RiotClientManager
     {
         private HttpClient httpClient;
-        private bool isConnected = false;
         public delegate void LeagueClosedHandler();
         public event LeagueClosedHandler LeagueClosed; // 클라이언트 닫을 때 
-        private bool isLeagueClosed = false;
-
+        private bool isLeagueClosedInvoked = false;
+        private object _lock = new object();
 
         // Riot LCU API를 통해 사용자 정보를 가져오는 메서드
         public async Task<UserDTO> GetUserInfo()
@@ -43,6 +42,7 @@ namespace testlol.Scripts
         public bool Connect()
         {
             ConnectInit();
+            
             try
             {
                 ConnectInit();
@@ -52,12 +52,9 @@ namespace testlol.Scripts
                 httpClient.BaseAddress = new Uri(ClientData.ApiUrl);
 
                 ClientData.clientProcess.EnableRaisingEvents = true;
-                if (!isLeagueClosed)
-                {
-                    ClientData.clientProcess.Exited += ClientProcess_Exited;
-                    isLeagueClosed=true;
-                }
-                
+                ClientData.clientProcess.Exited += ClientProcess_Exited;
+
+                isLeagueClosedInvoked = false;
 
                 return true;
             }
@@ -71,7 +68,15 @@ namespace testlol.Scripts
 
         private void  ClientProcess_Exited(object? sender, EventArgs e)
         {
-            LeagueClosed();
+            lock(_lock)
+            {
+                if(!isLeagueClosedInvoked) 
+                {
+                    LeagueClosed?.Invoke();
+                    MessageBox.Show("연결 해제");
+                    isLeagueClosedInvoked = true;
+                }
+            }
         }
 
         // Client 핸들 초기화
@@ -80,7 +85,6 @@ namespace testlol.Scripts
             
 
             this.httpClient = null;
-
             var handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
             handler.ServerCertificateCustomValidationCallback =
@@ -108,11 +112,9 @@ namespace testlol.Scripts
                     ClientData.Port = ushort.Parse(items[2]);
                     ClientData.ApiUrl = "https://127.0.0.1:" + ClientData.Port.ToString() + "/";
                 }
-                isConnected = true;
             }
             catch
             {
-                isConnected = false;
                 Console.WriteLine("connection failed");
             }
         }
