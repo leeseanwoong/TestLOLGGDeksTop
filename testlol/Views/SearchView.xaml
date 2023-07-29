@@ -127,7 +127,7 @@
                                     <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item5}" />
                                     <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item6}" />
                                     <Button  Command="{Binding Path=DataContext.(vm:SearchViewModel.ButtonPerksPopup), RelativeSource={RelativeSource Mode=FindAncestor, 
-                                AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" >
+                                AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" Visibility="{Binding BtnVisible}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" >
                                         <materialDesign:PackIcon Kind="Search" />
                                     </Button>
 

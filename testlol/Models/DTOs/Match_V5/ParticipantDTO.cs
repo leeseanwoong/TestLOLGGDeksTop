@@ -22,6 +22,12 @@ namespace testlol.Models.DTOs.Match_V5
         public bool win { get; set; } //승리 유무
         public int Summoner1Id { get; set; } //스펠1
         public int Summoner2Id { get; set; } //스펠2
+        public int playerAugment1 { get; set; } //아레나 스펠1
+        public int playerAugment2 { get; set; } //아레나 스펠2
+        public int playerAugment3 { get; set; } //아레나 스펠3
+        public int playerAugment4 { get; set; } //아레나 스펠4
+        public int playerSubteamId { get; set; } //아레나 팀 id
+        public int placement { get; set; } // 아레나 등 수
         public string summonerId { get; set; } //소환사 ID값
         public string championName { get; set; } //챔피언 이름
         public PerksDTO perks { get; set; } //룬

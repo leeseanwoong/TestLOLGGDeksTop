@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using MaterialDesignThemes.Wpf;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -144,16 +145,27 @@ namespace testlol.ViewModels
 
                     foreach (var item in matchlist)
                     {
-                        List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
-                        List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
                         MatchDTO matchData = match_V5.GetMatchData(item);
                         matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                        match_V5.GetPerksImg(rune, matchData);
-                        match_V5.GetStatsImg(rune, matchData);
-                        match_V5.GetTeam(matchData, redTeam, blueTeam);
                         ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
+                        List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
+                        List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
+                        match_V5.GetTeam(matchData, redTeam, blueTeam);
+                        if (matchData.info.queueId == 1700)
+                        {
+                            Dictionary<int, List<ParticipantDTO>> arena = new Dictionary<int, List<ParticipantDTO>>();
+                            match_V5.GetArenaTeams(matchData, arena);
+                            innermembers.Add(RecordListItemViewModel.From(match_V5, userData, matchData, arena, redTeam, blueTeam));
+                        }
+                        else
+                        {
+                            match_V5.GetPerksImg(rune, matchData);
+                            match_V5.GetStatsImg(rune, matchData);
+                            innermembers.Add(RecordListItemViewModel.From(match_V5, userData, matchData, redTeam, blueTeam));
+                        }
 
-                        innermembers.Add(RecordListItemViewModel.From(match_V5 ,userData, matchData, redTeam, blueTeam));
+
+
                     }
                 }
                 return members; 

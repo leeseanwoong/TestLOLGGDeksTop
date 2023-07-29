@@ -151,15 +151,25 @@ namespace testlol.ViewModels
                 List<RuneDTO> rune = match_V5.GetRune();
                 foreach (var item in matchlist)
                 {
-                    List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
-                    List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
                     MatchDTO matchData = match_V5.GetMatchData(item);
                     matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                    match_V5.GetPerksImg(rune, matchData);
-                    match_V5.GetStatsImg(rune, matchData);
-                    match_V5.GetTeam(matchData, redTeam, blueTeam);
                     ParticipantDTO userData = match_V5.GetUserData(matchData, Summoner.Name);
-                    Items.Add(RecordListItemViewModel.From(match_V5, userData, matchData, redTeam, blueTeam));
+
+                    List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
+                    List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
+                    match_V5.GetTeam(matchData, redTeam, blueTeam);
+                    if (matchData.info.queueId == 1700)
+                    {
+                        Dictionary<int,List<ParticipantDTO>> arena = new Dictionary<int,List<ParticipantDTO>>();
+                        match_V5.GetArenaTeams(matchData, arena);
+                        Items.Add(RecordListItemViewModel.From(match_V5, userData, matchData, arena, redTeam, blueTeam));
+                    }
+                    else
+                    {
+                        match_V5.GetPerksImg(rune, matchData);
+                        match_V5.GetStatsImg(rune, matchData);
+                        Items.Add(RecordListItemViewModel.From(match_V5, userData, matchData, redTeam, blueTeam));
+                    }
                 }
 
             }
@@ -204,14 +214,25 @@ namespace testlol.ViewModels
             int idx = Items.IndexOf(parameter as RecordListItemViewModel);
             if (idx > -1 && idx < Items.Count)
             {
-                match_V5.GetTier(Items[idx].RedTeam);
-                match_V5.GetTier(Items[idx].BlueTeam);
+                if (Items[idx].QueueType == "아레나")
+                {
+                    var viewModel = new ArenaDetailViewModel(Items[idx].ArenaTeams, Items[idx].gametime);
+                    ArenaDetailView arenaDetailView = new ArenaDetailView();
+                    arenaDetailView.DataContext = viewModel;
 
-                var viewModel = new DetailRecordViewModel(Items[idx].RedTeam, Items[idx].BlueTeam, Items[idx].gametime, Items[idx].teams);
-                DetailRecordView detailRecordView = new DetailRecordView();
-                detailRecordView.DataContext = viewModel;
+                    arenaDetailView.Show();
+                }
+                else
+                {
+                    match_V5.GetTier(Items[idx].RedTeam);
+                    match_V5.GetTier(Items[idx].BlueTeam);
 
-                detailRecordView.Show();
+                    var viewModel = new DetailRecordViewModel(Items[idx].RedTeam, Items[idx].BlueTeam, Items[idx].gametime, Items[idx].teams);
+                    DetailRecordView detailRecordView = new DetailRecordView();
+                    detailRecordView.DataContext = viewModel;
+
+                    detailRecordView.Show();
+                }
             }
 
         }

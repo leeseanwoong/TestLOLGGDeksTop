@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using testlol.API;
+using testlol.Models.DTOs;
 using testlol.Models.DTOs.Match_V5;
 
 namespace testlol.ViewModels
@@ -21,6 +22,7 @@ namespace testlol.ViewModels
         public string Item6 { get; set; }
         public string Win { get; set; }
         public string KDA { get; set; }
+        public int Ranking { get; set; } // 아레나 등 수
         public string Summoner1Casts { get; set; }
         public string Summoner2Casts { get; set; }
         public string ChampionName { get; set; }
@@ -38,6 +40,36 @@ namespace testlol.ViewModels
         public string visionSocreAndDetectedWards { get; set; }
         public string wardPslacedandkilled { get; set; }
         public string kdaScore { get; set; }
+
+        public static DetailListItemViewModel From(Match_V5 match_V5 ,long gameduration, int maxDamge, int maxDamgeTaken, ParticipantDTO participant)
+        {
+            return new DetailListItemViewModel()
+            {
+                Item0 = match_V5.ReturnItemPhoto(participant.item0),
+                Item1 = match_V5.ReturnItemPhoto(participant.item1),
+                Item2 = match_V5.ReturnItemPhoto(participant.item2),
+                Item3 = match_V5.ReturnItemPhoto(participant.item3),
+                Item4 = match_V5.ReturnItemPhoto(participant.item4),
+                Item5 = match_V5.ReturnItemPhoto(participant.item5),
+                Item6 = match_V5.ReturnItemPhoto(participant.item6),
+                SummonerName = participant.summonerName,
+                ChampionName = participant.championPhoto,
+                TotalGold = string.Format("{0:#,###0G}", participant.goldEarned),
+                KDA = participant.KDA,
+                kdaScore = participant.kills + " / " + participant.deaths + " / " + participant.assists + "(" + String.Format("{0:P0}", participant.killRate) + ")",
+                ChampionLevel = participant.champLevel,
+                TotalDamgeTaken = string.Format("{0:#,###0}", participant.totalDamageTaken),
+                TotalDamge = string.Format("{0:#,###0}", participant.totalDamageDealtToChampions),
+                MaxDamge = maxDamge,
+                MaxDamgeTaken = maxDamgeTaken,
+                Summoner1Casts = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment1 + ".png",
+                Summoner2Casts = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment3 + ".png",
+                PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment2 + ".png",
+                SubPerks = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment4 + ".png",
+                Ranking = participant.placement,
+
+            };
+        }
 
         public static DetailListItemViewModel From(string compare, Match_V5 match_V5, List<ParticipantDTO> Red, List<ParticipantDTO> Blue, int i, long gameduration, int maxDamge, int maxDamgeTaken)
         {

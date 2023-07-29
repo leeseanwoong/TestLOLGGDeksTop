@@ -52,6 +52,8 @@ namespace testlol.API
                 return "자유랭크";
             else if (QueueId == 450)
                 return "칼바람";
+            else if (QueueId == 1700)
+                return "아레나";
             else
                 return "";
         }
