@@ -42,45 +42,59 @@ namespace testlol.ViewModels
         private ObservableCollection<DetailListItemViewModel> innermembers
         { get; } = new ObservableCollection<DetailListItemViewModel>();
 
-        private ReadOnlyObservableCollection<DetailListItemViewModel> members;
-        public ReadOnlyObservableCollection<DetailListItemViewModel> Members
+        private CollectionViewSource groupedMembers;
+        public CollectionViewSource GroupedMembers
         {
             get
             {
-
-                if (members == null && ArenaTeam != null)
+                if (groupedMembers == null && innermembers !=null)
                 {
-                    members = new ReadOnlyObservableCollection<DetailListItemViewModel>(innermembers);
+                    groupedMembers = new CollectionViewSource
+                    {
+                        Source = innermembers
+                    };
+                    groupedMembers.View.GroupDescriptions.Add(new PropertyGroupDescription("Ranking"));
                 }
-                return members;
+                return groupedMembers;
             }
         }
+
         private void LoadMembers()
         {
             if (ArenaTeam == null)
                 return;
 
             Match_V5 match_V5 = new Match_V5();
-            int maxDamge = match_V5.GetArenaMaxDamge(ArenaTeam);
-            int maxDamgeTaken = match_V5.GetArenaMaxDamgeTaken(ArenaTeam);
+            // MaxDamge와 MaxDamgeTaken 값을 미리 계산하여 전달하도록 수정
+            int maxDamge = 0;
+            int maxDamgeTaken = 0;
+            foreach (var participants in ArenaTeam.Values)
+            {
+                foreach (var value in participants)
+                {
+                    if (maxDamge <= value.totalDamageDealtToChampions)
+                        maxDamge = value.totalDamageDealtToChampions;
 
-            // 데이터를 정렬해서 추가하기 위해 임시 리스트를 생성하고 팀 ID 기준으로 정렬
+                    if (maxDamgeTaken <= value.totalDamageTaken)
+                        maxDamgeTaken = value.totalDamageTaken;
+                }
+            }
+
             List<DetailListItemViewModel> sortedList = new List<DetailListItemViewModel>();
             foreach (var teamId in ArenaTeam.Keys)
             {
                 foreach (var participant in ArenaTeam[teamId])
                 {
-                    participant.placement = teamId;
                     sortedList.Add(DetailListItemViewModel.From(match_V5, GameDuration, maxDamge, maxDamgeTaken, participant));
                 }
             }
 
-            // 정렬된 데이터를 innermembers에 추가
-            foreach (var item in sortedList.OrderBy(x => x.Ranking))
+            foreach (var item in sortedList.OrderBy(x => x.Ranking).Where(x => x != null))
             {
                 innermembers.Add(item);
             }
-
         }
+
+
     }
 }

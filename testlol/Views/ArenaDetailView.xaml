@@ -6,14 +6,26 @@
         xmlns:local="clr-namespace:testlol.Views"
         xmlns:vm ="clr-namespace:testlol.ViewModels"
         mc:Ignorable="d"
-        Title="ArenaDetailView" Height="650" Width="900">
+        Title="ArenaDetailView" Height="650" Width="950">
     <Window.DataContext>
         <vm:ArenaDetailViewModel/>
     </Window.DataContext>
     <Grid>
-        <DataGrid ItemsSource="{Binding Members}" AutoGenerateColumns="False">
+        <DataGrid IsReadOnly="True" ItemsSource="{Binding GroupedMembers.View}" AutoGenerateColumns="False">
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="5" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                <TextBlock Text="등" FontWeight="Bold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Ranking" Binding="{Binding Ranking}"/>
+                <DataGridTextColumn Header="Ranking"/>
                 <DataGridTemplateColumn Header="Champion / Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
