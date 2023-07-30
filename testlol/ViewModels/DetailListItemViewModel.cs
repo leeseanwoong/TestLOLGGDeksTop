@@ -67,6 +67,7 @@ namespace testlol.ViewModels
                 PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment2 + ".png",
                 SubPerks = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment4 + ".png",
                 Ranking = participant.placement,
+                Win =match_V5.GetWinLose(participant.win)
 
             };
         }

@@ -11,7 +11,8 @@
         <vm:ArenaDetailViewModel/>
     </Window.DataContext>
     <Grid>
-        <DataGrid IsReadOnly="True" ItemsSource="{Binding GroupedMembers.View}" AutoGenerateColumns="False">
+        <DataGrid IsReadOnly="True" ItemsSource="{Binding GroupedMembers.View}" AutoGenerateColumns="False"
+                  RowStyle="{StaticResource DGWinRowStyle}">
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
