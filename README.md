@@ -29,4 +29,5 @@ WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브
   - 최근 전적 및 해당 전적들의 자세한 정보를 제공합니다.
 
 ## 결과 화면
-![메인화면] (https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/29359be3-4c18-4b70-bddf-d51a892f614c)
+메인화면
+<img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/29359be3-4c18-4b70-bddf-d51a892f614c"/>
