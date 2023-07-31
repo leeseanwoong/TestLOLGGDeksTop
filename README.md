@@ -3,6 +3,13 @@
 WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브레전드 전적 검색 프로그램입니다.
 이 프로젝트는 C# WPF를 사용하여 개발되었으며, Riot API와 LCU API를 이용하여 리그오브레전드의 사용자 정보와 전적 데이터를 받아와 출력합니다.
 
+## 사용한 기술
+
+- C#
+- Windows Presentation Foundation (WPF)
+- Riot API
+- LCU API
+
 ## 주요 기능
 
 - **자동 로그인 연동**
@@ -21,9 +28,5 @@ WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브
   - 다른 유저의 소환사 이름을 입력하여 Riot API를 통해 조회하여 출력합니다.
   - 최근 전적 및 해당 전적들의 자세한 정보를 제공합니다.
 
-## 사용한 기술
-
-- C#
-- Windows Presentation Foundation (WPF)
-- Riot API
-- LCU API
+## 결과 화면
+![메인화면] (https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/29359be3-4c18-4b70-bddf-d51a892f614c)
