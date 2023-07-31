@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:testlol.Views"
         xmlns:vm ="clr-namespace:testlol.ViewModels"
         mc:Ignorable="d"
+        
         Title="SearchUserQueueView" Height="400" Width="1500">
+
     <Window.DataContext>
         <vm:SearchUserQueueViewModel/>
     </Window.DataContext>
@@ -74,11 +76,11 @@
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Height="30" Width="30" Source="{Binding Path=BlueBan[0].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="1" Height="30" Width="30" Source="{Binding Path=BlueBan[1].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="2" Height="30" Width="30" Source="{Binding Path=BlueBan[2].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="3" Height="30" Width="30" Source="{Binding Path=BlueBan[3].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="4" Height="30" Width="30" Source="{Binding Path=BlueBan[4].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="0" Height="30" Width="30" Source="{Binding Path=BlueBan[0].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="1" Height="30" Width="30" Source="{Binding Path=BlueBan[1].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="2" Height="30" Width="30" Source="{Binding Path=BlueBan[2].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="3" Height="30" Width="30" Source="{Binding Path=BlueBan[3].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="4" Height="30" Width="30" Source="{Binding Path=BlueBan[4].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
             </Grid>
             <TextBlock Text="VS" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Grid Grid.Column ="3">
@@ -89,11 +91,11 @@
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Height="30" Width="30" Source="{Binding Path=RedBan[0].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="1" Height="30" Width="30" Source="{Binding Path=RedBan[1].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="2" Height="30" Width="30" Source="{Binding Path=RedBan[2].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="3" Height="30" Width="30" Source="{Binding Path=RedBan[3].championName,TargetNullValue={x:Null}}"/>
-                <Image Grid.Row="4" Height="30" Width="30" Source="{Binding Path=RedBan[4].championName,TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="0" Height="30" Width="30" Source="{Binding Path=RedBan[0].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="1" Height="30" Width="30" Source="{Binding Path=RedBan[1].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="2" Height="30" Width="30" Source="{Binding Path=RedBan[2].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="4" Height="30" Width="30" Source="{Binding Path=RedBan[4].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
+                <Image Grid.Row="3" Height="30" Width="30" Source="{Binding Path=RedBan[3].championName,Converter={StaticResource NullToImageConverter}, TargetNullValue={x:Null}}"/>
             </Grid>
             <DataGrid Grid.Column="4" Background="LightPink" ItemsSource="{Binding RedTeam}" IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns>

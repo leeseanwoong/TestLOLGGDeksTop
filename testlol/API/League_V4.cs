@@ -28,24 +28,12 @@ namespace testlol.API
             var result = apiManager.ReturnPosition(response);
 
             return result;
-
-            //여기서 부터 매니저에서 받아서 처리
-            /*string content = response.Content.ReadAsStringAsync().Result;
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return JsonConvert.DeserializeObject<List<PositionDTO>>(content);
-            }
-            else
-            {
-                return null;
-            }*/
         }
         public PositionDTO GetPosition(SummonerDTO summoner)
         {
             League_V4 league = new League_V4();
 
-            var position = league.GetPositions(summoner.Id).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
+            var position = league.GetPositions(summoner.Id).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault(); 
 
             return position ?? new PositionDTO();
         }

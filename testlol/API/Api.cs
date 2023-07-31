@@ -55,7 +55,7 @@ namespace testlol.API
             else if (QueueId == 1700)
                 return "아레나";
             else
-                return "";
+                return "사용자 설정 게임";
         }
 
         public string GetSpellName(int spell)

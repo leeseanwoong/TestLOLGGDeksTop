@@ -24,35 +24,63 @@ namespace testlol.ViewModels
             GameMode = match.GetQueueType((int)GameInfo.gameQueueConfigId);
             List<BanChampionDTO> blue = new List<BanChampionDTO>();
             List<BanChampionDTO> red = new List<BanChampionDTO>();
-            foreach (var item in gameInfo.bannedChampions)
+
+            if (gameInfo.bannedChampions.Count == 0)
             {
-                if (item.teamId == 100)
-                    blue.Add(item);
-                else
-                    red.Add(item);
+                for (int i = 0; i < 5; i++)
+                {
+                    blue.Add(new BanChampionDTO());
+                    red.Add(new BanChampionDTO());
+                }
+            }
+            else
+            {
+                foreach (var item in gameInfo.bannedChampions)
+                {
+                    if (item == null)
+                    {
+                        blue.Add(new BanChampionDTO());
+                        red.Add(new BanChampionDTO());
+                    }
+                    else
+                    {
+                        if (item.teamId == 100)
+                            blue.Add(item);
+                        else
+                            red.Add(item);
+                    }
+                }
             }
             Spectator_V4 spectator_V4 = new Spectator_V4();
             ChampionsDTO champions = spectator_V4.GetChampions();
+
             for (int i = 0; i < red.Count; i++)
             {
-                foreach (var item in champions.data) 
+                if (red[i] != null)
                 {
-                    if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                    foreach (var item in champions.data)
                     {
-                        red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+
+                        if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                        {
+                            red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+                        }
                     }
 
                 }
             }
             for (int i = 0; i < blue.Count; i++)
             {
-                foreach (var item in champions.data) 
+                if (blue[i] != null)
                 {
-                    if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                    foreach (var item in champions.data)
                     {
-                        blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
-                    }
 
+                        if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                        {
+                            blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+                        }
+                    }
                 }
             }
             BlueBan = blue;
@@ -94,7 +122,7 @@ namespace testlol.ViewModels
             get
             {
 
-                if (redTeam == null && GameInfo != null )
+                if (redTeam == null && GameInfo != null)
                 {
                     redTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerRed);
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();
@@ -116,7 +144,10 @@ namespace testlol.ViewModels
                     {
                         var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
                         if (position == null)
+                        {
+                            position = new Models.DTOs.League_V4.PositionDTO();
                             position.Tier = "UnRanked";
+                        }
 
                         foreach (var data in champions.data) // 챔피언 아이디 값으로 이름 찾기
                         {
@@ -127,7 +158,7 @@ namespace testlol.ViewModels
 
                         }
                         match_V5.GetPerks(item.perks, rune);
-                        innerRed.Add(QueueItemViewModel.From(compare,position,league,item));
+                        innerRed.Add(QueueItemViewModel.From(compare, position, league, item));
                     }
 
                 }
@@ -165,7 +196,10 @@ namespace testlol.ViewModels
                     {
                         var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
                         if (position == null)
+                        {
+                            position = new Models.DTOs.League_V4.PositionDTO();
                             position.Tier = "UnRanked";
+                        }
                         foreach (var data in champions.data)
                         {
                             if (long.Parse(champions.data[data.Key].key) == item.championid)
@@ -185,6 +219,6 @@ namespace testlol.ViewModels
             }
         }
 
-        
+
     }
 }
