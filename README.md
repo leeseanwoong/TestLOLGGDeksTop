@@ -46,6 +46,10 @@ WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브
 
 <img width="80%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/3a61a0c2-f45c-465b-a758-a01bb35f8710"/>
 
+아레나 모드 전적 자세한 정보확인 화면(ArenaDetailView)
+
+<img width="80%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/45257a08-4fc2-4424-ad98-539dcd1977ac"/>
+
 선택한 전적에서 사용한 룬 확인 화면(PerksPopUpView)
 
 <img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/82c28457-ae44-45f3-babf-d976893ef10f"/>
