@@ -42,6 +42,10 @@ WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브
 
 <img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/2c6bdb77-fec8-4cbb-8bca-353ff1c83d9d"/>
 
+사용자 인게임 정보 화면(QueueView)
+
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/f2ba07a2-5de8-4fdf-b883-f1e38189f22b"/>
+
 사용자 전적 자세한 정보확인 화면(DetailRecordView)
 
 <img width="100%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/3a61a0c2-f45c-465b-a758-a01bb35f8710"/>
@@ -56,6 +60,13 @@ WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브
 
 다른 사용자 검색 화면(SearchView)
 
-<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/25fe2236-52ad-486b-aa20-f926384aa5cc"/>
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/b75c27f6-6ed7-4a16-b426-34658b74fee2"/>
 
+검색한 사용자 인게임 정보 화면(SearchUserQueueView)
+
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/919f0472-1503-4c9a-b9a0-c5a80211ceca"/>
+
+리그오브레전드 패치노트 화면(PatchView)
+
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/6e184eb0-5dbf-4112-af6a-d17918744f4b"/>
 
