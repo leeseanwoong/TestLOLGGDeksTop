@@ -38,27 +38,84 @@ namespace testlol.ViewModels
                     else
                         red.Add(item);
                 }
+
+                if (GameInfo.bannedChampions.Count == 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        blue.Add(new BanChampionDTO()); // 빈 BanChampionDTO 추가
+                        red.Add(new BanChampionDTO());  // 빈 BanChampionDTO 추가
+                    }
+                }
+                else
+                {
+                    foreach (var item in gameInfo.bannedChampions)
+                    {
+                        if (item == null)
+                        {
+                            blue.Add(new BanChampionDTO());
+                            red.Add(new BanChampionDTO());
+                        }
+                        else
+                        {
+                            if (item.teamId == 100)
+                                blue.Add(item);
+                            else
+                                red.Add(item);
+                        }
+                    }
+                }
                 ChampionsDTO champions = spectator_V4.GetChampions();
+
                 for (int i = 0; i < red.Count; i++)
                 {
-                    foreach (var item in champions.data)
+                    if (red[i] != null)
                     {
-                        if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                        if (red[i].championId == 0)
                         {
-                            red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+                            red[i].championName = "https://z.fow.kr/champ/-1.png";
+                        }
+                        else
+                        {
+                            foreach (var item in champions.data)
+                            {
+
+                                if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                                {
+                                    red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + champions.data[item.Key].id + ".png";
+                                }
+                                else
+                                {
+                                    red[i].championName = "https://z.fow.kr/champ/-1.png";
+                                }
+                            }
                         }
 
                     }
                 }
                 for (int i = 0; i < blue.Count; i++)
                 {
-                    foreach (var item in champions.data)
+                    if (blue[i] != null)
                     {
-                        if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                        if (blue[i].championId == 0)
                         {
-                            blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+                            blue[i].championName = "https://z.fow.kr/champ/-1.png";
                         }
+                        else
+                        {
+                            foreach (var item in champions.data)
+                            {
 
+                                if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                                {
+                                    blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + champions.data[item.Key].id + ".png";
+                                }
+                                else
+                                {
+                                    blue[i].championName = "https://z.fow.kr/champ/-1.png";
+                                }
+                            }
+                        }
                     }
                 }
                 BlueBan = blue;

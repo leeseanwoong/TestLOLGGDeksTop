@@ -22,6 +22,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
@@ -61,6 +62,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </StackPanel>
+                
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Text>
@@ -83,7 +85,9 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </StackPanel>
+                
             </Grid>
+            <Button Content="인게임 정보" Command="{Binding ButtonInGamePopUp}" Grid.Column="3"/>
         </Grid>
         <DataGrid IsReadOnly="True" Grid.Row="1" CanUserResizeColumns="False" 
                   CanUserResizeRows="False" ItemsSource="{Binding Members}" 

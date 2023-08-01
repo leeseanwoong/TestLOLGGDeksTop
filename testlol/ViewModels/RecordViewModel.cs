@@ -11,6 +11,7 @@ using System.Windows.Input;
 using testlol.API;
 using testlol.Managers;
 using testlol.Models.DTOs.Match_V5;
+using testlol.Models.DTOs.Spectator_V4;
 using testlol.Types;
 using testlol.Utills;
 using testlol.Views;
@@ -214,6 +215,27 @@ namespace testlol.ViewModels
                 perksView.Show();
             }
 
+        }
+
+        public Prism.Commands.DelegateCommand buttonInGamePopUp;
+        public ICommand ButtonInGamePopUp => buttonInGamePopUp = buttonInGamePopUp ?? new Prism.Commands.DelegateCommand(ButtonInGamePopUpCommand);
+
+        private void ButtonInGamePopUpCommand()
+        {
+            Spectator_V4 spectator_V4 = new Spectator_V4();
+            CurrentGameInfoDTO GameInfo = spectator_V4.GetCurrentGameInfo(UserDataManager.Instance.Summoner.Id);
+            if (GameInfo == null)
+            {
+                MessageBox.Show(UserDataManager.Instance.Summoner.Name + " 님은 게임 중이 아닙니다.");
+            }
+             else
+            {
+                var viewModel = new QueueViewModel();
+                QueueView queueView = new QueueView();
+                queueView.DataContext = viewModel;
+
+                queueView.Show();
+            }
         }
         #endregion
 

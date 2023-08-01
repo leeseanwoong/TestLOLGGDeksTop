@@ -22,15 +22,17 @@ namespace testlol.ViewModels
             GameInfo = gameInfo;
             Match_V5 match = new Match_V5();
             GameMode = match.GetQueueType((int)GameInfo.gameQueueConfigId);
-            List<BanChampionDTO> blue = new List<BanChampionDTO>();
-            List<BanChampionDTO> red = new List<BanChampionDTO>();
+            List<BanChampionDTO?> blue = new List<BanChampionDTO?>();
+            List<BanChampionDTO?> red = new List<BanChampionDTO?>();
+
+
 
             if (gameInfo.bannedChampions.Count == 0)
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    blue.Add(new BanChampionDTO());
-                    red.Add(new BanChampionDTO());
+                    blue.Add(new BanChampionDTO()); // 빈 BanChampionDTO 추가
+                    red.Add(new BanChampionDTO());  // 빈 BanChampionDTO 추가
                 }
             }
             else
@@ -58,12 +60,23 @@ namespace testlol.ViewModels
             {
                 if (red[i] != null)
                 {
-                    foreach (var item in champions.data)
+                    if (red[i].championId == 0)
                     {
-
-                        if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                        red[i].championName = "https://z.fow.kr/champ/-1.png";
+                    }
+                    else
+                    {
+                        foreach (var item in champions.data)
                         {
-                            red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+
+                            if (long.Parse(champions.data[item.Key].key) == red[i].championId)
+                            {
+                                red[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + champions.data[item.Key].id + ".png";
+                            }
+                            else if (red[i].championId == null)
+                            {
+                                red[i].championName = "https://z.fow.kr/champ/-1.png";
+                            }
                         }
                     }
 
@@ -73,12 +86,23 @@ namespace testlol.ViewModels
             {
                 if (blue[i] != null)
                 {
-                    foreach (var item in champions.data)
+                    if (blue[i].championId == 0)
                     {
-
-                        if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                        blue[i].championName = "https://z.fow.kr/champ/-1.png";
+                    }
+                    else
+                    {
+                        foreach (var item in champions.data)
                         {
-                            blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.6.1/img/champion/" + champions.data[item.Key].id + ".png";
+
+                            if (long.Parse(champions.data[item.Key].key) == blue[i].championId)
+                            {
+                                blue[i].championName = "http://ddragon.leagueoflegends.com/cdn/13.14.1/img/champion/" + champions.data[item.Key].id + ".png";
+                            }
+                            else if (blue[i].championId ==null )
+                            {
+                                blue[i].championName = "https://z.fow.kr/champ/-1.png";
+                            }
                         }
                     }
                 }
@@ -86,6 +110,13 @@ namespace testlol.ViewModels
             BlueBan = blue;
             RedBan = red;
 
+        }
+
+        private bool banVisible;
+        public bool BanVisible
+        {
+            get => banVisible;
+            set => SetProperty(ref banVisible, value);
         }
 
         private CurrentGameInfoDTO gameInfo;

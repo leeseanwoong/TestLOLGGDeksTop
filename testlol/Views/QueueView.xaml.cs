@@ -18,7 +18,7 @@ namespace testlol.Views
     /// <summary>
     /// Interaction logic for QueueView.xaml
     /// </summary>
-    public partial class QueueView : UserControl
+    public partial class QueueView : Window
     {
         public QueueView()
         {

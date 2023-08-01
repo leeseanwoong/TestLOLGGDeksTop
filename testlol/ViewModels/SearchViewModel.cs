@@ -192,7 +192,7 @@ namespace testlol.ViewModels
                 CurrentGameInfoDTO GameInfo = spectator_V4.GetCurrentGameInfo(Summoner.Id);
                 if (GameInfo == null)
                 {
-                    MessageBox.Show(Summoner.Name + " 은 현재 게임중이 아닙니다.");
+                    MessageBox.Show(Summoner.Name + " 님은 현재 게임중이 아닙니다.");
                 }
                 else
                 {

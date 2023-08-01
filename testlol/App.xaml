@@ -13,6 +13,7 @@
                     <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml" />
                 </ResourceDictionary.MergedDictionaries>
             <local:NullToImageConverter x:Key="NullToImageConverter" />
+            <local:FalseToCollapsed x:Key="FalseToCollapsed" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

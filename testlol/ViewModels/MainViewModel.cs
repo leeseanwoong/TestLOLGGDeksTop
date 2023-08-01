@@ -145,15 +145,6 @@ namespace testlol.ViewModels
                     else
                         MainContentViewModel.MainContent = new RecordViewModel();
                     break;
-                case FunctionType.Queue:
-                    if (UserDataManager.Instance.Summoner == null)
-                    {
-                        MessageBox.Show("계정이 연결되있지 않습니다.");
-                        return;
-                    }
-                    else
-                        MainContentViewModel.MainContent = new QueueViewModel();
-                    break;
                 case FunctionType.Search:
                     MainContentViewModel.MainContent = new SearchViewModel();
                     break;

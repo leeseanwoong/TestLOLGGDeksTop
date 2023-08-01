@@ -32,30 +32,30 @@ WPF OP.GG는 WPF(Windows Presentation Foundation)를 공부하기 위해 개발된 리그오브
 
 메인화면
 
-<img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/29359be3-4c18-4b70-bddf-d51a892f614c"/>
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/14bcb46b-dbc9-4597-ac50-2ae88da9e8e0"/>
 
 사용자 정보확인 화면(HomeView)
 
-<img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/8b48c7e3-4aaf-4686-b7c1-dd61cd268db3"/>
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/4a4be9b7-8f0f-4223-a343-db303ad68ec5"/>
 
 사용자 전적확인 화면(RecordView)
 
-<img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/10c476d1-6782-462f-b99c-0a3474e7c298"/>
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/2c6bdb77-fec8-4cbb-8bca-353ff1c83d9d"/>
 
 사용자 전적 자세한 정보확인 화면(DetailRecordView)
 
-<img width="80%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/3a61a0c2-f45c-465b-a758-a01bb35f8710"/>
+<img width="100%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/3a61a0c2-f45c-465b-a758-a01bb35f8710"/>
 
 아레나 모드 전적 자세한 정보확인 화면(ArenaDetailView)
 
-<img width="80%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/45257a08-4fc2-4424-ad98-539dcd1977ac"/>
+<img width="100%"  src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/45257a08-4fc2-4424-ad98-539dcd1977ac"/>
 
 선택한 전적에서 사용한 룬 확인 화면(PerksPopUpView)
 
-<img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/82c28457-ae44-45f3-babf-d976893ef10f"/>
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/82c28457-ae44-45f3-babf-d976893ef10f"/>
 
 다른 사용자 검색 화면(SearchView)
 
-<img width="80%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/25fe2236-52ad-486b-aa20-f926384aa5cc"/>
+<img width="100%" src="https://github.com/leeseanwoong/TestLOLGGDeksTop/assets/78595475/25fe2236-52ad-486b-aa20-f926384aa5cc"/>
 
 

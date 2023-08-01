@@ -10,7 +10,6 @@ namespace testlol.Types
     {
             Home,
             Record,
-            Queue,
             Search,
             Patch,
     }

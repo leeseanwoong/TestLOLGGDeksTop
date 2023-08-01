@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace testlol
 {
@@ -19,10 +20,6 @@ namespace testlol
                 {
                     return visible ? Visibility.Visible : Visibility.Collapsed;
                 }
-            }
-            else
-            {
-                return Visibility.Hidden;
             }
 
             return null;
@@ -39,7 +36,7 @@ namespace testlol
         {
             if (value == null)
             {
-                return null;
+                return "https://z.fow.kr/champ/-1.png";
             }
             else
             {
