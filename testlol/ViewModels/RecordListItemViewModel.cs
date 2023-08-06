@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using testlol.API;
+using testlol.Managers;
 using testlol.Models.DTOs;
 using testlol.Models.DTOs.Match_V5;
+using testlol.Models.DTOs.Sumonner_V4;
 
 namespace testlol.ViewModels
 {
@@ -45,8 +47,25 @@ namespace testlol.ViewModels
         public Dictionary<int,List<ParticipantDTO>> ArenaTeams { get; set; }
         public Visibility BtnVisible { get; set; }
 
-        public static RecordListItemViewModel From(Match_V5 match_V5, ParticipantDTO userData, MatchDTO matchData,Dictionary<int,List<ParticipantDTO>> arena, List<ParticipantDTO> redTeam, List<ParticipantDTO> blueTeam)
+        public static RecordListItemViewModel From(string matchID)
         {
+            Match_V5 match_V5 = new Match_V5();
+
+            MatchDTO matchData = match_V5.GetMatchData(matchID);
+            matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
+            ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
+
+            List<RuneDTO> rune = match_V5.GetRune();
+
+            List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
+            List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
+            match_V5.GetTeam(matchData, redTeam, blueTeam);
+
+            if (matchData.info.queueId == 1700)
+            {
+                Dictionary<int, List<ParticipantDTO>> arena = new Dictionary<int, List<ParticipantDTO>>();
+                match_V5.GetArenaTeams(matchData, arena);
+
                 return new RecordListItemViewModel()
                 {
                     Assists = userData.assists,
@@ -57,7 +76,7 @@ namespace testlol.ViewModels
                     QueueType = match_V5.GetQueueType(matchData.info.queueId),
                     GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
                     ChampionPhoto = userData.championPhoto,
-                    Summoner1Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment1 + ".png", 
+                    Summoner1Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment1 + ".png",
                     Summoner2Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment3 + ".png",
                     PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment2 + ".png",
                     SubPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment4 + ".png",
@@ -78,9 +97,12 @@ namespace testlol.ViewModels
                     RedTeam = redTeam,
                     BtnVisible = Visibility.Hidden,
                 };
-        }
-        public static RecordListItemViewModel From(Match_V5 match_V5, ParticipantDTO userData, MatchDTO matchData, List<ParticipantDTO> redTeam, List<ParticipantDTO> blueTeam)
-        {
+            }
+            else
+            {
+                match_V5.GetPerksImg(rune, matchData);
+                match_V5.GetStatsImg(rune, matchData);
+
                 return new RecordListItemViewModel()
                 {
                     Assists = userData.assists,
@@ -116,5 +138,100 @@ namespace testlol.ViewModels
                     BtnVisible = Visibility.Visible,
                 };
             }
+        }
+
+        public static RecordListItemViewModel From(string matchID,SummonerDTO summoner)
+        {
+            Match_V5 match_V5 = new Match_V5();
+
+            MatchDTO matchData = match_V5.GetMatchData(matchID);
+            matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
+            ParticipantDTO userData = match_V5.GetUserData(matchData, summoner.Name);
+
+            List<RuneDTO> rune = match_V5.GetRune();
+
+            List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
+            List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
+            match_V5.GetTeam(matchData, redTeam, blueTeam);
+
+            if (matchData.info.queueId == 1700)
+            {
+                Dictionary<int, List<ParticipantDTO>> arena = new Dictionary<int, List<ParticipantDTO>>();
+                match_V5.GetArenaTeams(matchData, arena);
+
+                return new RecordListItemViewModel()
+                {
+                    Assists = userData.assists,
+                    Kills = userData.kills,
+                    Deaths = userData.deaths,
+                    KDA = userData.KDA,
+                    Win = match_V5.GetWinLose(userData.win),
+                    QueueType = match_V5.GetQueueType(matchData.info.queueId),
+                    GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
+                    ChampionPhoto = userData.championPhoto,
+                    Summoner1Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment1 + ".png",
+                    Summoner2Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment3 + ".png",
+                    PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment2 + ".png",
+                    SubPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment4 + ".png",
+                    Item0 = match_V5.ReturnItemPhoto(userData.item0),
+                    Item1 = match_V5.ReturnItemPhoto(userData.item1),
+                    Item3 = match_V5.ReturnItemPhoto(userData.item2),
+                    Item2 = match_V5.ReturnItemPhoto(userData.item3),
+                    Item4 = match_V5.ReturnItemPhoto(userData.item4),
+                    Item5 = match_V5.ReturnItemPhoto(userData.item5),
+                    Item6 = match_V5.ReturnItemPhoto(userData.item6),
+                    ChampionLevel = userData.champLevel,
+                    TotalGold = string.Format("{0:#,###0}", userData.goldEarned),
+                    KillRate = string.Format("{0:P0}", userData.killRate),
+                    gametime = matchData.info.gameDuration,
+                    ArenaTeams = arena,
+                    Perks = userData.perks,
+                    BlueTeam = blueTeam,
+                    RedTeam = redTeam,
+                    BtnVisible = Visibility.Hidden,
+                };
+            }
+            else
+            {
+                match_V5.GetPerksImg(rune, matchData);
+                match_V5.GetStatsImg(rune, matchData);
+
+                return new RecordListItemViewModel()
+                {
+                    Assists = userData.assists,
+                    Kills = userData.kills,
+                    Deaths = userData.deaths,
+                    KDA = userData.KDA,
+                    Win = match_V5.GetWinLose(userData.win),
+                    QueueType = match_V5.GetQueueType(matchData.info.queueId),
+                    GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
+                    ChampionPhoto = userData.championPhoto,
+                    Summoner1Casts = match_V5.GetSpellName(userData.Summoner1Id),
+                    Summoner2Casts = match_V5.GetSpellName(userData.Summoner2Id),
+                    PrimaryPerks = userData.perks.styles[0].selections[0].perkImage,
+                    SubPerks = userData.perks.styles[1].styleIcon,
+                    Item0 = match_V5.ReturnItemPhoto(userData.item0),
+                    Item1 = match_V5.ReturnItemPhoto(userData.item1),
+                    Item3 = match_V5.ReturnItemPhoto(userData.item2),
+                    Item2 = match_V5.ReturnItemPhoto(userData.item3),
+                    Item4 = match_V5.ReturnItemPhoto(userData.item4),
+                    Item5 = match_V5.ReturnItemPhoto(userData.item5),
+                    Item6 = match_V5.ReturnItemPhoto(userData.item6),
+                    BlueTeam = blueTeam,
+                    RedTeam = redTeam,
+                    ChampionLevel = userData.champLevel,
+                    TotalCS = userData.totalCs,
+                    AvgCS = string.Format("{0:0.0}", userData.totalCs / ((double)matchData.info.gameDuration / 60)),
+                    TotalDetecedWard = userData.detectorWardsPlaced,
+                    TotalGold = string.Format("{0:#,###0}", userData.goldEarned),
+                    KillRate = string.Format("{0:P0}", userData.killRate),
+                    gametime = matchData.info.gameDuration,
+                    teams = matchData.info.teams,
+                    Perks = userData.perks,
+                    BtnVisible = Visibility.Visible,
+                };
+            }
+        }
+        
     }
 }

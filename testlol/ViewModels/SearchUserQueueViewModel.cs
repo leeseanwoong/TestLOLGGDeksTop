@@ -189,7 +189,7 @@ namespace testlol.ViewModels
 
                         }
                         match_V5.GetPerks(item.perks, rune);
-                        innerRed.Add(QueueItemViewModel.From(compare, position, league, item));
+                        innerRed.Add(QueueItemViewModel.From(compare, item));
                     }
 
                 }
@@ -242,7 +242,7 @@ namespace testlol.ViewModels
 
                         match_V5.GetPerks(item.perks, rune);
 
-                        innerBlue.Add(QueueItemViewModel.From(compare, position, league, item));
+                        innerBlue.Add(QueueItemViewModel.From(compare, item));
                     }
 
                 }

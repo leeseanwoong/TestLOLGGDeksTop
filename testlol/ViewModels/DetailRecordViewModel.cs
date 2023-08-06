@@ -204,12 +204,12 @@ namespace testlol.ViewModels
                 {
                     string compare = "red";
                     redTeam = new ReadOnlyObservableCollection<DetailListItemViewModel>(innerRed);
-                    Match_V5 match_V5 = new Match_V5();
                     int maxDamge = GetMaxDamge(Red, Blue);
                     int maxDamgeTaken = GetMaxDamgeTaken(Red, Blue);
-                    for (int i = 0; i < 5; i++)
+
+                    foreach (var item in Red)
                     {
-                        innerRed.Add(DetailListItemViewModel.From(compare ,match_V5, Red, Blue, i, GameDuration, maxDamge, maxDamgeTaken));
+                        innerRed.Add(DetailListItemViewModel.From(compare, item, GameDuration, maxDamge, maxDamgeTaken));
                     }
                     
                 }
@@ -230,12 +230,11 @@ namespace testlol.ViewModels
                 {
                     string compare = "blue";
                     blueTeam = new ReadOnlyObservableCollection<DetailListItemViewModel>(innerBlue);
-                    Match_V5 match_V5 = new Match_V5();
                     int maxDamge = GetMaxDamge(Red, Blue);
                     int maxDamgeTaken = GetMaxDamgeTaken(Red, Blue);
-                    for (int i = 0; i < 5; i++)
+                    foreach(var  item in Blue)
                     {
-                        innerBlue.Add(DetailListItemViewModel.From(compare, match_V5, Red, Blue, i, GameDuration, maxDamge, maxDamgeTaken));
+                        innerBlue.Add(DetailListItemViewModel.From(compare, item, GameDuration, maxDamge, maxDamgeTaken));
                     }
 
                 }

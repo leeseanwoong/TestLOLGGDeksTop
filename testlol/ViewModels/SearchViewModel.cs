@@ -148,28 +148,10 @@ namespace testlol.ViewModels
 
 
                 var matchlist = match_V5.GetMatchList(Summoner.puuid);
-                List<RuneDTO> rune = match_V5.GetRune();
+
                 foreach (var item in matchlist)
                 {
-                    MatchDTO matchData = match_V5.GetMatchData(item);
-                    matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                    ParticipantDTO userData = match_V5.GetUserData(matchData, Summoner.Name);
-
-                    List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
-                    List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
-                    match_V5.GetTeam(matchData, redTeam, blueTeam);
-                    if (matchData.info.queueId == 1700)
-                    {
-                        Dictionary<int,List<ParticipantDTO>> arena = new Dictionary<int,List<ParticipantDTO>>();
-                        match_V5.GetArenaTeams(matchData, arena);
-                        Items.Add(RecordListItemViewModel.From(match_V5, userData, matchData, arena, redTeam, blueTeam));
-                    }
-                    else
-                    {
-                        match_V5.GetPerksImg(rune, matchData);
-                        match_V5.GetStatsImg(rune, matchData);
-                        Items.Add(RecordListItemViewModel.From(match_V5, userData, matchData, redTeam, blueTeam));
-                    }
+                    Items.Add(RecordListItemViewModel.From(item, Summoner));
                 }
 
             }

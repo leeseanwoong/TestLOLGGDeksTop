@@ -165,15 +165,14 @@ namespace testlol.ViewModels
                 if (redTeam == null && GameInfo != null)
                 {
                     redTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerRed);
+
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();
-                    List<CurrentGameParticipantDTO> red = new List<CurrentGameParticipantDTO>();
-                    League_V4 league = new League_V4();
-                    Match_V5 match_V5 = new Match_V5();
-                    Spectator_V4 spectator_V4 = new Spectator_V4();
-                    ChampionsDTO champions = spectator_V4.GetChampions();
                     participants = GameInfo.participants;
-                    List<RuneDTO> rune = match_V5.GetRune();
+
+                    List<CurrentGameParticipantDTO> red = new List<CurrentGameParticipantDTO>();
+                    
                     string compare = "red";
+
                     foreach (var item in participants)
                     {
                         if (item.teamid == 200)
@@ -182,24 +181,7 @@ namespace testlol.ViewModels
 
                     foreach (var item in red)
                     {
-                        var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
-
-                        if (position == null)
-                        {
-                            position = new Models.DTOs.League_V4.PositionDTO();
-                            position.Tier = "UnRanked";
-                        }
-
-                        foreach (var data in champions.data) // 챔피언 아이디 값으로 이름 찾기
-                        {
-                            if (long.Parse(champions.data[data.Key].key) == item.championid)
-                            {
-                                item.championName = champions.data[data.Key].id;
-                            }
-
-                        }
-                        match_V5.GetPerks(item.perks, rune);
-                        innerRed.Add(QueueItemViewModel.From(compare, position, league, item));
+                        innerRed.Add(QueueItemViewModel.From(compare, item));
                     }
 
                 }
@@ -218,15 +200,14 @@ namespace testlol.ViewModels
                 if (blueTeam == null && GameInfo != null)
                 {
                     blueTeam = new ReadOnlyObservableCollection<QueueItemViewModel>(innerBlue);
+
                     List<CurrentGameParticipantDTO> participants = new List<CurrentGameParticipantDTO>();
-                    List<CurrentGameParticipantDTO> blue = new List<CurrentGameParticipantDTO>();
-                    League_V4 league = new League_V4();
-                    Match_V5 match_V5 = new Match_V5();
-                    Spectator_V4 spectator_V4 = new Spectator_V4();
-                    ChampionsDTO champions = spectator_V4.GetChampions();
                     participants = GameInfo.participants;
-                    List<RuneDTO> rune = match_V5.GetRune();
+
+                    List<CurrentGameParticipantDTO> blue = new List<CurrentGameParticipantDTO>();
+                    
                     string compare = "blue";
+
                     foreach (var item in participants)
                     {
                         if (item.teamid == 100)
@@ -235,24 +216,7 @@ namespace testlol.ViewModels
 
                     foreach (var item in blue)
                     {
-                        var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
-                        if (position == null)
-                        {
-                            position = new Models.DTOs.League_V4.PositionDTO();
-                            position.Tier = "UnRanked";
-                        }
-                        foreach (var data in champions.data)
-                        {
-                            if (long.Parse(champions.data[data.Key].key) == item.championid)
-                            {
-                                item.championName = champions.data[data.Key].id;
-                            }
-
-                        }
-
-                        match_V5.GetPerks(item.perks, rune);
-
-                        innerBlue.Add(QueueItemViewModel.From(compare, position, league, item));
+                        innerBlue.Add(QueueItemViewModel.From(compare, item));
                     }
 
                 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using testlol.API;
 using testlol.Models.DTOs.League_V4;
+using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Spectator_V4;
 
 namespace testlol.ViewModels
@@ -21,9 +22,34 @@ namespace testlol.ViewModels
         public string SummonerName { get; set; }
         public string BanChampionName { get; set; }
 
-        public static QueueItemViewModel From(string compare,PositionDTO position, League_V4 league, CurrentGameParticipantDTO item)
+        public static QueueItemViewModel From(string compare, CurrentGameParticipantDTO item)
         {
-            if(compare == "red")
+            League_V4 league = new League_V4();
+            Match_V5 match_V5 = new Match_V5();
+            Spectator_V4 spectator_V4 = new Spectator_V4();
+
+            ChampionsDTO champions = spectator_V4.GetChampions();
+            List<RuneDTO> rune = match_V5.GetRune();
+
+            var position = league.GetPositions(item.summonerId).Where(p => p.QueueType.Equals("RANKED_SOLO_5x5")).FirstOrDefault();
+            if (position == null)
+            {
+                position = new Models.DTOs.League_V4.PositionDTO();
+                position.Tier = "UnRanked";
+            }
+
+            match_V5.GetPerks(item.perks, rune);
+
+            foreach (var data in champions.data) // 챔피언 아이디 값으로 이름 찾기
+            {
+                if (long.Parse(champions.data[data.Key].key) == item.championid)
+                {
+                    item.championName = champions.data[data.Key].id;
+                }
+
+            }
+
+            if (compare == "red")
             {
                 return new QueueItemViewModel()
                 {

@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using testlol.API;
 using testlol.Managers;
+using testlol.Models.DTOs;
 using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Spectator_V4;
 using testlol.Types;
@@ -25,7 +26,7 @@ namespace testlol.ViewModels
         {
             Match_V5 match_V5 = new Match_V5();
             var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
-            
+
             int totalGameCount = matchlist.Count();
             int totalKills = 0;
             int totalDeaths = 0;
@@ -85,7 +86,7 @@ namespace testlol.ViewModels
                     }
                 }
             }
-         
+
             var mostList = mostChampions.OrderByDescending(x => x.ChampCount).ToList();
             TotalGameCount = totalGameCount + " 전 " + totalWinCount + " 승 " + totalLossesCount + " 패";
             TotalWinRate = String.Format("{0:P0}", (double)totalWinCount / totalGameCount);
@@ -141,35 +142,13 @@ namespace testlol.ViewModels
                     members = new ReadOnlyObservableCollection<RecordListItemViewModel>(innermembers);
                     Match_V5 match_V5 = new Match_V5();
                     var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
-                    
-                    List<RuneDTO> rune = match_V5.GetRune();
 
                     foreach (var item in matchlist)
                     {
-                        MatchDTO matchData = match_V5.GetMatchData(item);
-                        matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                        ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
-                        List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
-                        List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
-                        match_V5.GetTeam(matchData, redTeam, blueTeam);
-                        if (matchData.info.queueId == 1700)
-                        {
-                            Dictionary<int, List<ParticipantDTO>> arena = new Dictionary<int, List<ParticipantDTO>>();
-                            match_V5.GetArenaTeams(matchData, arena);
-                            innermembers.Add(RecordListItemViewModel.From(match_V5, userData, matchData, arena, redTeam, blueTeam));
-                        }
-                        else
-                        {
-                            match_V5.GetPerksImg(rune, matchData);
-                            match_V5.GetStatsImg(rune, matchData);
-                            innermembers.Add(RecordListItemViewModel.From(match_V5, userData, matchData, redTeam, blueTeam));
-                        }
-
-
-
+                        innermembers.Add(RecordListItemViewModel.From(item));
                     }
                 }
-                return members; 
+                return members;
             }
         }
 
@@ -185,14 +164,25 @@ namespace testlol.ViewModels
             int idx = Members.IndexOf(parameter as RecordListItemViewModel);
             if (idx > -1 && idx < Members.Count)
             {
-                match_V5.GetTier(Members[idx].RedTeam);
-                match_V5.GetTier(Members[idx].BlueTeam);
+                if (Members[idx].QueueType == "아레나")
+                {
+                    var viewModel = new ArenaDetailViewModel(Members[idx].ArenaTeams, Members[idx].gametime);
+                    ArenaDetailView arenaDetailView = new ArenaDetailView();
+                    arenaDetailView.DataContext = viewModel;
 
-                var viewModel = new DetailRecordViewModel(Members[idx].RedTeam, Members[idx].BlueTeam, Members[idx].gametime, Members[idx].teams);
-                DetailRecordView detailRecordView = new DetailRecordView();
-                detailRecordView.DataContext = viewModel;
+                    arenaDetailView.Show();
+                }
+                else
+                {
+                    match_V5.GetTier(Members[idx].RedTeam);
+                    match_V5.GetTier(Members[idx].BlueTeam);
 
-                detailRecordView.Show();
+                    var viewModel = new DetailRecordViewModel(Members[idx].RedTeam, Members[idx].BlueTeam, Members[idx].gametime, Members[idx].teams);
+                    DetailRecordView detailRecordView = new DetailRecordView();
+                    detailRecordView.DataContext = viewModel;
+
+                    detailRecordView.Show();
+                }
             }
 
         }
@@ -228,7 +218,7 @@ namespace testlol.ViewModels
             {
                 MessageBox.Show(UserDataManager.Instance.Summoner.Name + " 님은 게임 중이 아닙니다.");
             }
-             else
+            else
             {
                 var viewModel = new QueueViewModel();
                 QueueView queueView = new QueueView();

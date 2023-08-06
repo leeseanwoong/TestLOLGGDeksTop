@@ -19,15 +19,14 @@ namespace testlol.API
 
         }
 
-        private ApiManager apiManager = new ApiManager();
 
-        public IEnumerable<string> GetMatchList(string puuid)  //ieumerable = get밖에 없어서 수정 불가
+        public IEnumerable<string> GetMatchList(string puuid) 
         {
             string path = "match/v5/matches/by-puuid/" + puuid;
 
             var response = GET(GetAsiaMatchUrl(path));
 
-            var result = apiManager.ReturnMatchList(response);
+            var result = ApiManager.Instance.ReturnMatchList(response);
 
             return result;
         }
@@ -38,7 +37,7 @@ namespace testlol.API
 
             var response = GET(path);
 
-            var result = apiManager.ReturnRune(response);
+            var result = ApiManager.Instance.ReturnRune(response);
 
             return result;
         }
@@ -49,12 +48,12 @@ namespace testlol.API
 
             var response = GET(GetAsiaUrl(path));
 
-            var result = apiManager.ReturnMatchData(response);
+            var result = ApiManager.Instance.ReturnMatchData(response);
 
             return result;
         }
 
-        #region Utill
+        #region Utill클래스로 빼기
         public ParticipantDTO GetUserData(MatchDTO matchDTO, string summonerName)
         {
             ParticipantDTO userData = new ParticipantDTO();
@@ -116,7 +115,6 @@ namespace testlol.API
                 }
             }
         }
-
         public int GetArenaMaxDamge(Dictionary<int, List<ParticipantDTO>> arena)
         {
             int maxDamge = 0;
@@ -143,14 +141,11 @@ namespace testlol.API
             }
             return maxDamge;
         }
-        
-
         public string GetGameTime(long GameDuration)
         {
             TimeSpan t = TimeSpan.FromSeconds(GameDuration);
             return $"{t.Minutes}분 {t.Seconds}초";
         }
-
         public string GetWinLose(bool win)
         {
             if (win == true)
@@ -322,26 +317,6 @@ namespace testlol.API
             }
         }
 
-    private string GetDefaultIconUrl(int perkId)
-        {
-            switch (perkId)
-            {
-                case 5008:
-                    return "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png";
-                case 5005:
-                    return "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsattackspeedicon.png";
-                case 5007:
-                    return "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodscdrscalingicon.png";
-                case 5002:
-                    return "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsarmoricon.png";
-                case 5003:
-                    return "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmagicresicon.magicresist_fix.png";
-                case 5001:
-                    return "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png";
-                default:
-                    return null;
-            }
-        }
         public void GetTier(List<ParticipantDTO> team)
         {
             League_V4 league = new League_V4();

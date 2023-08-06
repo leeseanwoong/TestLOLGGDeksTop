@@ -14,10 +14,11 @@ namespace testlol.Managers
 {
     public class ApiManager
     {
-        public ApiManager()
-        {
-                
-        }
+
+        private static ApiManager apiManager;
+
+        public static ApiManager Instance => apiManager ?? (apiManager = new ApiManager());
+
         public List<PositionDTO> ReturnPosition(HttpResponseMessage response)
         {
             string content = response.Content.ReadAsStringAsync().Result;

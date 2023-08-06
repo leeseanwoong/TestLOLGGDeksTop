@@ -17,7 +17,6 @@ namespace testlol.API
 
         }
 
-        private ApiManager apiManager = new ApiManager();
 
         public CurrentGameInfoDTO GetCurrentGameInfo(string id)
         {
@@ -25,7 +24,7 @@ namespace testlol.API
 
             var response = GET(GetUrl(path));
 
-            var result = apiManager.ReturnCurrentGameInfo(response);
+            var result = ApiManager.Instance.ReturnCurrentGameInfo(response);
 
             return result;
         }
@@ -35,7 +34,7 @@ namespace testlol.API
 
             var response = GET(path);
             
-            var result = apiManager.ReturnChampion(response);
+            var result = ApiManager.Instance.ReturnChampion(response);
 
             return result;
         }

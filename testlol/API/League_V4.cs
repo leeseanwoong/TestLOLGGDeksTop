@@ -17,15 +17,13 @@ namespace testlol.API
 
         }
 
-        private ApiManager apiManager = new ApiManager();
-
         public List<PositionDTO> GetPositions(string summonerId)
         {
             string path = "league/v4/entries/by-summoner/" + summonerId;
 
             var response = GET(GetUrl(path)); //여기 까지만
             
-            var result = apiManager.ReturnPosition(response);
+            var result = ApiManager.Instance.ReturnPosition(response);
 
             return result;
         }

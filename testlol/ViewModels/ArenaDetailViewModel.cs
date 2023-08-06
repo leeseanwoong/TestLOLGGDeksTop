@@ -64,7 +64,6 @@ namespace testlol.ViewModels
             if (ArenaTeam == null)
                 return;
 
-            Match_V5 match_V5 = new Match_V5();
             // MaxDamge와 MaxDamgeTaken 값을 미리 계산하여 전달하도록 수정
             int maxDamge = 0;
             int maxDamgeTaken = 0;
@@ -85,7 +84,7 @@ namespace testlol.ViewModels
             {
                 foreach (var participant in ArenaTeam[teamId])
                 {
-                    sortedList.Add(DetailListItemViewModel.From(match_V5, GameDuration, maxDamge, maxDamgeTaken, participant));
+                    sortedList.Add(DetailListItemViewModel.From(GameDuration, maxDamge, maxDamgeTaken, participant));
                 }
             }
 
