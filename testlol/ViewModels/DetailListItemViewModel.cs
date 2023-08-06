@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using testlol.API;
 using testlol.Models.DTOs;
 using testlol.Models.DTOs.Match_V5;
+using testlol.Utills;
 
 namespace testlol.ViewModels
 {
@@ -43,17 +44,15 @@ namespace testlol.ViewModels
 
         public static DetailListItemViewModel From(long gameduration, int maxDamge, int maxDamgeTaken, ParticipantDTO participant)
         {
-            Match_V5 match_V5 = new Match_V5();
-
             return new DetailListItemViewModel()
             {
-                Item0 = match_V5.ReturnItemPhoto(participant.item0),
-                Item1 = match_V5.ReturnItemPhoto(participant.item1),
-                Item2 = match_V5.ReturnItemPhoto(participant.item2),
-                Item3 = match_V5.ReturnItemPhoto(participant.item3),
-                Item4 = match_V5.ReturnItemPhoto(participant.item4),
-                Item5 = match_V5.ReturnItemPhoto(participant.item5),
-                Item6 = match_V5.ReturnItemPhoto(participant.item6),
+                Item0 =LoLUtility.ReturnItemPhoto(participant.item0),
+                Item1 =LoLUtility.ReturnItemPhoto(participant.item1),
+                Item2 =LoLUtility.ReturnItemPhoto(participant.item2),
+                Item3 =LoLUtility.ReturnItemPhoto(participant.item3),
+                Item4 =LoLUtility.ReturnItemPhoto(participant.item4),
+                Item5 =LoLUtility.ReturnItemPhoto(participant.item5),
+                Item6 = LoLUtility.ReturnItemPhoto(participant.item6),
                 SummonerName = participant.summonerName,
                 ChampionName = participant.championPhoto,
                 TotalGold = string.Format("{0:#,###0G}", participant.goldEarned),
@@ -69,7 +68,7 @@ namespace testlol.ViewModels
                 PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment2 + ".png",
                 SubPerks = "https://z.fow.kr/img/arena/augment/" + participant.playerAugment4 + ".png",
                 Ranking = participant.placement,
-                Win =match_V5.GetWinLose(participant.win)
+                Win = LoLUtility.GetWinLose(participant.win)
 
             };
         }
@@ -77,25 +76,23 @@ namespace testlol.ViewModels
 
         public static DetailListItemViewModel From(string compare,ParticipantDTO participant, long gameduration, int maxDamge, int maxDamgeTaken)
         {
-            Match_V5 match_V5 = new Match_V5();
-
             if (compare == "red")
             {
                 return new DetailListItemViewModel()
                 {
                     tier = participant.tier,
                     ChampionLevel = participant.champLevel,
-                    Summoner1Casts = match_V5.GetSpellName(participant.Summoner1Id),
-                    Summoner2Casts = match_V5.GetSpellName(participant.Summoner2Id),
+                    Summoner1Casts = LoLUtility.GetSpellName(participant.Summoner1Id),
+                    Summoner2Casts = LoLUtility.GetSpellName(participant.Summoner2Id),
                     PrimaryPerks = participant.perks.styles[0].selections[0].perkImage,
                     SubPerks = participant.perks.styles[1].styleIcon,
-                    Item0 = match_V5.ReturnItemPhoto(participant.item0),
-                    Item1 = match_V5.ReturnItemPhoto(participant.item1),
-                    Item2 = match_V5.ReturnItemPhoto(participant.item2),
-                    Item3 = match_V5.ReturnItemPhoto(participant.item3),
-                    Item4 = match_V5.ReturnItemPhoto(participant.item4),
-                    Item5 = match_V5.ReturnItemPhoto(participant.item5),
-                    Item6 = match_V5.ReturnItemPhoto(participant.item6),
+                    Item0 = LoLUtility.ReturnItemPhoto(participant.item0),
+                    Item1 = LoLUtility.ReturnItemPhoto(participant.item1),
+                    Item2 = LoLUtility.ReturnItemPhoto(participant.item2),
+                    Item3 = LoLUtility.ReturnItemPhoto(participant.item3),
+                    Item4 = LoLUtility.ReturnItemPhoto(participant.item4),
+                    Item5 = LoLUtility.ReturnItemPhoto(participant.item5),
+                    Item6 = LoLUtility.ReturnItemPhoto(participant.item6),
                     SummonerName = participant.summonerName,
                     ChampionName = participant.championPhoto,
                     KDA = participant.KDA,
@@ -117,17 +114,17 @@ namespace testlol.ViewModels
                 {
                     tier = participant.tier,
                     ChampionLevel = participant.champLevel,
-                    Summoner1Casts = match_V5.GetSpellName(participant.Summoner1Id),
-                    Summoner2Casts = match_V5.GetSpellName(participant.Summoner2Id),
+                    Summoner1Casts = LoLUtility.GetSpellName(participant.Summoner1Id),
+                    Summoner2Casts = LoLUtility.GetSpellName(participant.Summoner2Id),
                     PrimaryPerks = participant.perks.styles[0].selections[0].perkImage,
                     SubPerks = participant.perks.styles[1].styleIcon,
-                    Item0 = match_V5.ReturnItemPhoto(participant.item0),
-                    Item1 = match_V5.ReturnItemPhoto(participant.item1),
-                    Item2 = match_V5.ReturnItemPhoto(participant.item2),
-                    Item3 = match_V5.ReturnItemPhoto(participant.item3),
-                    Item4 = match_V5.ReturnItemPhoto(participant.item4),
-                    Item5 = match_V5.ReturnItemPhoto(participant.item5),
-                    Item6 = match_V5.ReturnItemPhoto(participant.item6),
+                    Item0 = LoLUtility.ReturnItemPhoto(participant.item0),
+                    Item1 = LoLUtility.ReturnItemPhoto(participant.item1),
+                    Item2 = LoLUtility.ReturnItemPhoto(participant.item2),
+                    Item3 = LoLUtility.ReturnItemPhoto(participant.item3),
+                    Item4 = LoLUtility.ReturnItemPhoto(participant.item4),
+                    Item5 = LoLUtility.ReturnItemPhoto(participant.item5),
+                    Item6 = LoLUtility.ReturnItemPhoto(participant.item6),
                     SummonerName = participant.summonerName,
                     ChampionName = participant.championPhoto,
                     KDA = participant.KDA,

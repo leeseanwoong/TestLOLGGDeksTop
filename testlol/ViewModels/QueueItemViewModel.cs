@@ -7,6 +7,7 @@ using testlol.API;
 using testlol.Models.DTOs.League_V4;
 using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Spectator_V4;
+using testlol.Utills;
 
 namespace testlol.ViewModels
 {
@@ -38,7 +39,7 @@ namespace testlol.ViewModels
                 position.Tier = "UnRanked";
             }
 
-            match_V5.GetPerks(item.perks, rune);
+            LoLUtility.GetPerks(item.perks, rune);
 
             foreach (var data in champions.data) // 챔피언 아이디 값으로 이름 찾기
             {
@@ -55,8 +56,8 @@ namespace testlol.ViewModels
                 {
                     tier = position.Tier + " " + position.Rank,
                     SummonerName = item.summonerName,
-                    Summoner1Casts = league.GetSpellName((int)item.spell1Id),
-                    Summoner2Casts = league.GetSpellName((int)item.spell2Id),
+                    Summoner1Casts = LoLUtility.GetSpellName((int)item.spell1Id),
+                    Summoner2Casts = LoLUtility.GetSpellName((int)item.spell2Id),
                     Win = position.Wins + "승 " + position.Losses + "패 " + "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")",
                     PrimaryPerks = item.perks.perksImgs[0],
                     SubPerks = item.perks.perkSubStyleIcon,
@@ -69,8 +70,8 @@ namespace testlol.ViewModels
                 {
                     tier = position.Tier + " " + position.Rank,
                     SummonerName = item.summonerName,
-                    Summoner1Casts = league.GetSpellName((int)item.spell1Id),
-                    Summoner2Casts = league.GetSpellName((int)item.spell2Id),
+                    Summoner1Casts = LoLUtility.GetSpellName((int)item.spell1Id),
+                    Summoner2Casts = LoLUtility.GetSpellName((int)item.spell2Id),
                     Win = position.Wins + "승 " + position.Losses + "패 " + "(" + string.Format("{0:P0}", (double)position.Wins / (position.Wins + position.Losses)) + ")",
                     PrimaryPerks = item.perks.perksImgs[0],
                     SubPerks = item.perks.perkSubStyleIcon,

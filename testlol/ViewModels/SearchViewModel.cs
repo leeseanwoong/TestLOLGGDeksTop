@@ -192,7 +192,6 @@ namespace testlol.ViewModels
 
         private void ButtonDeatilPopupCommand(object parameter)
         {
-            Match_V5 match_V5 = new Match_V5();
             int idx = Items.IndexOf(parameter as RecordListItemViewModel);
             if (idx > -1 && idx < Items.Count)
             {
@@ -206,8 +205,8 @@ namespace testlol.ViewModels
                 }
                 else
                 {
-                    match_V5.GetTier(Items[idx].RedTeam);
-                    match_V5.GetTier(Items[idx].BlueTeam);
+                    LoLUtility.GetTier(Items[idx].RedTeam);
+                    LoLUtility.GetTier(Items[idx].BlueTeam);
 
                     var viewModel = new DetailRecordViewModel(Items[idx].RedTeam, Items[idx].BlueTeam, Items[idx].gametime, Items[idx].teams);
                     DetailRecordView detailRecordView = new DetailRecordView();

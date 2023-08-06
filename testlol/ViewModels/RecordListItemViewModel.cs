@@ -9,6 +9,7 @@ using testlol.Managers;
 using testlol.Models.DTOs;
 using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Sumonner_V4;
+using testlol.Utills;
 
 namespace testlol.ViewModels
 {
@@ -44,7 +45,7 @@ namespace testlol.ViewModels
         public long gametime { get; set; }
         public List<TeamDTO> teams { get; set; }
         public PerksDTO Perks { get; set; }
-        public Dictionary<int,List<ParticipantDTO>> ArenaTeams { get; set; }
+        public Dictionary<int, List<ParticipantDTO>> ArenaTeams { get; set; }
         public Visibility BtnVisible { get; set; }
 
         public static RecordListItemViewModel From(string matchID)
@@ -52,19 +53,19 @@ namespace testlol.ViewModels
             Match_V5 match_V5 = new Match_V5();
 
             MatchDTO matchData = match_V5.GetMatchData(matchID);
-            matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-            ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
+            matchData.info.participants = LoLUtility.InitParticipants(matchData.info.participants);
+            ParticipantDTO userData = LoLUtility.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
 
             List<RuneDTO> rune = match_V5.GetRune();
 
             List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
             List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
-            match_V5.GetTeam(matchData, redTeam, blueTeam);
+            LoLUtility.GetTeam(matchData, redTeam, blueTeam);
 
             if (matchData.info.queueId == 1700)
             {
                 Dictionary<int, List<ParticipantDTO>> arena = new Dictionary<int, List<ParticipantDTO>>();
-                match_V5.GetArenaTeams(matchData, arena);
+                LoLUtility.GetArenaTeams(matchData, arena);
 
                 return new RecordListItemViewModel()
                 {
@@ -72,21 +73,21 @@ namespace testlol.ViewModels
                     Kills = userData.kills,
                     Deaths = userData.deaths,
                     KDA = userData.KDA,
-                    Win = match_V5.GetWinLose(userData.win),
-                    QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                    GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
+                    Win = LoLUtility.GetWinLose(userData.win),
+                    QueueType = LoLUtility.GetQueueType(matchData.info.queueId),
+                    GameDuration = LoLUtility.GetGameTime(matchData.info.gameDuration),
                     ChampionPhoto = userData.championPhoto,
                     Summoner1Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment1 + ".png",
                     Summoner2Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment3 + ".png",
                     PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment2 + ".png",
                     SubPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment4 + ".png",
-                    Item0 = match_V5.ReturnItemPhoto(userData.item0),
-                    Item1 = match_V5.ReturnItemPhoto(userData.item1),
-                    Item3 = match_V5.ReturnItemPhoto(userData.item2),
-                    Item2 = match_V5.ReturnItemPhoto(userData.item3),
-                    Item4 = match_V5.ReturnItemPhoto(userData.item4),
-                    Item5 = match_V5.ReturnItemPhoto(userData.item5),
-                    Item6 = match_V5.ReturnItemPhoto(userData.item6),
+                    Item0 = LoLUtility.ReturnItemPhoto(userData.item0),
+                    Item1 = LoLUtility.ReturnItemPhoto(userData.item1),
+                    Item3 = LoLUtility.ReturnItemPhoto(userData.item2),
+                    Item2 = LoLUtility.ReturnItemPhoto(userData.item3),
+                    Item4 = LoLUtility.ReturnItemPhoto(userData.item4),
+                    Item5 = LoLUtility.ReturnItemPhoto(userData.item5),
+                    Item6 = LoLUtility.ReturnItemPhoto(userData.item6),
                     ChampionLevel = userData.champLevel,
                     TotalGold = string.Format("{0:#,###0}", userData.goldEarned),
                     KillRate = string.Format("{0:P0}", userData.killRate),
@@ -100,8 +101,8 @@ namespace testlol.ViewModels
             }
             else
             {
-                match_V5.GetPerksImg(rune, matchData);
-                match_V5.GetStatsImg(rune, matchData);
+                LoLUtility.GetPerksImg(rune, matchData);
+                LoLUtility.GetStatsImg(rune, matchData);
 
                 return new RecordListItemViewModel()
                 {
@@ -109,21 +110,21 @@ namespace testlol.ViewModels
                     Kills = userData.kills,
                     Deaths = userData.deaths,
                     KDA = userData.KDA,
-                    Win = match_V5.GetWinLose(userData.win),
-                    QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                    GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
+                    Win = LoLUtility.GetWinLose(userData.win),
+                    QueueType = LoLUtility.GetQueueType(matchData.info.queueId),
+                    GameDuration = LoLUtility.GetGameTime(matchData.info.gameDuration),
                     ChampionPhoto = userData.championPhoto,
-                    Summoner1Casts = match_V5.GetSpellName(userData.Summoner1Id),
-                    Summoner2Casts = match_V5.GetSpellName(userData.Summoner2Id),
+                    Summoner1Casts = LoLUtility.GetSpellName(userData.Summoner1Id),
+                    Summoner2Casts = LoLUtility.GetSpellName(userData.Summoner2Id),
                     PrimaryPerks = userData.perks.styles[0].selections[0].perkImage,
                     SubPerks = userData.perks.styles[1].styleIcon,
-                    Item0 = match_V5.ReturnItemPhoto(userData.item0),
-                    Item1 = match_V5.ReturnItemPhoto(userData.item1),
-                    Item3 = match_V5.ReturnItemPhoto(userData.item2),
-                    Item2 = match_V5.ReturnItemPhoto(userData.item3),
-                    Item4 = match_V5.ReturnItemPhoto(userData.item4),
-                    Item5 = match_V5.ReturnItemPhoto(userData.item5),
-                    Item6 = match_V5.ReturnItemPhoto(userData.item6),
+                    Item0 = LoLUtility.ReturnItemPhoto(userData.item0),
+                    Item1 = LoLUtility.ReturnItemPhoto(userData.item1),
+                    Item3 = LoLUtility.ReturnItemPhoto(userData.item2),
+                    Item2 = LoLUtility.ReturnItemPhoto(userData.item3),
+                    Item4 = LoLUtility.ReturnItemPhoto(userData.item4),
+                    Item5 = LoLUtility.ReturnItemPhoto(userData.item5),
+                    Item6 = LoLUtility.ReturnItemPhoto(userData.item6),
                     BlueTeam = blueTeam,
                     RedTeam = redTeam,
                     ChampionLevel = userData.champLevel,
@@ -140,24 +141,24 @@ namespace testlol.ViewModels
             }
         }
 
-        public static RecordListItemViewModel From(string matchID,SummonerDTO summoner)
+        public static RecordListItemViewModel From(string matchID, SummonerDTO summoner)
         {
             Match_V5 match_V5 = new Match_V5();
 
             MatchDTO matchData = match_V5.GetMatchData(matchID);
-            matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-            ParticipantDTO userData = match_V5.GetUserData(matchData, summoner.Name);
+            matchData.info.participants = LoLUtility.InitParticipants(matchData.info.participants);
+            ParticipantDTO userData = LoLUtility.GetUserData(matchData, summoner.Name);
 
             List<RuneDTO> rune = match_V5.GetRune();
 
             List<ParticipantDTO> redTeam = new List<ParticipantDTO>();
             List<ParticipantDTO> blueTeam = new List<ParticipantDTO>();
-            match_V5.GetTeam(matchData, redTeam, blueTeam);
+            LoLUtility.GetTeam(matchData, redTeam, blueTeam);
 
             if (matchData.info.queueId == 1700)
             {
                 Dictionary<int, List<ParticipantDTO>> arena = new Dictionary<int, List<ParticipantDTO>>();
-                match_V5.GetArenaTeams(matchData, arena);
+                LoLUtility.GetArenaTeams(matchData, arena);
 
                 return new RecordListItemViewModel()
                 {
@@ -165,21 +166,21 @@ namespace testlol.ViewModels
                     Kills = userData.kills,
                     Deaths = userData.deaths,
                     KDA = userData.KDA,
-                    Win = match_V5.GetWinLose(userData.win),
-                    QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                    GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
+                    Win = LoLUtility.GetWinLose(userData.win),
+                    QueueType = LoLUtility.GetQueueType(matchData.info.queueId),
+                    GameDuration = LoLUtility.GetGameTime(matchData.info.gameDuration),
                     ChampionPhoto = userData.championPhoto,
                     Summoner1Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment1 + ".png",
                     Summoner2Casts = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment3 + ".png",
                     PrimaryPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment2 + ".png",
                     SubPerks = "https://z.fow.kr/img/arena/augment/" + userData.playerAugment4 + ".png",
-                    Item0 = match_V5.ReturnItemPhoto(userData.item0),
-                    Item1 = match_V5.ReturnItemPhoto(userData.item1),
-                    Item3 = match_V5.ReturnItemPhoto(userData.item2),
-                    Item2 = match_V5.ReturnItemPhoto(userData.item3),
-                    Item4 = match_V5.ReturnItemPhoto(userData.item4),
-                    Item5 = match_V5.ReturnItemPhoto(userData.item5),
-                    Item6 = match_V5.ReturnItemPhoto(userData.item6),
+                    Item0 = LoLUtility.ReturnItemPhoto(userData.item0),
+                    Item1 = LoLUtility.ReturnItemPhoto(userData.item1),
+                    Item3 = LoLUtility.ReturnItemPhoto(userData.item2),
+                    Item2 = LoLUtility.ReturnItemPhoto(userData.item3),
+                    Item4 = LoLUtility.ReturnItemPhoto(userData.item4),
+                    Item5 = LoLUtility.ReturnItemPhoto(userData.item5),
+                    Item6 = LoLUtility.ReturnItemPhoto(userData.item6),
                     ChampionLevel = userData.champLevel,
                     TotalGold = string.Format("{0:#,###0}", userData.goldEarned),
                     KillRate = string.Format("{0:P0}", userData.killRate),
@@ -193,8 +194,8 @@ namespace testlol.ViewModels
             }
             else
             {
-                match_V5.GetPerksImg(rune, matchData);
-                match_V5.GetStatsImg(rune, matchData);
+                LoLUtility.GetPerksImg(rune, matchData);
+                LoLUtility.GetStatsImg(rune, matchData);
 
                 return new RecordListItemViewModel()
                 {
@@ -202,21 +203,21 @@ namespace testlol.ViewModels
                     Kills = userData.kills,
                     Deaths = userData.deaths,
                     KDA = userData.KDA,
-                    Win = match_V5.GetWinLose(userData.win),
-                    QueueType = match_V5.GetQueueType(matchData.info.queueId),
-                    GameDuration = match_V5.GetGameTime(matchData.info.gameDuration),
+                    Win = LoLUtility.GetWinLose(userData.win),
+                    QueueType = LoLUtility.GetQueueType(matchData.info.queueId),
+                    GameDuration = LoLUtility.GetGameTime(matchData.info.gameDuration),
                     ChampionPhoto = userData.championPhoto,
-                    Summoner1Casts = match_V5.GetSpellName(userData.Summoner1Id),
-                    Summoner2Casts = match_V5.GetSpellName(userData.Summoner2Id),
+                    Summoner1Casts = LoLUtility.GetSpellName(userData.Summoner1Id),
+                    Summoner2Casts = LoLUtility.GetSpellName(userData.Summoner2Id),
                     PrimaryPerks = userData.perks.styles[0].selections[0].perkImage,
                     SubPerks = userData.perks.styles[1].styleIcon,
-                    Item0 = match_V5.ReturnItemPhoto(userData.item0),
-                    Item1 = match_V5.ReturnItemPhoto(userData.item1),
-                    Item3 = match_V5.ReturnItemPhoto(userData.item2),
-                    Item2 = match_V5.ReturnItemPhoto(userData.item3),
-                    Item4 = match_V5.ReturnItemPhoto(userData.item4),
-                    Item5 = match_V5.ReturnItemPhoto(userData.item5),
-                    Item6 = match_V5.ReturnItemPhoto(userData.item6),
+                    Item0 = LoLUtility.ReturnItemPhoto(userData.item0),
+                    Item1 = LoLUtility.ReturnItemPhoto(userData.item1),
+                    Item3 = LoLUtility.ReturnItemPhoto(userData.item2),
+                    Item2 = LoLUtility.ReturnItemPhoto(userData.item3),
+                    Item4 = LoLUtility.ReturnItemPhoto(userData.item4),
+                    Item5 = LoLUtility.ReturnItemPhoto(userData.item5),
+                    Item6 = LoLUtility.ReturnItemPhoto(userData.item6),
                     BlueTeam = blueTeam,
                     RedTeam = redTeam,
                     ChampionLevel = userData.champLevel,
@@ -232,6 +233,6 @@ namespace testlol.ViewModels
                 };
             }
         }
-        
+
     }
 }

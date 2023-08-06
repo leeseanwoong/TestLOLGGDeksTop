@@ -21,7 +21,7 @@ namespace testlol.ViewModels
         {
             GameInfo = gameInfo;
             Match_V5 match = new Match_V5();
-            GameMode = match.GetQueueType((int)GameInfo.gameQueueConfigId);
+            GameMode = LoLUtility.GetQueueType((int)GameInfo.gameQueueConfigId);
             List<BanChampionDTO?> blue = new List<BanChampionDTO?>();
             List<BanChampionDTO?> red = new List<BanChampionDTO?>();
 
@@ -188,7 +188,7 @@ namespace testlol.ViewModels
                             }
 
                         }
-                        match_V5.GetPerks(item.perks, rune);
+                        LoLUtility.GetPerks(item.perks, rune);
                         innerRed.Add(QueueItemViewModel.From(compare, item));
                     }
 
@@ -240,7 +240,7 @@ namespace testlol.ViewModels
 
                         }
 
-                        match_V5.GetPerks(item.perks, rune);
+                        LoLUtility.GetPerks(item.perks, rune);
 
                         innerBlue.Add(QueueItemViewModel.From(compare, item));
                     }

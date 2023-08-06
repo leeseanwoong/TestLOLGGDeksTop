@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using testlol.API;
 using testlol.Managers;
-using testlol.Models.DTOs.Match_V5;
 using testlol.Models.DTOs.Spectator_V4;
 using testlol.Utills;
 
@@ -27,8 +26,7 @@ namespace testlol.ViewModels
             else
             {
                 Visible = Visibility.Visible;
-                Match_V5 match = new Match_V5();
-                GameMode = match.GetQueueType((int)GameInfo.gameQueueConfigId);
+                GameMode = LoLUtility.GetQueueType((int)GameInfo.gameQueueConfigId);
                 List<BanChampionDTO> blue = new List<BanChampionDTO>();
                 List<BanChampionDTO> red = new List<BanChampionDTO>();
                 foreach (var item in GameInfo.bannedChampions)

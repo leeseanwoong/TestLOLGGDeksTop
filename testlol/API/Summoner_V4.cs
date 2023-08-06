@@ -16,15 +16,13 @@ namespace testlol.API
 
         }
 
-        private ApiManager apiManager = new ApiManager();
-
         public SummonerDTO GetSummonerByName(string SummonerName)
         {
             string path = "summoner/v4/summoners/by-name/" + SummonerName;
 
             var response = GET(GetUrl(path));
 
-            var result = apiManager.ReturnSummoner(response);
+            var result = ApiManager.Instance.ReturnSummoner(response);
             
             return result;
         }

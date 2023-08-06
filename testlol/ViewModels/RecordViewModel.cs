@@ -39,8 +39,8 @@ namespace testlol.ViewModels
             {
                 MostChampionDTO most = new MostChampionDTO();
                 MatchDTO matchData = match_V5.GetMatchData(item);
-                matchData.info.participants = match_V5.InitParticipants(matchData.info.participants);
-                ParticipantDTO userData = match_V5.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
+                matchData.info.participants = LoLUtility.InitParticipants(matchData.info.participants);
+                ParticipantDTO userData = LoLUtility.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
                 if (userData.win == true)
                 {
                     totalWinCount = totalWinCount + 1;
@@ -174,8 +174,8 @@ namespace testlol.ViewModels
                 }
                 else
                 {
-                    match_V5.GetTier(Members[idx].RedTeam);
-                    match_V5.GetTier(Members[idx].BlueTeam);
+                    LoLUtility.GetTier(Members[idx].RedTeam);
+                    LoLUtility.GetTier(Members[idx].BlueTeam);
 
                     var viewModel = new DetailRecordViewModel(Members[idx].RedTeam, Members[idx].BlueTeam, Members[idx].gametime, Members[idx].teams);
                     DetailRecordView detailRecordView = new DetailRecordView();
