@@ -92,7 +92,12 @@ namespace testlol.ViewModels
             get => winRate;
             set => SetProperty(ref winRate, value);
         }
-
+        private bool isLoading = false;
+        public bool IsLoading
+        {
+            get => isLoading;
+            set => SetProperty(ref isLoading, value);
+        }
         private SummonerDTO summoner;
         public SummonerDTO Summoner
         {
@@ -114,17 +119,31 @@ namespace testlol.ViewModels
 
         public ICommand ButtonSearch => buttonSearch = buttonSearch ?? new Prism.Commands.DelegateCommand(ButtonSearchCommand);
 
-        private void ButtonSearchCommand()
+        private async void ButtonSearchCommand()
+        {
+            if (string.IsNullOrEmpty(SummonerName))
+                return;
+
+            IsLoading = true;
+
+            await Task.Run(() =>
+            {
+                LoadSummonerData();
+                LoadMatchList();
+            });
+
+            IsLoading = false;
+        }
+
+        
+        private void LoadSummonerData()
         {
             Summoner_V4 summoner_V4 = new Summoner_V4();
             League_V4 league_V4 = new League_V4();
-            Match_V5 match_V5 = new Match_V5();
             Summoner = summoner_V4.GetSummonerByName(SummonerName);
-            if (string.IsNullOrEmpty(SummonerName))
-                return;
+
             if (Summoner != null)
             {
-                items.Clear();
                 var position = league_V4.GetPosition(Summoner);
                 SearchName = Summoner.Name;
                 SummonerLevel = Summoner.SummonerLevel;
@@ -145,22 +164,28 @@ namespace testlol.ViewModels
 
                 Wins = position.Wins + "승 ";
                 Losses = position.Losses + "패 ";
-
-
-                var matchlist = match_V5.GetMatchList(Summoner.puuid);
-
-                foreach (var item in matchlist)
-                {
-                    Items.Add(RecordListItemViewModel.From(item, Summoner));
-                }
-
             }
             else
             {
                 MessageBox.Show("Not Found");
             }
-
         }
+
+        private void LoadMatchList()
+        {
+            Match_V5 match_V5 = new Match_V5();
+            var matchlist = match_V5.GetMatchList(Summoner.puuid);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Items.Clear();
+                foreach (var item in matchlist)
+                {
+                    Items.Add(RecordListItemViewModel.From(item, Summoner));
+                }
+            });
+        }
+
+
 
         private Prism.Commands.DelegateCommand buttonQueue;
         public ICommand ButtonQueue => buttonQueue = buttonQueue ?? new Prism.Commands.DelegateCommand(ButtonQueueCommand);

@@ -21,12 +21,12 @@ namespace testlol.ViewModels
 
         public HomeViewModel()
         {
-            League_V4 league_V4 = new League_V4(); // 매니저 만들어서 싱글톤으로 뺴서 사용
+            League_V4 league_V4 = new League_V4(); 
             var position = league_V4.GetPosition(UserDataManager.Instance.Summoner);
             if(position.Tier == null)
             {
                 TierIcon = "https://z.fow.kr/img/emblem/unranked.png";
-                Tier = "UnRanked"; // 이건 스트링을 따로 모아놓는 곳에 저장
+                Tier = "UnRanked"; 
                 TierIcon = null;
             }
             else
@@ -34,7 +34,7 @@ namespace testlol.ViewModels
                 Tier = position.Tier;
                 Rank = position.Rank;
                 LeaguePoints = position.leaguePoints + " LP";
-                TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png"; // 상대 경로로 바꾸기, Img경로 따로 뺴서 만들기
+                TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png"; 
             }
             Name = UserDataManager.Instance.Summoner.Name;
             SummonerLevel = UserDataManager.Instance.Summoner.SummonerLevel;

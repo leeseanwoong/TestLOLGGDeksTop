@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:testlol.Views"
              mc:Ignorable="d" 
              xmlns:vm="clr-namespace:testlol.ViewModels"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:view="clr-namespace:testlol.Views"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -35,16 +36,16 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <StackPanel  Orientation="Horizontal">
-                <Image Source="{Binding ProfileIconId, TargetNullValue={x:Null}}" Height="150" Width="150" Margin="5"/>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding SearchName}" FontSize="30"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Wins}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Losses}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding WinRate}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Source="{Binding ProfileIconId, TargetNullValue={x:Null}}" Height="150" Width="150" Margin="5"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding SearchName}" FontSize="30"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Wins}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Losses}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding WinRate}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
-            </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Vertical">
                 <Image HorizontalAlignment="Center" Stretch="Fill" Grid.Column="1" Source="{Binding TierIcon, TargetNullValue={x:Null}}" Height="120" Width="120" >
@@ -56,167 +57,172 @@
                     <TextBlock TextAlignment="Center" Text="{Binding Tier}" FontWeight="Bold" Margin="3"/>
                     <TextBlock TextAlignment="Center" Text="{Binding LeaguePoints}" Margin="3"/>
                 </StackPanel>
-                
+
             </StackPanel>
         </Grid>
-        <DataGrid IsReadOnly="True" Grid.Row="2" CanUserResizeColumns="False" 
+        <Grid Grid.Row="2">
+            <DataGrid IsReadOnly="True" Grid.Row="2" CanUserResizeColumns="False" 
                   CanUserResizeRows="False" ItemsSource="{Binding Items}" 
                   AutoGenerateColumns="False" RowStyle="{StaticResource DGWinRowStyle}">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Queue Type" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid  VerticalAlignment="Center" Width="auto">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock HorizontalAlignment="Center"  Text="{Binding QueueType}" Margin="3"/>
-                                    <TextBlock HorizontalAlignment="Center"  Grid.Row="1" Text="{Binding GameDuration}" Margin="3"/>
-                                    <TextBlock HorizontalAlignment="Center"  Grid.Row="2" Text="{Binding Win}" Margin="3"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Queue Type" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid  VerticalAlignment="Center" Width="auto">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock HorizontalAlignment="Center"  Text="{Binding QueueType}" Margin="3"/>
+                                        <TextBlock HorizontalAlignment="Center"  Grid.Row="1" Text="{Binding GameDuration}" Margin="3"/>
+                                        <TextBlock HorizontalAlignment="Center"  Grid.Row="2" Text="{Binding Win}" Margin="3"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Champion">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid VerticalAlignment="Center">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                    <DataGridTemplateColumn Header="Champion">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="50" Height="50" Stretch="Fill" Margin="3" Source="{Binding ChampionPhoto}"/>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
+                                                <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
+                                                <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Kills}"/>
+                                                <TextBlock Grid.Column="1" Text=" / "/>
+                                                <TextBlock Grid.Column="2" Text="{Binding Deaths}"/>
+                                                <TextBlock Grid.Column="3" Text=" / "/>
+                                                <TextBlock Grid.Column="4" Text="{Binding Assists}"/>
+                                            </StackPanel>
+                                            <TextBlock HorizontalAlignment="Center" Grid.Row="1" Text="{Binding KDA}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item0}" />
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item1}" />
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item2}" />
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item3}" />
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item4}" />
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item5}" />
+                                        <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item6}" />
+                                        <Button  Command="{Binding Path=DataContext.(vm:SearchViewModel.ButtonPerksPopup), RelativeSource={RelativeSource Mode=FindAncestor, 
+                                AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" Visibility="{Binding BtnVisible}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" >
+                                            <materialDesign:PackIcon Kind="Search" />
+                                        </Button>
+
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Info" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" Width="auto">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock HorizontalAlignment="Center"  
+                                               Text="{Binding ChampionLevel,StringFormat=레벨 {0}}"  Margin="3"/>
+                                        <TextBlock HorizontalAlignment="Center"  
+                                               Text="{Binding KillRate,StringFormat=킬관여 {0}}"  Margin="3"/>
+                                        <TextBlock HorizontalAlignment="Center"  
+                                               Text="{Binding TotalDetecedWard,StringFormat=제어와드 {0}}"  Margin="3"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock HorizontalAlignment="Center"  
+                                               Text="{Binding TotalCS,StringFormat=CS {0}}"  Margin="3"/>
+                                            <TextBlock HorizontalAlignment="Center"  
+                                               Text="{Binding AvgCS,StringFormat= ({0})}"  Margin="3"/>
+                                        </StackPanel>
+                                        <TextBlock HorizontalAlignment="Center"  
+                                               Text="{Binding TotalGold,StringFormat=골드 {0}}"  Margin="3"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Team" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
-                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Width="50" Height="50" Stretch="Fill" Margin="3" Source="{Binding ChampionPhoto}"/>
-                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Orientation="Vertical">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding Summoner1Casts}" />
-                                            <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding PrimaryPerks}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding Summoner2Casts}" />
-                                            <Image Width="25" Height="25" Margin="1" Stretch="Fill" Source="{Binding SubPerks}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Orientation="Vertical">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Kills}"/>
-                                            <TextBlock Grid.Column="1" Text=" / "/>
-                                            <TextBlock Grid.Column="2" Text="{Binding Deaths}"/>
-                                            <TextBlock Grid.Column="3" Text=" / "/>
-                                            <TextBlock Grid.Column="4" Text="{Binding Assists}"/>
-                                        </StackPanel>
-                                        <TextBlock HorizontalAlignment="Center" Grid.Row="1" Text="{Binding KDA}"/>
-                                    </StackPanel>
+                                    <DataGrid IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" AutoGenerateColumns="False" ItemsSource="{Binding BlueTeam}">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Image Width="20" Height="20" Stretch="Fill" Source="{Binding championPhoto}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn Binding="{Binding summonerName}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <DataGrid IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" Grid.Column="1"  AutoGenerateColumns="False" ItemsSource="{Binding RedTeam}">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Image Width="20" Height="20" Stretch="Fill" Source="{Binding championPhoto}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn Binding="{Binding summonerName}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
                                 </Grid>
-                                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item0}" />
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item1}" />
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item2}" />
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item3}" />
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item4}" />
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item5}" />
-                                    <Image Width="25" Height="25" Stretch="Fill" Margin="1" Source="{Binding Item6}" />
-                                    <Button  Command="{Binding Path=DataContext.(vm:SearchViewModel.ButtonPerksPopup), RelativeSource={RelativeSource Mode=FindAncestor, 
-                                AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" Visibility="{Binding BtnVisible}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" >
-                                        <materialDesign:PackIcon Kind="Search" />
-                                    </Button>
-
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="Info" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid VerticalAlignment="Center" Width="auto">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock HorizontalAlignment="Center"  
-                                               Text="{Binding ChampionLevel,StringFormat=레벨 {0}}"  Margin="3"/>
-                                    <TextBlock HorizontalAlignment="Center"  
-                                               Text="{Binding KillRate,StringFormat=킬관여 {0}}"  Margin="3"/>
-                                    <TextBlock HorizontalAlignment="Center"  
-                                               Text="{Binding TotalDetecedWard,StringFormat=제어와드 {0}}"  Margin="3"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock HorizontalAlignment="Center"  
-                                               Text="{Binding TotalCS,StringFormat=CS {0}}"  Margin="3"/>
-                                        <TextBlock HorizontalAlignment="Center"  
-                                               Text="{Binding AvgCS,StringFormat= ({0})}"  Margin="3"/>
-                                    </StackPanel>
-                                    <TextBlock HorizontalAlignment="Center"  
-                                               Text="{Binding TotalGold,StringFormat=골드 {0}}"  Margin="3"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="Team" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <DataGrid IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" AutoGenerateColumns="False" ItemsSource="{Binding BlueTeam}">
-                                    <DataGrid.Columns>
-                                        <DataGridTemplateColumn>
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Image Width="20" Height="20" Stretch="Fill" Source="{Binding championPhoto}"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn Binding="{Binding summonerName}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <DataGrid IsReadOnly="True" CanUserResizeColumns="False" CanUserResizeRows="False" Grid.Column="1"  AutoGenerateColumns="False" ItemsSource="{Binding RedTeam}">
-                                    <DataGrid.Columns>
-                                        <DataGridTemplateColumn>
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Image Width="20" Height="20" Stretch="Fill" Source="{Binding championPhoto}"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn Binding="{Binding summonerName}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Command="{Binding Path=DataContext.(vm:SearchViewModel.ButtonDetailPopup), RelativeSource={RelativeSource Mode=FindAncestor, 
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Path=DataContext.(vm:SearchViewModel.ButtonDetailPopup), RelativeSource={RelativeSource Mode=FindAncestor, 
                                 AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" >
-                                <materialDesign:PackIcon Kind="Search" />
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                    <materialDesign:PackIcon Kind="Search" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <materialDesign:DataGridTextColumn/>
+                    <materialDesign:DataGridTextColumn/>
 
-            </DataGrid.Columns>
-        </DataGrid>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid x:Name="loadingGrid" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <fa:ImageAwesome Icon="Refresh" Spin="True" Height="90" Width="90" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
