@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:testlol.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:vm ="clr-namespace:testlol.ViewModels"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="984" d:DesignWidth="1162">
     <UserControl.DataContext>
         <vm:HomeViewModel/>
     </UserControl.DataContext>
@@ -20,7 +21,7 @@
                     </Border.Background>
                 </Border>
                 <TextBlock Margin="20 15" FontSize="30" Text="{Binding Name}" Foreground="DarkGray"/>
-                <StackPanel Orientation="Horizontal" Margin="20 0">
+                <StackPanel Orientation="Horizontal" Margin="20,30">
                     <StackPanel Margin="5">
                         <TextBlock Text="WINS" FontSize="15" FontWeight="Bold" Foreground="Green"/>
                         <TextBlock Text="{Binding Wins}" FontSize="18" Foreground="Gray" HorizontalAlignment="Center"/>
@@ -30,7 +31,7 @@
                         <TextBlock Text="{Binding Losses}" FontSize="18" Foreground="Gray" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="30 20">
+                <StackPanel Margin="30 150">
                     <TextBlock Text="LEVEL" FontSize="15" Foreground="LightGray"/>
                     <TextBlock Text="{Binding SummonerLevel}" HorizontalAlignment="Center" FontSize="80" Foreground="Gray"/>
                 </StackPanel>
@@ -48,5 +49,6 @@
                 <TextBlock FontSize="18" Foreground="Gray" Text="{Binding LeaguePoints}" Margin="5"/>
             </StackPanel>
         </StackPanel>
+        <fa:ImageAwesome Icon="Refresh" Spin="True" Height="90" Width="90" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

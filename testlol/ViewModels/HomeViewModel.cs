@@ -21,31 +21,56 @@ namespace testlol.ViewModels
 
         public HomeViewModel()
         {
-            League_V4 league_V4 = new League_V4(); 
-            var position = league_V4.GetPosition(UserDataManager.Instance.Summoner);
-            if(position.Tier == null)
-            {
-                TierIcon = "https://z.fow.kr/img/emblem/unranked.png";
-                Tier = "UnRanked"; 
-                TierIcon = null;
-            }
-            else
-            {
-                Tier = position.Tier;
-                Rank = position.Rank;
-                LeaguePoints = position.leaguePoints + " LP";
-                TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png"; 
-            }
-            Name = UserDataManager.Instance.Summoner.Name;
-            SummonerLevel = UserDataManager.Instance.Summoner.SummonerLevel;
-            ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + UserDataManager.Instance.Summoner.ProfileIconId + ".jpg";
-            
-            Wins = position.Wins;
-            Losses = position.Losses;
-            
+            InitializeAsync();
         }
 
+        private async Task InitializeAsync()
+        {
+            IsLoading = true;
+            await Task.Run(()=> InitHomeDataAsync());
+            IsLoading = false;
+        }
+
+
+        private async Task InitHomeDataAsync()
+        {
+            League_V4 league_V4 = new League_V4();
+            var position = league_V4.GetPosition(UserDataManager.Instance.Summoner);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (position.Tier == null)
+                {
+                    TierIcon = "https://z.fow.kr/img/emblem/unranked.png";
+                    Tier = "UnRanked";
+                    TierIcon = null;
+                }
+                else
+                {
+                    Tier = position.Tier;
+                    Rank = position.Rank;
+                    LeaguePoints = position.leaguePoints + " LP";
+                    TierIcon = "https://z.fow.kr/img/emblem/" + position.Tier.ToLower() + ".png";
+                }
+                Name = UserDataManager.Instance.Summoner.Name;
+                SummonerLevel = UserDataManager.Instance.Summoner.SummonerLevel;
+                ProfileIconId = "http://opgg-static.akamaized.net/images/profile_icons/profileIcon" + UserDataManager.Instance.Summoner.ProfileIconId + ".jpg";
+
+                Wins = position.Wins;
+                Losses = position.Losses;
+
+            });
+        }
+
+
         #region property
+        private bool isLoading;
+        public bool IsLoading
+        {
+            get => isLoading;
+            set =>SetProperty(ref isLoading, value);
+        }
+
         private string name;
         public string Name
         {

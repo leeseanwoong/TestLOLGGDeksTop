@@ -19,7 +19,6 @@ namespace testlol.API
 
         }
 
-
         public IEnumerable<string> GetMatchList(string puuid) 
         {
             string path = "match/v5/matches/by-puuid/" + puuid;
