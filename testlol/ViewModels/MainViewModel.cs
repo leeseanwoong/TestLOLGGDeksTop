@@ -28,6 +28,7 @@ namespace testlol.ViewModels
         private DispatcherTimer timer;
         public MainViewModel()
         {
+            IsLoading = true;
             riotClientManager = new RiotClientManager();
 
             riotClientManager.LeagueClosed += RiotClientManager_LeagueClosed;
@@ -44,6 +45,7 @@ namespace testlol.ViewModels
             lock (_lock)
             {
                 timer.Start();
+                IsLoading = true;
             }
         }
 
@@ -67,6 +69,7 @@ namespace testlol.ViewModels
 
                     lock(_lock)
                     {
+                        IsLoading=false;
                         MessageBox.Show("연결 완료");
                     }
                     
@@ -84,6 +87,13 @@ namespace testlol.ViewModels
         {
             Summoner_V4 summoner_V4 = new Summoner_V4();
             return summoner_V4.GetSummonerByName(SummerName);
+        }
+
+        private bool isLoading;
+        public bool IsLoading
+        {
+            get => isLoading;
+            set=>SetProperty(ref isLoading, value);
         }
 
         private MenuViewModel _menuViewModel;

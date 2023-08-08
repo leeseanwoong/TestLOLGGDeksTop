@@ -8,6 +8,7 @@
         Title="MainWindow" Height="1000" Width="1550"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStartupLocation="CenterScreen"
+        xmlns:fa ="http://schemas.fontawesome.io/icons/"
         xmlns:vm="clr-namespace:testlol.ViewModels"
         xmlns:view ="clr-namespace:testlol.Views">
 
@@ -23,6 +24,8 @@
             <view:MenuView DataContext="{Binding MenuViewModel}"/>
 
             <view:MainView Grid.Column="1" DataContext="{Binding MainContentViewModel}"/>
+            <fa:ImageAwesome Grid.Column="1" Icon="Refresh" Spin="True" Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}"
+                             Height="90" Width="90" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
     </Grid> 
 </Window>
