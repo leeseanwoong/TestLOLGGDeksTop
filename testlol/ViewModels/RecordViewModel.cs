@@ -24,9 +24,22 @@ namespace testlol.ViewModels
         #region ctor
         public RecordViewModel()
         {
+            InitializeAsync();
+        }
+        #endregion
+        private async void InitializeAsync()
+        {
+            IsLoading = true;
+            await InitMostAsync();
+            await LoadMatchListAsync();
+            IsLoading = false;
+        }
+        private async Task InitMostAsync()
+        {
             Match_V5 match_V5 = new Match_V5();
             var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
 
+            
             int totalGameCount = matchlist.Count();
             int totalKills = 0;
             int totalDeaths = 0;
@@ -35,72 +48,83 @@ namespace testlol.ViewModels
             int totalLossesCount = 0;
             List<MostChampionDTO> mostChampions = new List<MostChampionDTO>();
 
-            foreach (var item in matchlist)
+            await Task.Run(() =>
             {
-                MostChampionDTO most = new MostChampionDTO();
-                MatchDTO matchData = match_V5.GetMatchData(item);
-                matchData.info.participants = LoLUtility.InitParticipants(matchData.info.participants);
-                ParticipantDTO userData = LoLUtility.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
-                if (userData.win == true)
+                foreach (var item in matchlist)
                 {
-                    totalWinCount = totalWinCount + 1;
-                    most.WinCount += 1;
-                }
-                else if (userData.win == false)
-                {
-                    totalLossesCount = totalLossesCount + 1;
-                    most.LossesCount += 1;
-                }
-                most.ChampionPhoto = userData.championPhoto;
-                most.ChampionName = userData.championName;
-                most.ChampCount = most.ChampCount + 1;
-                most.Kills = userData.kills;
-                most.Deaths = userData.deaths;
-                most.Assists = userData.assists;
-                totalKills = totalKills + userData.kills;
-                totalDeaths = totalDeaths + userData.deaths;
-                totalAssists = totalAssists + userData.assists;
-                most.KDA = (most.Deaths == 0) ? Math.Round((double)most.Kills + most.Assists, 2) : Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
-                mostChampions.Add(most);
-            }
-
-            for (int j = 0; j < mostChampions.Count; j++)
-            {
-                for (int k = 0; k < mostChampions.Count; k++)
-                {
-                    if (j == k) { }
-                    else
+                    MostChampionDTO most = new MostChampionDTO();
+                    MatchDTO matchData = match_V5.GetMatchData(item);
+                    matchData.info.participants = LoLUtility.InitParticipants(matchData.info.participants);
+                    ParticipantDTO userData = LoLUtility.GetUserData(matchData, UserDataManager.Instance.Summoner.Name);
+                    if (userData.win == true)
                     {
-                        if (mostChampions[j].ChampionName == mostChampions[k].ChampionName)
+                        totalWinCount = totalWinCount + 1;
+                        most.WinCount += 1;
+                    }
+                    else if (userData.win == false)
+                    {
+                        totalLossesCount = totalLossesCount + 1;
+                        most.LossesCount += 1;
+                    }
+                    most.ChampionPhoto = userData.championPhoto;
+                    most.ChampionName = userData.championName;
+                    most.ChampCount = most.ChampCount + 1;
+                    most.Kills = userData.kills;
+                    most.Deaths = userData.deaths;
+                    most.Assists = userData.assists;
+                    totalKills = totalKills + userData.kills;
+                    totalDeaths = totalDeaths + userData.deaths;
+                    totalAssists = totalAssists + userData.assists;
+                    most.KDA = (most.Deaths == 0) ? Math.Round((double)most.Kills + most.Assists, 2) : Math.Round(((double)most.Kills + most.Assists) / most.Deaths, 2);
+                    mostChampions.Add(most);
+                }
+
+                for (int j = 0; j < mostChampions.Count; j++)
+                {
+                    for (int k = 0; k < mostChampions.Count; k++)
+                    {
+                        if (j == k) { }
+                        else
                         {
-                            mostChampions[j].Assists += mostChampions[k].Assists;
-                            mostChampions[j].Deaths += mostChampions[k].Deaths;
-                            mostChampions[j].Kills += mostChampions[k].Kills;
-                            mostChampions[j].LossesCount += mostChampions[k].LossesCount;
-                            mostChampions[j].WinCount += mostChampions[k].WinCount;
-                            mostChampions[j].ChampCount += 1;
-                            mostChampions[j].KDA = Math.Round(((double)mostChampions[j].Kills + mostChampions[j].Assists) / mostChampions[j].Deaths, 2);
-                            mostChampions.RemoveAt(k);
-                            k += -1;
+                            if (mostChampions[j].ChampionName == mostChampions[k].ChampionName)
+                            {
+                                mostChampions[j].Assists += mostChampions[k].Assists;
+                                mostChampions[j].Deaths += mostChampions[k].Deaths;
+                                mostChampions[j].Kills += mostChampions[k].Kills;
+                                mostChampions[j].LossesCount += mostChampions[k].LossesCount;
+                                mostChampions[j].WinCount += mostChampions[k].WinCount;
+                                mostChampions[j].ChampCount += 1;
+                                mostChampions[j].KDA = Math.Round(((double)mostChampions[j].Kills + mostChampions[j].Assists) / mostChampions[j].Deaths, 2);
+                                mostChampions.RemoveAt(k);
+                                k += -1;
+                            }
                         }
                     }
                 }
-            }
 
-            var mostList = mostChampions.OrderByDescending(x => x.ChampCount).ToList();
-            TotalGameCount = totalGameCount + " 전 " + totalWinCount + " 승 " + totalLossesCount + " 패";
-            TotalWinRate = String.Format("{0:P0}", (double)totalWinCount / totalGameCount);
-            TotalKDAScore = string.Format("{0:#,###0.#}", (double)totalKills / 10) + " / " + string.Format("{0:#,###0.#}", (double)totalAssists / 10) + " / " + string.Format("{0:#,###0.#}", (double)totalDeaths / 10);
-            TotalKDA = String.Format("{0:0.0#}", (double)(totalKills + totalAssists) / totalDeaths);
-            MostChampions = mostList;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var mostList = mostChampions.OrderByDescending(x => x.ChampCount).ToList();
+                    TotalGameCount = totalGameCount + " 전 " + totalWinCount + " 승 " + totalLossesCount + " 패";
+                    TotalWinRate = String.Format("{0:P0}", (double)totalWinCount / totalGameCount);
+                    TotalKDAScore = string.Format("{0:#,###0.#}", (double)totalKills / 10) + " / " + string.Format("{0:#,###0.#}", (double)totalAssists / 10) + " / " + string.Format("{0:#,###0.#}", (double)totalDeaths / 10);
+                    TotalKDA = String.Format("{0:0.0#}", (double)(totalKills + totalAssists) / totalDeaths);
+                    MostChampions = mostList;
+                });
+            });
+            
+            
         }
-        #endregion
 
         #region property
-        private ObservableCollection<RecordListItemViewModel> innermembers
-        { get; } = new ObservableCollection<RecordListItemViewModel>();
+       
 
-        private ReadOnlyObservableCollection<RecordListItemViewModel> members;
+        private bool isLoading;
+        public bool IsLoading
+        {
+            get => isLoading;
+            set=>SetProperty(ref isLoading, value);
+        }
 
         private List<MostChampionDTO> mostChampions;
         public List<MostChampionDTO> MostChampions
@@ -132,6 +156,10 @@ namespace testlol.ViewModels
             get => totalKDAScore;
             set => SetProperty(ref totalKDAScore, value);
         }
+        private ObservableCollection<RecordListItemViewModel> innermembers
+        { get; } = new ObservableCollection<RecordListItemViewModel>();
+
+        private ReadOnlyObservableCollection<RecordListItemViewModel> members;
 
         public ReadOnlyObservableCollection<RecordListItemViewModel> Members
         {
@@ -140,16 +168,29 @@ namespace testlol.ViewModels
                 if (members == null && UserDataManager.Instance.Summoner != null)
                 {
                     members = new ReadOnlyObservableCollection<RecordListItemViewModel>(innermembers);
-                    Match_V5 match_V5 = new Match_V5();
-                    var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
-
-                    foreach (var item in matchlist)
-                    {
-                        innermembers.Add(RecordListItemViewModel.From(item));
-                    }
+                    //LoadMatchListAsync();
                 }
                 return members;
             }
+        }
+
+        private async Task LoadMatchListAsync()
+        {
+            
+
+                Match_V5 match_V5 = new Match_V5();
+                var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
+
+                await Task.Run(() =>
+                {
+                    foreach (var item in matchlist)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => // UI 스레드에서 실행
+                        {
+                            innermembers.Add(RecordListItemViewModel.From(item));
+                        });
+                    }
+                });
         }
 
         #endregion
