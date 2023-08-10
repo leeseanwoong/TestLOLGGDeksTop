@@ -39,7 +39,7 @@ namespace testlol.ViewModels
             Match_V5 match_V5 = new Match_V5();
             var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
 
-            
+
             int totalGameCount = matchlist.Count();
             int totalKills = 0;
             int totalDeaths = 0;
@@ -112,18 +112,18 @@ namespace testlol.ViewModels
                     MostChampions = mostList;
                 });
             });
-            
-            
+
+
         }
 
         #region property
-       
+
 
         private bool isLoading;
         public bool IsLoading
         {
             get => isLoading;
-            set=>SetProperty(ref isLoading, value);
+            set => SetProperty(ref isLoading, value);
         }
 
         private List<MostChampionDTO> mostChampions;
@@ -176,21 +176,18 @@ namespace testlol.ViewModels
 
         private async Task LoadMatchListAsync()
         {
-            
 
-                Match_V5 match_V5 = new Match_V5();
-                var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
 
-                await Task.Run(() =>
+            Match_V5 match_V5 = new Match_V5();
+            var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
+
+            foreach (var item in matchlist)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() => // UI 스레드에서 실행
                 {
-                    foreach (var item in matchlist)
-                    {
-                        Application.Current.Dispatcher.Invoke(() => // UI 스레드에서 실행
-                        {
-                            innermembers.Add(RecordListItemViewModel.From(item));
-                        });
-                    }
+                    innermembers.Add(RecordListItemViewModel.From(item));
                 });
+            }
         }
 
         #endregion
