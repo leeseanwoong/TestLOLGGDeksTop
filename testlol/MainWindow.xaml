@@ -24,8 +24,7 @@
             <view:MenuView DataContext="{Binding MenuViewModel}"/>
 
             <view:MainView Grid.Column="1" DataContext="{Binding MainContentViewModel}"/>
-            <fa:ImageAwesome Grid.Column="1" Icon="Refresh" Spin="True" Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}"
-                             Height="90" Width="90" HorizontalAlignment="Center" VerticalAlignment="Center" />
+           
         </Grid>
-    </Grid> 
+    </Grid>
 </Window>

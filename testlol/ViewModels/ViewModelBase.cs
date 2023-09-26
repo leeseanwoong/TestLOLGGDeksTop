@@ -10,15 +10,10 @@ namespace testlol.ViewModels
 {
     internal class ViewModelBase : INotifyPropertyChanged
     {
-        private ViewModelBase Parent;
+        
         public ViewModelBase()
         {
 
-        }
-
-        public ViewModelBase(ViewModelBase parent)
-        {
-            parent = Parent;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -78,8 +78,9 @@ namespace testlol.ViewModels
                         maxDamgeTaken = value.totalDamageTaken;
                 }
             }
-
+            
             List<DetailListItemViewModel> sortedList = new List<DetailListItemViewModel>();
+            
             foreach (var teamId in ArenaTeam.Keys)
             {
                 foreach (var participant in ArenaTeam[teamId])

@@ -115,7 +115,21 @@ namespace testlol.ViewModels
 
 
         }
+        private async Task LoadMatchListAsync()
+        {
 
+
+            Match_V5 match_V5 = new Match_V5();
+            var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
+
+            foreach (var item in matchlist)
+            {
+                Application.Current.Dispatcher.Invoke(() => // UI 스레드에서 실행
+                {
+                    innermembers.Add(RecordListItemViewModel.From(item));
+                });
+            }
+        }
         #region property
 
 
@@ -174,21 +188,7 @@ namespace testlol.ViewModels
             }
         }
 
-        private async Task LoadMatchListAsync()
-        {
-
-
-            Match_V5 match_V5 = new Match_V5();
-            var matchlist = match_V5.GetMatchList(UserDataManager.Instance.Summoner.puuid);
-
-            foreach (var item in matchlist)
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() => // UI 스레드에서 실행
-                {
-                    innermembers.Add(RecordListItemViewModel.From(item));
-                });
-            }
-        }
+        
 
         #endregion
 
